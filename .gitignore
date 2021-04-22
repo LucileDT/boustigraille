@@ -50,3 +50,20 @@
 
 # Embedded web-server pid file
 /.web-server-pid
+
+# Configuration files
+/.env
+/.env.test
+/.env.local
+/.env.local.php
+/.env.*.local
+
+# Default Symfony gitignore configuration
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+.phpunit
+.phpunit.result.cache
+/phpunit.xml
+
