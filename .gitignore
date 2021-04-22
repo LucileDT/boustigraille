@@ -67,3 +67,6 @@
 .phpunit.result.cache
 /phpunit.xml
 
+# Netbeans settings
+/nbproject/
+
