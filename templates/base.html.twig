@@ -1,19 +1,112 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-           and uncomment the following Encore helpers to start using Symfony UX #}
-        {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
+        <meta charset="UTF-8" />
+        <title>Boustigraille - {% block title %}{% endblock %}</title>
+        {% block global_css %}
+            <link rel="stylesheet" href="{{ asset('css/library/bootstrap.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/global.css') }}">
         {% endblock %}
-
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
+        {% block global_js %}
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+{#            <script src="{{ asset('javascript/library/jQuery/jquery.min.js') }}"></script>#}
+            <script src="{{ asset('javascript/library/bootstrap.bundle.min.js') }}"></script>
+{#            <script src="{{ asset('javascript/global.js') }}"></script>#}
         {% endblock %}
+        {% block javascript %}{% endblock %}
+{#        <link rel="stylesheet" href="{{ asset('css/base.css') }}">#}
+        {% block stylesheets %}{% endblock %}
+{#        <link rel="icon" type="image/png" href="{{ asset('boustigraille.png') }}" />#}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <div id="page" class="container-fluid">
+            {# ------------------------------------ #}
+            {# ------------- Top menu ------------- #}
+            {# ------------------------------------ #}
+            <header>
+                <div class="container">
+                    <nav id="top-navbar" class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+                        <a class="navbar-brand" href="{{ path('home') }}">Accueil <span class="sr-only">(page courante)</span></a>
+                        <button
+                            class="navbar-toggler"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#navbar-top-menu"
+                            aria-controls="navbar-top-menu"
+                            aria-expanded="false"
+                            aria-label="Ouvrir le menu de navigation"
+                            >
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div
+                            class="collapse navbar-collapse"
+                            id="navbar-top-menu"
+                            >
+                            <ul class="navbar-nav mr-auto">
+                            </ul>
+                            <ul class="navbar-nav ml-auto">
+                                {% if app.user is not null %}
+                                    <li class="nav-item dropdown">
+                                        <a
+                                            class="nav-link dropdown-toggle"
+                                            href="#"
+                                            id="dropdown-user"
+                                            role="button"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false"
+                                            >
+                                            {{ app.user.username }}
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user">
+                                            <a class="dropdown-item" href="{{ path('app_logout') }}">Me déconnecter</a>
+                                        </div>
+                                    </li>
+                                {% endif %}
+                            </ul>
+
+                        </div>
+                    </nav>
+                </div>
+            </header>
+
+            <div id="container-alert-messages" class="container-fluid">
+                {% for type, messages in app.session.flashbag.all() %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ type }} alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            {{ message | raw }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+
+            <div class="container-fluid">
+                <nav aria-label="Fil d'ariane">
+                    <ol class="breadcrumb">
+                        {% block breadcrumb %}
+                            <li class="breadcrumb-item active" aria-current="page">Accueil</li>
+                        {% endblock %}
+                    </ol>
+                </nav>
+            </div>
+
+            <div id="page-content">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+        <footer class="page-footer mt-4">
+            <nav class="nav bg-primary justify-content-center text-light py-2">
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="#"><i class="icon ion-md-link"></i>&nbsp;Site réalisé sous licence AGPL v3</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="#"><i class="icon ion-md-link"></i>&nbsp;Voir le code source</a>
+                </li>
+            </nav>
+        </footer>
+
+        {% block javascripts %}{% endblock %}
     </body>
 </html>

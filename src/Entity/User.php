@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * User is a class used to connect to the application. It contains the basic
  * information needed for this.
  *
- * @ORM\Table(name="user")
+ * @ORM\Table(name="`user`")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  *
  * @UniqueEntity(
@@ -257,5 +257,10 @@ class User implements UserInterface
     public function getSalt()
     {
 
+    }
+
+    public function supportsClass($class)
+    {
+        return User::class === $class;
     }
 }

@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page">
+        <a href="/">Accueil</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Connexion</li>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <p class="text-center lead">
+                Bienvenue sur Boustigraille.
+            </p>
+            <p class="text-center lead">
+                Pour accéder au logiciel, identifiez-vous :
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4 text-center">
+            <form action="{{ path('app_login') }}" method="post">
+                <div class="form-group">
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="username"
+                        name="username"
+                        placeholder="Username"
+                        value="{% if username is defined %}{{ username }}{% endif %}"
+                    >
+                </div>
+                <div class="form-group">
+                    <input type="password"
+                        class="form-control"
+                        id="password"
+                        name="password"
+                        placeholder="Mot de passe"
+                    >
+                </div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <button
+                    type="submit"
+                    class="btn btn-primary center-block"
+                >
+                    Connexion
+                </button>
+            </form>
+        </div>
+        <div class="col-4"></div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}{% endblock %}

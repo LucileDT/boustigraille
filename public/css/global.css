@@ -1,0 +1,12 @@
+html,
+body {
+    height: calc(100% - 60px);
+}
+
+#page {
+    margin-top: 60px;
+    min-height: 100%;
+}
+
+#page-content {
+}
