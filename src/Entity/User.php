@@ -1,13 +1,7 @@
 <?php
-/**
- * @package App\Entity
- * @version 1.0
- * @author Lucile-DT
- * @license GPU v3.0
- */
-
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
@@ -40,16 +34,12 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="username", type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $username;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=255)
+     * @ORM\Column(type="string", length=255)
      */
     private $password;
 

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Édition du compte {{ user.username }}{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="/">Accueil</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="#">Administration</a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">
+        <a href="{{ path('user_index') }}">Liste des comptes</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+        Édition du compte {{ user.username }}
+    </li>
+{% endblock %}
+
+{% block body %}
+    <div class="row mt-5 mb-4">
+        <div class="col">
+            <h1>Édition du compte {{ user.username }}</h1>
+        </div>
+    </div>
+
+    {{ include('user/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+{% endblock %}

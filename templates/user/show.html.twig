@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="/">Accueil</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="#">Administration</a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">
+        <a href="{{ path('user_index') }}">Liste des comptes</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+        Compte de {{ user.username }}
+    </li>
+{% endblock %}
+
+{% block body %}
+    <div class="row mt-5 mb-4">
+        <div class="col">
+            <h1>Compte de {{ user.username }}</h1>
+        </div>
+        <div class="col-1 text-right">
+            {{ include('user/_delete_form.html.twig') }}
+        </div>
+        <div class="col-1 text-right">
+            <a class="btn btn-primary btn-large" href="{{ path('user_edit', {'id': user.id}) }}">Éditer</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ user.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Username</th>
+                        <td>{{ user.username }}</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <th>Responsabilités</th>
+                        <td>
+                            {%  for responsibility in user.responsibilities %}
+                                <span>{{ responsibility.label }}</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
