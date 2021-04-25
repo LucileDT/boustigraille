@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Édition de l'ingrédient {{ ingredient.label }}{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="/">Accueil</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="#">Ingrédients</a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">
+        <a href="{{ path('user_index') }}">Liste des ingrédients</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+        Édition de l'ingrédient {{ ingredient.label }}
+    </li>
+{% endblock %}
+
+{% block body %}
+    <div class="row mt-5 mb-4">
+        <div class="col">
+            <h1>Édition de l'ingrédient {{ ingredient.label }}</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            {{ include('ingredient/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+        </div>
+    </div>
+{% endblock %}

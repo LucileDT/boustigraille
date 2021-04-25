@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ ingredient.label }}{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="/">Accueil</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="#">Ingredients</a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">
+        <a href="{{ path('user_index') }}">Liste des ingredients</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+        {{ ingredient.label }}
+    </li>
+{% endblock %}
+
+{% block body %}
+    <div class="row mt-5 mb-4">
+        <div class="col">
+            <h1>{{ ingredient.label }}</h1>
+        </div>
+        <div class="col-1 text-right">
+            {{ include('ingredient/_delete_form.html.twig') }}
+        </div>
+        <div class="col-1 text-right">
+            <a class="btn btn-primary btn-large" href="{{ path('ingredient_edit', {'id': ingredient.id}) }}">Éditer</a>
+        </div>
+    </div>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ingredient.id }}</td>
+            </tr>
+            <tr>
+                <th>Label</th>
+                <td>{{ ingredient.label }}</td>
+            </tr>
+            <tr>
+                <th>Marque</th>
+                <td>{{ ingredient.brand }}</td>
+            </tr>
+            <tr>
+                <th>Magasin</th>
+                <td>{{ ingredient.shop }}</td>
+            </tr>
+            <tr>
+                <th>Manière de mesurer(g, ml, l, ...)</th>
+                <td>{{ ingredient.measureType }}</td>
+            </tr>
+            <tr>
+                <th>Taille d'une portion</th>
+                <td>{{ ingredient.portionSize }} {{ ingredient.measureType }}</td>
+            </tr>
+            <tr>
+                <th>Protéines</th>
+                <td>{{ ingredient.proteins }} g</td>
+            </tr>
+            <tr>
+                <th>Glucides</th>
+                <td>{{ ingredient.carbohydrates }} g</td>
+            </tr>
+            <tr>
+                <th>Lipides</th>
+                <td>{{ ingredient.fat }} g</td>
+            </tr>
+            <tr>
+                <th>Énergie</th>
+                <td>{{ ingredient.energy }} kcal</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

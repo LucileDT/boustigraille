@@ -44,6 +44,25 @@
                             id="navbar-top-menu"
                             >
                             <ul class="navbar-nav mr-auto">
+                                {% if app.user is not null %}
+                                    <li class="nav-item dropdown">
+                                        <a
+                                            class="nav-link dropdown-toggle"
+                                            href="#"
+                                            id="dropdown-ingredients"
+                                            role="button"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false"
+                                            >
+                                            Ingrédients
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdown-ingredients">
+                                            <a class="dropdown-item" href="{{ path('ingredient_new') }}">Enregistrer un nouvel ingrédient</a>
+                                            <a class="dropdown-item" href="{{ path('ingredient_index') }}">Voir la liste des ingrédients</a>
+                                        </div>
+                                    </li>
+                                {% endif %}
                             </ul>
                             <ul class="navbar-nav ml-auto">
                                 {% if app.user is not null %}

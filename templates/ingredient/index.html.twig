@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des ingrédients{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="/">Accueil</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="#">Administration</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+        Liste des ingrédients
+    </li>
+{% endblock %}
+
+{% block body %}
+    <div class="row mt-5 mb-4">
+        <div class="col-6">
+            <h1>Liste des ingrédients</h1>
+        </div>
+        <div class="col-6 text-right">
+            <a class="btn btn-primary btn-large" href="{{ path('ingredient_new') }}">Créer un nouvel ingrédient</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <table class="table table-stripped">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Id</th>
+                        <th>Label</th>
+                        <th>Marque</th>
+                        <th>Magasin</th>
+                        <th>Manière de mesurer<br>(g, ml, l, ...)</th>
+                        <th>Taille d'une portion</th>
+                        <th>Protéines</th>
+                        <th>Glucides</th>
+                        <th>Lipides</th>
+                        <th>Énergie</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ingredient in ingredients %}
+                        <tr>
+                            <td>{{ ingredient.id }}</td>
+                            <td>{{ ingredient.label }}</td>
+                            <td>{{ ingredient.brand }}</td>
+                            <td>{{ ingredient.shop }}</td>
+                            <td>{{ ingredient.measureType }}</td>
+                            <td>{{ ingredient.portionSize }} {{ ingredient.measureType }}</td>
+                            <td>{{ ingredient.proteins }} g</td>
+                            <td>{{ ingredient.carbohydrates }} g</td>
+                            <td>{{ ingredient.fat }} g</td>
+                            <td>{{ ingredient.energy }} kcal</td>
+                            <td class="text-right">
+                                <a class="btn-primary btn" href="{{ path('ingredient_show', {'id': ingredient.id}) }}">Voir</a>
+                                <a class="btn-secondary btn" href="{{ path('ingredient_edit', {'id': ingredient.id}) }}">Éditer</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="11">Pas d'ingrédients enregistrés</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
