@@ -43,22 +43,22 @@ class Ingredient
     private $measureType;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $proteins;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $carbohydrates;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $fat;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $energy;
 
@@ -127,48 +127,48 @@ class Ingredient
         return $this;
     }
 
-    public function getProteins(): ?int
+    public function getProteins(): ?float
     {
         return $this->proteins;
     }
 
-    public function setProteins(int $proteins): self
+    public function setProteins(float $proteins): self
     {
         $this->proteins = $proteins;
 
         return $this;
     }
 
-    public function getCarbohydrates(): ?int
+    public function getCarbohydrates(): ?float
     {
         return $this->carbohydrates;
     }
 
-    public function setCarbohydrates(?int $carbohydrates): self
+    public function setCarbohydrates(?float $carbohydrates): self
     {
         $this->carbohydrates = $carbohydrates;
 
         return $this;
     }
 
-    public function getFat(): ?int
+    public function getFat(): ?float
     {
         return $this->fat;
     }
 
-    public function setFat(?int $fat): self
+    public function setFat(?float $fat): self
     {
         $this->fat = $fat;
 
         return $this;
     }
 
-    public function getEnergy(): ?int
+    public function getEnergy(): ?float
     {
         return $this->energy;
     }
 
-    public function setEnergy(int $energy): self
+    public function setEnergy(float $energy): self
     {
         $this->energy = $energy;
 

@@ -6,6 +6,7 @@ use App\Entity\Ingredient;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -30,16 +31,16 @@ class IngredientType extends AbstractType
             ->add('portionSize', IntegerType::class, [
                 'label' => 'Taille d\'une portion',
             ])
-            ->add('proteins', IntegerType::class, [
+            ->add('proteins', NumberType::class, [
                 'label' => 'Protéines (g) *',
             ])
-            ->add('carbohydrates', IntegerType::class, [
+            ->add('carbohydrates', NumberType::class, [
                 'label' => 'Glucides (g) *',
             ])
-            ->add('fat', IntegerType::class, [
+            ->add('fat', NumberType::class, [
                 'label' => 'Lipides (g) *',
             ])
-            ->add('energy', IntegerType::class, [
+            ->add('energy', NumberType::class, [
                 'label' => 'Énergie (kcal) *',
             ])
         ;
