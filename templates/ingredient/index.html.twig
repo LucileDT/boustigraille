@@ -23,6 +23,11 @@
             <a class="btn btn-primary btn-large" href="{{ path('ingredient_new') }}">Créer un nouvel ingrédient</a>
         </div>
     </div>
+    <div class="row mb-4">
+        <div class="col">
+            {{ include('ingredient/_create_from_openfoodfacts_form.html.twig', {'button_label': 'Créer depuis Open Food Facts'}) }}
+        </div>
+    </div>
 
     <div class="row">
         <div class="col">
@@ -33,7 +38,7 @@
                         <th>Label</th>
                         <th>Marque</th>
                         <th>Magasin</th>
-                        <th>Manière de mesurer<br>(g, ml, l, ...)</th>
+                        <th>Manière de mesurer<br>(g, ml, l, unité, ...)</th>
                         <th>Taille d'une portion</th>
                         <th>Protéines</th>
                         <th>Glucides</th>

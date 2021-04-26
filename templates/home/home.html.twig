@@ -9,13 +9,14 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <p class="text-center lead">
-                    Bienvenue sur Boustigraille.
-                </p>
-            </div>
+    <div class="row">
+        <div class="col">
+            {{
+                include('ingredient/_create_from_openfoodfacts_form.html.twig', {
+                    'button_label': 'Créer un ingrédient depuis Open Food Facts',
+                    'form': formFromOpenFoodFacts
+                })
+            }}
         </div>
     </div>
 {% endblock %}

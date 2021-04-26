@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Ingredient;
+use App\Form\IngredientFromOpenFoodFactsType;
 use App\Form\IngredientType;
+use App\FormDataObject\IngredientFromOpenFoodFactsFDO;
 use App\Repository\IngredientRepository;
+use App\Service\OpenFoodFactService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,8 +23,14 @@ class IngredientController extends AbstractController
      */
     public function index(IngredientRepository $ingredientRepository): Response
     {
+        $ingredientFromOpenFoodFactsFDO = new IngredientFromOpenFoodFactsFDO();
+        $form = $this->createForm(IngredientFromOpenFoodFactsType::class, $ingredientFromOpenFoodFactsFDO, [
+            'action' => $this->generateUrl('ingredient_new_from_openfoodfacts'),
+        ]);
+
         return $this->render('ingredient/index.html.twig', [
             'ingredients' => $ingredientRepository->findAll(),
+            'form' => $form->createView(),
         ]);
     }
 
@@ -45,6 +54,50 @@ class IngredientController extends AbstractController
         return $this->render('ingredient/new.html.twig', [
             'ingredient' => $ingredient,
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/new-from-openfoodfacts", name="ingredient_new_from_openfoodfacts", methods={"GET","POST"})
+     */
+    public function newFromOpenFoodFacts(OpenFoodFactService $offService, Request $request, IngredientFromOpenFoodFactsFDO $ingredientIdentifier): Response
+    {
+        $form = $this->createForm(IngredientFromOpenFoodFactsType::class, $ingredientIdentifier);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $productBarCode = '';
+            if (filter_var($ingredientIdentifier->getIdentifier(), FILTER_VALIDATE_URL) !== false)
+            {
+                $productUrl = $ingredientIdentifier->getIdentifier();
+                $productBarCode = $offService->getBarCodeFromProductUrl($productUrl);
+            }
+            else
+            {
+                $productBarCode = $ingredientIdentifier->getIdentifier();
+            }
+
+            $product = $offService->getProductFromApi($productBarCode);
+            $ingredient = new Ingredient();
+
+            try
+            {
+                $offService->fillIngredientNutritionalDataWithProductOnes($ingredient, $product);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($ingredient);
+                $entityManager->flush();
+            }
+            catch (\Exception $ex)
+            {
+                $this->addFlash('danger', $ex->getMessage());
+            }
+
+
+            return $this->redirectToRoute('ingredient_index');
+        }
+
+        return $this->render('ingredient/index.html.twig', [
+            'ingredients' => $ingredientRepository->findAll(),
         ]);
     }
 

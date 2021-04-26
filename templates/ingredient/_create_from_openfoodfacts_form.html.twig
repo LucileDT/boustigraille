@@ -1,0 +1,13 @@
+{{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
+    <div class="input-group input-group w-100">
+        <label class="sr-only" for="ingredient_from_open_food_facts_identifier">
+            {{ form_label(form.identifier) }}
+        </label>
+        {{ form_widget(form.identifier, {'attr': {'class': 'form-control'}}) }}
+        {{ form_help(form.identifier) }}
+        {{ form_errors(form.identifier) }}
+        <span class="input-group-btn">
+            <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+        </span>
+    </div>
+{{ form_end(form) }}
