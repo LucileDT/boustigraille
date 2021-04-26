@@ -1,4 +1,6 @@
 # Boustigraille
+[![License : GNU AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0) [![License : OBdL v1.0](https://img.shields.io/badge/licence-ODbL%20v1.0-blue)](https://opendatacommons.org/licenses/odbl/1-0/) 
+
 Décompte des macronutriments de repas préenregistrés et suivi nutritionnel.
 
 # Licences
