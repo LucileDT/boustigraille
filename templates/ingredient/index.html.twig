@@ -7,7 +7,7 @@
         <a href="/">Accueil</a>
     </li>
     <li class="breadcrumb-item">
-        <a href="#">Administration</a>
+        <a href="#">Ingrédients</a>
     </li>
     <li class="breadcrumb-item active" aria-current="page">
         Liste des ingrédients
@@ -16,18 +16,22 @@
 
 {% block body %}
     <div class="row mt-5 mb-4">
-        <div class="col-6">
+        <div class="col">
             <h1>Liste des ingrédients</h1>
         </div>
-        <div class="col-6 text-right">
-            <a class="btn btn-primary btn-large" href="{{ path('ingredient_new') }}">Créer un nouvel ingrédient</a>
-        </div>
+        {% if app.user is not null %}
+            <div class="col-6 text-right">
+                <a class="btn btn-primary btn-large" href="{{ path('ingredient_new') }}">Créer un nouvel ingrédient</a>
+            </div>
+        {% endif %}
     </div>
-    <div class="row mb-4">
-        <div class="col">
-            {{ include('ingredient/_create_from_openfoodfacts_form.html.twig', {'button_label': 'Créer depuis Open Food Facts'}) }}
+    {% if app.user is not null %}
+        <div class="row mb-4">
+            <div class="col">
+                {{ include('ingredient/_create_from_openfoodfacts_form.html.twig', {'button_label': 'Créer depuis Open Food Facts'}) }}
+            </div>
         </div>
-    </div>
+    {% endif %}
 
     <div class="row">
         <div class="col">
@@ -61,8 +65,20 @@
                             <td>{{ ingredient.fat }} g</td>
                             <td>{{ ingredient.energy }} kcal</td>
                             <td class="text-right">
-                                <a class="btn-primary btn" href="{{ path('ingredient_show', {'id': ingredient.id}) }}">Voir</a>
-                                <a class="btn-secondary btn" href="{{ path('ingredient_edit', {'id': ingredient.id}) }}">Éditer</a>
+                                <a
+                                    class="btn-primary btn"
+                                    href="{{ path('ingredient_show', {'id': ingredient.id}) }}"
+                                    >
+                                    Voir
+                                </a>
+                                {% if app.user is not null %}
+                                    <a
+                                        class="btn-secondary btn"
+                                        href="{{ path('ingredient_edit', {'id': ingredient.id}) }}"
+                                        >
+                                        Éditer
+                                    </a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% else %}
