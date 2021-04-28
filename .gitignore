@@ -70,3 +70,5 @@
 # Netbeans settings
 /nbproject/
 
+# Font library folder
+/public/font/library
