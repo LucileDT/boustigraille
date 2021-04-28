@@ -11,12 +11,14 @@
 {% block body %}
     <div class="row">
         <div class="col">
-            {{
-                include('ingredient/_create_from_openfoodfacts_form.html.twig', {
-                    'button_label': 'Créer un ingrédient depuis Open Food Facts',
-                    'form': formFromOpenFoodFacts
-                })
-            }}
+            {% if app.user is not null %}
+                {{
+                    include('ingredient/_create_from_openfoodfacts_form.html.twig', {
+                        'button_label': 'Créer un ingrédient depuis Open Food Facts',
+                        'form': formFromOpenFoodFacts
+                    })
+                }}
+            {% endif %}
         </div>
     </div>
 {% endblock %}
