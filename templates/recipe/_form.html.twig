@@ -60,108 +60,46 @@
 
 {% import _self as renderIngredientQuantityTypeMacro %}
 
-{{ form_start(form) }}
-    <div class="form-group">
-        <label for="recipe_name">
-            {{ form_label(form.name) }}
-        </label>
-        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
-        {{ form_help(form.name) }}
-        {{ form_errors(form.name) }}
-    </div>
-
-    <div class="form-group">
-        <div
-            id="ingredients"
-            class="ingredients"
-            data-prototype="{{ renderIngredientQuantityTypeMacro.renderIngredientQuantityType(form.ingredients.vars.prototype) | e('html_attr') }}"
-            >
-            {% for ingredientQuantity in form.ingredients %}
-                <div class="ingredient">
-                    {{ renderIngredientQuantityTypeMacro.renderIngredientQuantityType(ingredientQuantity) }}
-                </div>
-            {% endfor %}
+{% if app.user is not null %}
+    {{ form_start(form) }}
+        <div class="form-group">
+            <label for="recipe_name">
+                {{ form_label(form.name) }}
+            </label>
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            {{ form_help(form.name) }}
+            {{ form_errors(form.name) }}
         </div>
 
-        {# prevent displaying Ingredients label #}
-        {% if form.ingredients|length == 0 %}
-            {{ form_widget(form.ingredients) }}
-        {% endif %}
-        <button
-            type="button"
-            class="add_item_link btn btn-outline-secondary w-100"
-            data-collection-holder-class="ingredients">
-            Ajouter un ingrédient
+        <div class="form-group">
+            <div
+                id="ingredients"
+                class="ingredients"
+                data-prototype="{{ renderIngredientQuantityTypeMacro.renderIngredientQuantityType(form.ingredients.vars.prototype) | e('html_attr') }}"
+                >
+                {% for ingredientQuantity in form.ingredients %}
+                    <div class="ingredient">
+                        {{ renderIngredientQuantityTypeMacro.renderIngredientQuantityType(ingredientQuantity) }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            {# prevent displaying Ingredients label #}
+            {% if form.ingredients|length == 0 %}
+                {{ form_widget(form.ingredients) }}
+            {% endif %}
+            <button
+                type="button"
+                class="add_item_link btn btn-outline-secondary w-100"
+                data-collection-holder-class="ingredients">
+                Ajouter un ingrédient
+            </button>
+        </div>
+
+        {{ form_widget(form) }}
+
+        <button class="btn btn-primary w-100">
+            {{ button_label|default('Enregistrer') }}
         </button>
-    </div>
-
-    {{ form_widget(form) }}
-
-    <button class="btn btn-primary w-100">
-        {{ button_label|default('Enregistrer') }}
-    </button>
-{{ form_end(form) }}
-
-<script>
-    {#jQuery(document).ready(function() {
-        function addTagFormDeleteLink($ingredientForm) {
-            $ingredientForm.find('.ingredient-deletion-button').on('click', function(e) {
-                // remove the ingredient from the form
-                $ingredientForm.remove();
-            });
-        }
-
-        function addFormToCollection($collectionHolderClass) {
-            // Get the ul that holds the collection of ingredients
-            var $collectionHolder = $('.' + $collectionHolderClass);
-
-            // Get the data-prototype explained earlier
-            var prototype = $collectionHolder.data('prototype');
-
-            // get the new index
-            var index = $collectionHolder.data('index');
-
-            var newForm = prototype;
-            // You need this only if you didn't set 'label' => false in your ingredients field in TaskType
-            // Replace '__name__label__' in the prototype's HTML to
-            // instead be a number based on how many items we have
-            newForm = newForm.replace(/__name__label__/g, index);
-
-            // Replace '__name__' in the prototype's HTML to
-            // instead be a number based on how many items we have
-            newForm = newForm.replace(/__name__/g, index);
-
-            // increase the index with one for the next item
-            $collectionHolder.data('index', index + 1);
-
-            // Display the form in the page in an li, before the "Add a ingredient" link li
-            var $newFormLi = $('<div class="form-group"></div>').append(newForm);
-            // Add the new form at the end of the list
-            $collectionHolder.append($newFormLi)
-
-            // add a delete link to the new form
-            addTagFormDeleteLink($newFormLi);
-        }
-
-        // Get the ul that holds the collection of ingredients
-        var $collectionHolder = $('ul.ingredients');
-
-        // add a delete link to all of the existing ingredient form li elements
-        $collectionHolder.find('li').each(function() {
-            addTagFormDeleteLink($(this));
-        });
-
-        // Get the ul that holds the collection of ingredients
-        var $ingredientsCollectionHolder = $('ul.ingredients');
-
-        // count the current form inputs we have (e.g. 2), use that as the new
-        // index when inserting a new item (e.g. 2)
-        $ingredientsCollectionHolder.data('index', $ingredientsCollectionHolder.find('input').length);
-
-        $('body').on('click', '.add_item_link', function(e) {
-            var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
-            // add a new ingredient form (see next code block)
-            addFormToCollection($collectionHolderClass);
-        })
-    });#}
-</script>
+    {{ form_end(form) }}
+{% endif %}
