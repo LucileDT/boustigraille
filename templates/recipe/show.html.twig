@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ recipe.name }}{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="/">Accueil</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="#">Recettes</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{{ path('recipe_index') }}">Liste des recettes</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+        {{ recipe.name }}
+    </li>
+{% endblock %}
+
+{% block body %}
+    <div class="row mt-5 mb-4">
+        <div class="col">
+            <h1>
+                {{ recipe.name }}
+                {% if app.user is not null %}
+                    <small class="font-italic">(id : {{ recipe.id }})</small>
+                {% endif %}
+            </h1>
+        </div>
+        <div class="col-1 text-right">
+            {{ include('recipe/_delete_form.html.twig') }}
+        </div>
+        <div class="col-1 text-right">
+            <a class="btn btn-primary btn-large" href="{{ path('recipe_edit', {'id': recipe.id}) }}">Éditer</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <h2 class="mt-5 pt-2">
+                Ingrédients pour une part
+            </h2>
+            <div class="ml-5 my-4">
+                <form>
+                    {% for ingredientQuantity in recipe.ingredients %}
+                        {% set ingredient = ingredientQuantity.ingredient %}
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="ingredient-check-{{ ingredient.id }}">
+                            <label class="custom-control-label" for="ingredient-check-{{ ingredient.id }}">
+                                {{ ingredientQuantity.quantity }}
+                                {{ ingredient.measureType }}
+                                de
+                                <span class="text-lowercase">{{ ingredient.label }}</span>
+                            </label>
+                        </div>
+                    {% endfor %}
+                </form>
+            </div>
+            <h2 class="mt-5 pt-2">Préparation</h2>
+            <div class="ml-5 my-4">
+                {% if recipe.process | length > 0 %}
+                    {{ recipe.process | markdown_to_html }}
+                {% else %}
+                    Vas-y à l'instinct c:
+                {% endif %}
+            </div>
+            {% if recipe.comment | length > 0 %}
+                <h2 class="mt-5 pt-2">Notes</h2>
+                <div class="ml-5 my-4">
+                    {{ recipe.comment }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
