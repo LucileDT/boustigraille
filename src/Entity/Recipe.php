@@ -114,4 +114,64 @@ class Recipe
 
         return $this;
     }
+
+    /**
+     * Compute proteins count using recipe ingredients
+     *
+     * @return float
+     */
+    public function getProteins(): float
+    {
+        $proteinsCount = (float) 0;
+        foreach ($this->ingredients as $ingredient)
+        {
+            $proteinsCount += ($ingredient->getIngredient()->getProteins() / 100) * $ingredient->getQuantity();
+        }
+        return $proteinsCount;
+    }
+
+    /**
+     * Compute fat count using recipe ingredients
+     *
+     * @return float
+     */
+    public function getFat(): float
+    {
+        $fatCount = (float) 0;
+        foreach ($this->ingredients as $ingredient)
+        {
+            $fatCount += ($ingredient->getIngredient()->getFat() / 100) * $ingredient->getQuantity();
+        }
+        return $fatCount;
+    }
+
+    /**
+     * Compute carbohydrates count using recipe ingredients
+     *
+     * @return float
+     */
+    public function getCarbohydrates(): float
+    {
+        $carbohydratesCount = (float) 0;
+        foreach ($this->ingredients as $ingredient)
+        {
+            $carbohydratesCount += ($ingredient->getIngredient()->getCarbohydrates() / 100) * $ingredient->getQuantity();
+        }
+        return $carbohydratesCount;
+    }
+
+    /**
+     * Compute energy count using recipe ingredients
+     *
+     * @return float
+     */
+    public function getEnergy(): float
+    {
+        $energyCount = (float) 0;
+        foreach ($this->ingredients as $ingredient)
+        {
+            $energyCount += ($ingredient->getIngredient()->getEnergy() / 100) * $ingredient->getQuantity();
+        }
+        return $energyCount;
+    }
 }
