@@ -57,6 +57,17 @@
                             <td>{{ recipe.carbohydrates }} g</td>
                             <td>{{ recipe.energy }} kcal</td>
                         </tr>
+                        {% if app.user is not null %}
+                            <tr>
+                                <th colspan="4" class="bg-light text-muted"><i>Mes valeurs</i></th>
+                            </tr>
+                            <tr class="text-muted">
+                                <th>{{ app.user.proteins }} g</th>
+                                <td>{{ app.user.fat }} g</td>
+                                <td>{{ app.user.carbohydrates }} g</td>
+                                <td>{{ app.user.energy }} kcal</td>
+                            </tr>
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
