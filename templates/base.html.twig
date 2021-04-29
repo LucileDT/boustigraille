@@ -5,6 +5,7 @@
         <title>Boustigraille - {% block title %}{% endblock %}</title>
         {% block global_css %}
             <link rel="stylesheet" href="{{ asset('css/library/bootstrap.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('font/library/remixicon/fonts/remixicon.css') }}">
             <link rel="stylesheet" href="{{ asset('css/global.css') }}">
         {% endblock %}
         {% block global_js %}
@@ -117,6 +118,10 @@
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user">
                                             <a class="dropdown-item" href="{{ path('app_logout') }}">Me déconnecter</a>
                                         </div>
+                                    </li>
+                                {% else %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('app_login') }}">Me connecter</a>
                                     </li>
                                 {% endif %}
                             </ul>

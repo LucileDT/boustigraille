@@ -27,14 +27,41 @@
                 {% endif %}
             </h1>
         </div>
-        <div class="col-1 text-right">
-            {{ include('recipe/_delete_form.html.twig') }}
-        </div>
-        <div class="col-1 text-right">
-            <a class="btn btn-primary btn-large" href="{{ path('recipe_edit', {'id': recipe.id}) }}">Éditer</a>
-        </div>
+        {% if app.user is not null %}
+            <div class="col-1 text-right">
+                {{ include('recipe/_delete_form.html.twig') }}
+            </div>
+            <div class="col-1 text-right">
+                <a class="btn btn-primary btn-large" href="{{ path('recipe_edit', {'id': recipe.id}) }}">Éditer</a>
+            </div>
+        {% endif %}
     </div>
 
+    <div class="row">
+        <div class="col">
+            <h2 class="mt-5 pt-2">Valeurs nutritionnelles</h2>
+            <div class="my-4">
+                <table class="table table-bordered text-center">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Protéines</th>
+                            <th>Lipides</th>
+                            <th>Glucides</th>
+                            <th>Énergie</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>{{ recipe.proteins }} g</th>
+                            <td>{{ recipe.fat }} g</td>
+                            <td>{{ recipe.carbohydrates }} g</td>
+                            <td>{{ recipe.energy }} kcal</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col">
             <h2 class="mt-5 pt-2">
@@ -56,6 +83,10 @@
                     {% endfor %}
                 </form>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             <h2 class="mt-5 pt-2">Préparation</h2>
             <div class="ml-5 my-4">
                 {% if recipe.process | length > 0 %}
@@ -64,12 +95,16 @@
                     Vas-y à l'instinct c:
                 {% endif %}
             </div>
-            {% if recipe.comment | length > 0 %}
+        </div>
+    </div>
+    {% if recipe.comment | length > 0 %}
+        <div class="row">
+            <div class="col">
                 <h2 class="mt-5 pt-2">Notes</h2>
                 <div class="ml-5 my-4">
                     {{ recipe.comment }}
                 </div>
-            {% endif %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}
