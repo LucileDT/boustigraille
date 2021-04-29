@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Édition de mes valeurs nutritionnelles{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="/">Accueil</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="#">Profil</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+        Édition de mes valeurs nutritionnelles
+    </li>
+{% endblock %}
+
+{% block body %}
+    <div class="row mt-5 mb-4">
+        <div class="col">
+            <h1>Édition de mes valeurs nutritionnelles</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

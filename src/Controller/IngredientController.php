@@ -8,6 +8,7 @@ use App\Form\IngredientType;
 use App\FormDataObject\IngredientFromOpenFoodFactsFDO;
 use App\Repository\IngredientRepository;
 use App\Service\OpenFoodFactService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,6 +37,7 @@ class IngredientController extends AbstractController
 
     /**
      * @Route("/new", name="ingredient_new", methods={"GET","POST"})
+     * @Security("not is_anonymous()")
      */
     public function new(Request $request): Response
     {
@@ -59,6 +61,7 @@ class IngredientController extends AbstractController
 
     /**
      * @Route("/new-from-openfoodfacts", name="ingredient_new_from_openfoodfacts", methods={"GET","POST"})
+     * @Security("not is_anonymous()")
      */
     public function newFromOpenFoodFacts(OpenFoodFactService $offService, Request $request, IngredientFromOpenFoodFactsFDO $ingredientIdentifier): Response
     {
@@ -113,6 +116,7 @@ class IngredientController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="ingredient_edit", methods={"GET","POST"})
+     * @Security("not is_anonymous()")
      */
     public function edit(Request $request, Ingredient $ingredient): Response
     {
@@ -133,6 +137,7 @@ class IngredientController extends AbstractController
 
     /**
      * @Route("/{id}", name="ingredient_delete", methods={"POST"})
+     * @Security("not is_anonymous()")
      */
     public function delete(Request $request, Ingredient $ingredient): Response
     {
