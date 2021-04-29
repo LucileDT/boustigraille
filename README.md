@@ -18,9 +18,9 @@ La base de données est disponible sous licence [ODbL v1.0](https://opendatacomm
 ## Réalisées
 - enregistrement d'ingrédients (notamment nom, marque, valeurs nutritionelles)
 - import des valeurs nutritionnelles pour un ingrédient depuis l'URL du produit sur Open Food Facts
+- enregistrement de recettes (ingrédients, valeurs nutritionnelles, procédure de préparation)
 
 ## Prévues
-- enregistrement de recettes (ingrédients, valeurs nutritionnelles, procédure de préparation)
 - recherche de recettes via leur titre
 - enregistrement des valeurs nutritionnelles de référence pour un compte utilisateur
 - recherche de recettes via leurs valeurs nutritionnelles (en fonction des valeurs nutritionnelles de références du compte utilisateur connecté)
