@@ -12,3 +12,5 @@ install:
   - ./bin/console doctrine:migration:migrate --no-interaction
   - touch .env
   - echo "" >> .env
+  - touch .env.local
+  - echo "" >> .env.local
