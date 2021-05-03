@@ -11,3 +11,4 @@ install:
   - ./bin/console doctrine:database:create
   - ./bin/console doctrine:migration:migrate --no-interaction
   - touch .env
+  - echo "" >> .env
