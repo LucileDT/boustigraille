@@ -12,3 +12,4 @@ install:
   - composer install --no-interaction
   - ./bin/console doctrine:database:create
   - ./bin/console doctrine:migration:migrate --no-interaction
+  - echo "" >> .env
