@@ -50,6 +50,25 @@
                             {% endfor %}
                         </td>
                     </tr>
+                    <tr class="bg-light border-bottom">
+                        <td>Valeurs nutritionnelles</td>
+                        <td>
+                            <table class="w-100 bg-white text-center table-bordered table mb-0">
+                                <tr class="border-bottom">
+                                    <td>Protéines</td>
+                                    <td>Lipides</td>
+                                    <td>Glucides</td>
+                                    <td>Énergie</td>
+                                </tr>
+                                <tr class="border-bottom">
+                                    <td>{{ user.proteins }} g</td>
+                                    <td>{{ user.fat }} g</td>
+                                    <td>{{ user.carbohydrates }} g</td>
+                                    <td>{{ user.energy }} kcal</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

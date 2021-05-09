@@ -52,10 +52,70 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th>{{ recipe.proteins }} g</th>
-                            <td>{{ recipe.fat }} g</td>
-                            <td>{{ recipe.carbohydrates }} g</td>
-                            <td>{{ recipe.energy }} kcal</td>
+                            <th>
+                                {{ recipe.proteins | round }} g
+                                {% if app.user is not null %}
+                                    {% set percentageDifference = (((recipe.proteins - app.user.proteins) / app.user.proteins) * 100) | round %}
+                                    <small class="text-muted">
+                                        / {{ app.user.proteins }} g
+                                        {% if recipe.proteins >= app.user.proteins %}
+                                            (<i class="ri-arrow-up-circle-fill text-success"></i>
+                                            +{{ percentageDifference}}%)
+                                        {% else %}
+                                            (<i class="ri-arrow-down-circle-fill text-danger"></i>
+                                            {{ percentageDifference}}%)
+                                        {% endif %}
+                                    </small>
+                                {% endif %}
+                            </th>
+                            <td>
+                                {{ recipe.fat | round }} g
+                                {% if app.user is not null %}
+                                    {% set percentageDifference = (((recipe.fat - app.user.fat) / app.user.fat) * 100) | round %}
+                                    <small class="text-muted">
+                                        / {{ app.user.fat }} g
+                                        {% if recipe.fat >= app.user.fat %}
+                                            (<i class="ri-arrow-up-circle-fill"></i>
+                                            +{{ percentageDifference}}%)
+                                        {% else %}
+                                            (<i class="ri-arrow-down-circle-fill"></i>
+                                            {{ percentageDifference}}%)
+                                        {% endif %}
+                                    </small>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ recipe.carbohydrates | round }} g
+                                {% if app.user is not null %}
+                                    {% set percentageDifference = (((recipe.carbohydrates - app.user.carbohydrates) / app.user.carbohydrates) * 100) | round %}
+                                    <small class="text-muted">
+                                        / {{ app.user.carbohydrates }} g
+                                        {% if recipe.carbohydrates >= app.user.carbohydrates %}
+                                            (<i class="ri-arrow-up-circle-fill"></i>
+                                            +{{ percentageDifference}}%)
+                                        {% else %}
+                                            (<i class="ri-arrow-down-circle-fill"></i>
+                                            {{ percentageDifference}}%)
+                                        {% endif %}
+                                    </small>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ recipe.energy | round }} kcal
+                                {% if app.user is not null %}
+                                    {% set percentageDifference = (((recipe.energy - app.user.energy) / app.user.energy) * 100) | round %}
+                                    <small class="text-muted">
+                                        / {{ app.user.energy }} g
+                                        {% if recipe.energy < app.user.energy %}
+                                            (<i class="ri-arrow-down-circle-fill text-success"></i>
+                                            {{ percentageDifference}}%)
+                                        {% else %}
+                                            (<i class="ri-arrow-up-circle-fill text-danger"></i>
+                                            +{{ percentageDifference}}%)
+                                        {% endif %}
+                                    </small>
+                                {% endif %}
+                            </td>
                         </tr>
                     </tbody>
                 </table>

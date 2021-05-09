@@ -10,3 +10,8 @@ body {
 
 #page-content {
 }
+
+/* Align icons with text */
+i {
+    vertical-align: middle;
+}
