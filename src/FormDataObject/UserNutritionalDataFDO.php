@@ -29,28 +29,28 @@ class UserNutritionalDataFDO
         return $this->energy;
     }
 
-    public function setProteins(float $proteins): self
+    public function setProteins(?float $proteins): self
     {
         $this->proteins = $proteins;
 
         return $this;
     }
 
-    public function setFat(float $fat): self
+    public function setFat(?float $fat): self
     {
         $this->fat = $fat;
 
         return $this;
     }
 
-    public function setCarbohydrates(float $carbohydrates): self
+    public function setCarbohydrates(?float $carbohydrates): self
     {
         $this->carbohydrates = $carbohydrates;
 
         return $this;
     }
 
-    public function setEnergy(float $energy): self
+    public function setEnergy(?float $energy): self
     {
         $this->energy = $energy;
 
