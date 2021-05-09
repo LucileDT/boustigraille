@@ -276,7 +276,7 @@ class User implements UserInterface
         return $this->proteins;
     }
 
-    public function setProteins(float $proteins): self
+    public function setProteins(?float $proteins): self
     {
         $this->proteins = $proteins;
 
@@ -312,7 +312,7 @@ class User implements UserInterface
         return $this->energy;
     }
 
-    public function setEnergy(float $energy): self
+    public function setEnergy(?float $energy): self
     {
         $this->energy = $energy;
 
