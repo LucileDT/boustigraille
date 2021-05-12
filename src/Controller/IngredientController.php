@@ -30,7 +30,7 @@ class IngredientController extends AbstractController
         ]);
 
         return $this->render('ingredient/index.html.twig', [
-            'ingredients' => $ingredientRepository->findAll(),
+            'ingredients' => $ingredientRepository->findBy([], ['label' => 'ASC']),
             'form' => $form->createView(),
         ]);
     }
