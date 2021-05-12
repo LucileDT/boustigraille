@@ -95,8 +95,10 @@ class IngredientController extends AbstractController
                 $this->addFlash('danger', $ex->getMessage());
             }
 
-
-            return $this->redirectToRoute('ingredient_index');
+            return $this->redirectToRoute(
+                    'ingredient_edit',
+                    ['id' => $ingredient->getId()]
+            );
         }
 
         return $this->render('ingredient/index.html.twig', [
