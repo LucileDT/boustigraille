@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\IngredientQuantityForRecipe;
 use App\Entity\Recipe;
-use App\FormDataObject\RecipeFDO;
 use App\Form\RecipeType;
+use App\Form\MarkRecipeAsFavoriteType;
+use App\FormDataObject\RecipeFDO;
+use App\FormDataObject\FavoriteRecipeFDO;
 use App\Repository\RecipeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,12 +55,42 @@ class RecipeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="recipe_show", methods={"GET"})
+     * @Route("/{id}", name="recipe_show", methods={"GET", "POST"})
      */
-    public function show(Recipe $recipe): Response
+    public function show(Request $request, Recipe $recipe): Response
     {
+        $connectedUser = $this->getUser();
+        if (empty($connectedUser))
+        {
+            return $this->render('recipe/show.html.twig', [
+                'recipe' => $recipe,
+            ]);
+        }
+
+        $favoriteRecipeFDO = new FavoriteRecipeFDO($connectedUser->hasFaved($recipe));
+        $form = $this->createForm(MarkRecipeAsFavoriteType::class, $favoriteRecipeFDO, [
+            'attr' => ['id' => 'toggle-favorite']
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($favoriteRecipeFDO->isMarkedAsFavorite())
+            {
+                $connectedUser->addFavoriteRecipe($recipe);
+            }
+            else
+            {
+                $connectedUser->removeFavoriteRecipe($recipe);
+            }
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($connectedUser);
+            $entityManager->persist($recipe);
+            $entityManager->flush();
+        }
+
         return $this->render('recipe/show.html.twig', [
             'recipe' => $recipe,
+            'toggleFavoriteForm' => $form->createView(),
         ]);
     }
 

@@ -15,3 +15,8 @@ body {
 i {
     vertical-align: middle;
 }
+
+/* Icon which triggers an action */
+.action-icon {
+    cursor: pointer;
+}
