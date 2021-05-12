@@ -2,6 +2,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
@@ -81,12 +83,18 @@ class User implements UserInterface
      */
     private $energy;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Recipe::class)
+     */
+    private $favoriteRecipes;
+
     function __construct($id = -1, $username = NULL, $plainPassword = NULL, $responsibilities = [])
     {
         $this->id = $id;
         $this->username = $username;
         $this->plainPassword = $plainPassword;
         $this->responsibilities = $responsibilities;
+        $this->favoriteRecipes = new ArrayCollection();
     }
 
     /**
@@ -226,7 +234,7 @@ class User implements UserInterface
      *
      * @param Responsibility $responsibility The responsibility to add.
      *
-     * @return boolean
+     * @return bool
      */
     function hasResponsibility(Responsibility $responsibility)
     {
@@ -317,5 +325,39 @@ class User implements UserInterface
         $this->energy = $energy;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Recipe[]
+     */
+    public function getFavoriteRecipes(): Collection
+    {
+        return $this->favoriteRecipes;
+    }
+
+    public function addFavoriteRecipe(Recipe $favoriteRecipe): self
+    {
+        if (!$this->favoriteRecipes->contains($favoriteRecipe)) {
+            $this->favoriteRecipes[] = $favoriteRecipe;
+        }
+
+        return $this;
+    }
+
+    public function removeFavoriteRecipe(Recipe $favoriteRecipe): self
+    {
+        $this->favoriteRecipes->removeElement($favoriteRecipe);
+
+        return $this;
+    }
+
+    /**
+     * Check if the user has marked a specific recipe as favorite
+     * @param App/Entity/Recipe $recipe
+     * @return bool
+     */
+    public function hasFaved(Recipe $recipe): bool
+    {
+        return $this->favoriteRecipes->contains($recipe);
     }
 }
