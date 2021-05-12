@@ -86,6 +86,7 @@ class OpenFoodFactService
     public function fillIngredientNutritionalDataWithProductOnes(Ingredient &$ingredient, $product)
     {
         // General information
+        $ingredient->setBarCode($product->code);
         if (isset($product->product_name))
         {
             $ingredient->setLabel($product->product_name);
@@ -118,14 +119,26 @@ class OpenFoodFactService
                 || !isset($product->nutriments->fat_value)
                 || !isset(get_object_vars($product->nutriments)['energy-kcal_value']))
         {
-            $missingData = '';
-            $missingData .= !isset($product->nutriments->proteins_value) ? 'proteins ' : '';
-            $missingData .= !isset($product->nutriments->carbohydrates_value) ? 'carbohydrates ' : '';
-            $missingData .= !isset($product->nutriments->fat_value) ? 'fat ' : '';
-            $missingData .= !isset(get_object_vars($product->nutriments)['energy-kcal_value']) ? 'energy' : '';
+            $missingData = [];
+            if (!isset($product->nutriments->proteins_value))
+            {
+                $missingData[] = 'proteins';
+            }
+            if (!isset($product->nutriments->carbohydrates_value))
+            {
+                $missingData[] = 'carbohydrates';
+            }
+            if (!isset($product->nutriments->fat_value))
+            {
+                $missingData[] = 'fat';
+            }
+            if (!isset(get_object_vars($product->nutriments)['energy-kcal_value']))
+            {
+                $missingData[] = 'energy';
+            }
             throw new \Exception(sprintf(
                             'This product is missing nutritional data and can\'t be imported. Missing data: [%s]',
-                            $missingData
+                            implode(', ', $missingData)
                         ));
         }
         if (isset($product->nutriments->proteins_value))

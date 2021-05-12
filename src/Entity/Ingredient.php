@@ -18,6 +18,11 @@ class Ingredient
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=40, nullable=true)
+     */
+    private $barCode;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $label;
@@ -171,6 +176,18 @@ class Ingredient
     public function setEnergy(float $energy): self
     {
         $this->energy = $energy;
+
+        return $this;
+    }
+
+    public function getBarCode(): ?string
+    {
+        return $this->barCode;
+    }
+
+    public function setBarCode(string $barCode): self
+    {
+        $this->barCode = $barCode;
 
         return $this;
     }

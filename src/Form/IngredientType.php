@@ -18,6 +18,10 @@ class IngredientType extends AbstractType
             ->add('label', TextType::class, [
                 'label' => 'Label *',
             ])
+            ->add('barcode', TextType::class, [
+                'label' => 'Code barre',
+                'required' => false,
+            ])
             ->add('brand', TextType::class, [
                 'label' => 'Marque *',
             ])
@@ -30,6 +34,7 @@ class IngredientType extends AbstractType
             ])
             ->add('portionSize', IntegerType::class, [
                 'label' => 'Taille d\'une portion',
+                'required' => false,
             ])
             ->add('proteins', NumberType::class, [
                 'label' => 'Protéines (g) *',
