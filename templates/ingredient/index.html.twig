@@ -35,15 +35,18 @@
 
     <div class="row">
         <div class="col">
-            <table class="table table-stripped">
+            <table class="table table-stripped table-sm table-hover">
                 <thead class="thead-light">
                     <tr>
-                        <th>Id</th>
+                        {% if app.user is not null %}
+                            <th>Id</th>
+                        {% endif %}
                         <th>Label</th>
                         <th>Marque</th>
                         <th>Magasin</th>
                         <th>Manière de mesurer<br>(g, ml, l, unité, ...)</th>
                         <th>Taille d'une portion</th>
+                        <th class="text-center">Apport<br>en protéines</th>
                         <th>Protéines</th>
                         <th>Glucides</th>
                         <th>Lipides</th>
@@ -54,26 +57,43 @@
                 <tbody>
                     {% for ingredient in ingredients %}
                         <tr>
-                            <td>{{ ingredient.id }}</td>
-                            <td>{{ ingredient.label }}</td>
+                            {% if app.user is not null %}
+                                <td>{{ ingredient.id }}</td>
+                            {% endif %}
+                            <td><strong>{{ ingredient.label }}</strong></td>
                             <td>{{ ingredient.brand }}</td>
                             <td>{{ ingredient.shop }}</td>
                             <td>{{ ingredient.measureType }}</td>
                             <td>{{ ingredient.portionSize }} {{ ingredient.measureType }}</td>
+                            <td class="text-center">
+                                {% if ingredient.proteins / ingredient.energy > 0.15 %}
+                                    <i class="ri-checkbox-blank-circle-fill text-success"
+                                       data-toggle="tooltip"
+                                       title="Très riche en protéines"></i>
+                                {% elseif ingredient.proteins / ingredient.energy > 0.1 %}
+                                    <i class="ri-checkbox-blank-circle-fill text-info"
+                                       data-toggle="tooltip"
+                                       title="Riche en protéines"></i>
+                                {% elseif ingredient.proteins / ingredient.energy > 0.05 %}
+                                    <i class="ri-checkbox-blank-circle-fill text-muted"
+                                       data-toggle="tooltip"
+                                       title="Moyennement riche en protéines"></i>
+                                {% endif %}
+                            </td>
                             <td>{{ ingredient.proteins }} g</td>
                             <td>{{ ingredient.carbohydrates }} g</td>
                             <td>{{ ingredient.fat }} g</td>
                             <td>{{ ingredient.energy }} kcal</td>
                             <td class="text-right">
                                 <a
-                                    class="btn-primary btn"
+                                    class="btn-primary btn btn-sm"
                                     href="{{ path('ingredient_show', {'id': ingredient.id}) }}"
                                     >
                                     Voir
                                 </a>
                                 {% if app.user is not null %}
                                     <a
-                                        class="btn-secondary btn"
+                                        class="btn-secondary btn btn-sm"
                                         href="{{ path('ingredient_edit', {'id': ingredient.id}) }}"
                                         >
                                         Éditer
