@@ -185,7 +185,7 @@ class Ingredient
         return $this->barCode;
     }
 
-    public function setBarCode(string $barCode): self
+    public function setBarCode(?string $barCode): self
     {
         $this->barCode = $barCode;
 
