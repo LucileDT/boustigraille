@@ -163,6 +163,11 @@
                                 {{ ingredient.measureType }}
                                 de
                                 <span class="text-lowercase">{{ ingredient.label }}</span>
+                                <a href="{{ path('ingredient_show', {'id': ingredient.id}) }}"
+                                   target="_blank"
+                                    class="text-muted">
+                                    <small>Voir la fiche ingrédient</small>
+                                </a>
                             </label>
                         </div>
                     {% endfor %}
