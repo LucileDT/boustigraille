@@ -39,6 +39,11 @@ class Recipe
      */
     private $comment;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mainPictureFilename;
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
@@ -173,5 +178,17 @@ class Recipe
             $energyCount += ($ingredient->getIngredient()->getEnergy() / 100) * $ingredient->getQuantity();
         }
         return $energyCount;
+    }
+
+    public function getMainPictureFilename(): ?string
+    {
+        return $this->mainPictureFilename;
+    }
+
+    public function setMainPictureFilename(?string $mainPictureFilename): self
+    {
+        $this->mainPictureFilename = $mainPictureFilename;
+
+        return $this;
     }
 }
