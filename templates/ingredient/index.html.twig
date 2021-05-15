@@ -79,7 +79,17 @@
                                         <i class="ri-checkbox-blank-circle-fill text-muted"
                                            data-toggle="tooltip"
                                            title="Moyennement riche en protéines"></i>
+                                    {% else %}
+                                        <i class="ri-checkbox-blank-circle-line text-muted"
+                                           data-toggle="tooltip"
+                                           title="Presque pas de protéines"
+                                           ></i>
                                     {% endif %}
+                                {% else %}
+                                    <i class="ri-checkbox-blank-circle-fill text-light"
+                                       data-toggle="tooltip"
+                                       title="Apport en protéines non calculable"
+                                       ></i>
                                 {% endif %}
                             </td>
                             <td>{{ ingredient.proteins }} g</td>
