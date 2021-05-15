@@ -48,7 +48,15 @@
             </tr>
             <tr>
                 <th>Marque</th>
-                <td>{{ ingredient.brand }}</td>
+                <td>
+                    {% if ingredient.brand is empty %}
+                        <span class="text-muted font-italic">
+                            Générique
+                        </span>
+                    {% else %}
+                        {{ ingredient.brand }}
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <th>Magasin</th>

@@ -61,7 +61,15 @@
                                 <td>{{ ingredient.id }}</td>
                             {% endif %}
                             <td><strong>{{ ingredient.label }}</strong></td>
-                            <td>{{ ingredient.brand }}</td>
+                            <td>
+                                {% if ingredient.brand is empty %}
+                                    <small class="text-muted font-italic">
+                                        Générique
+                                    </small>
+                                {% else %}
+                                    {{ ingredient.brand }}
+                                {% endif %}
+                            </td>
                             <td>{{ ingredient.shop }}</td>
                             <td>{{ ingredient.measureType }}</td>
                             <td>{{ ingredient.portionSize }} {{ ingredient.measureType }}</td>
