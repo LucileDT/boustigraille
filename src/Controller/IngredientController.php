@@ -60,7 +60,7 @@ class IngredientController extends AbstractController
     }
 
     /**
-     * @Route("/new-from-openfoodfacts", name="ingredient_new_from_openfoodfacts", methods={"GET","POST"})
+     * @Route("/new-from-openfoodfacts", name="ingredient_new_from_openfoodfacts", methods={"POST"})
      * @Security("not is_anonymous()")
      */
     public function newFromOpenFoodFacts(OpenFoodFactService $offService, Request $request, IngredientFromOpenFoodFactsFDO $ingredientIdentifier): Response
@@ -95,17 +95,7 @@ class IngredientController extends AbstractController
                 $this->addFlash('danger', $ex->getMessage());
 
                 // try to get the previous page or fallback on home page
-                $referer = $request->headers->get('referer');
-                if (empty($referer))
-                {
-                    $url = $this->generateUrl('home');
-                }
-                else
-                {
-                    $url = $referer;
-                }
-
-                return $this->redirect($url);
+                $this->tryToRedirectToLastUrl($request);
             }
 
             return $this->redirectToRoute(
@@ -113,14 +103,14 @@ class IngredientController extends AbstractController
                     ['id' => $ingredient->getId()]
             );
         }
-
-        return $this->render('ingredient/index.html.twig', [
-            'ingredients' => $ingredientRepository->findAll(),
-        ]);
+        else
+        {
+            $this->tryToRedirectToLastUrl($request);
+        }
     }
 
     /**
-     * @Route("/{id}", name="ingredient_show", methods={"GET"})
+     * @Route("/{id}", name="ingredient_show", methods={"GET"}, requirements={"id"="\d+"})
      */
     public function show(Ingredient $ingredient): Response
     {
@@ -130,7 +120,7 @@ class IngredientController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="ingredient_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="ingredient_edit", methods={"GET","POST"}, requirements={"id"="\d+"})
      * @Security("not is_anonymous()")
      */
     public function edit(Request $request, Ingredient $ingredient): Response
@@ -151,7 +141,7 @@ class IngredientController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="ingredient_delete", methods={"POST"})
+     * @Route("/{id}", name="ingredient_delete", methods={"POST"}, requirements={"id"="\d+"})
      * @Security("not is_anonymous()")
      */
     public function delete(Request $request, Ingredient $ingredient): Response
@@ -163,5 +153,23 @@ class IngredientController extends AbstractController
         }
 
         return $this->redirectToRoute('ingredient_index');
+    }
+
+    /**
+     * Tries to redirect to the last url or fallback on the homepage.
+     */
+    private function tryToRedirectToLastUrl(Request $request)
+    {
+        $referer = $request->headers->get('referer');
+        if (empty($referer))
+        {
+            $url = $this->generateUrl('home');
+        }
+        else
+        {
+            $url = $referer;
+        }
+
+        return $this->redirect($url);
     }
 }
