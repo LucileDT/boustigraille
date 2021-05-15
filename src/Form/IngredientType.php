@@ -23,7 +23,8 @@ class IngredientType extends AbstractType
                 'required' => false,
             ])
             ->add('brand', TextType::class, [
-                'label' => 'Marque *',
+                'label' => 'Marque',
+                'required' => false,
             ])
             ->add('shop', TextType::class, [
                 'label' => 'Magasin',
