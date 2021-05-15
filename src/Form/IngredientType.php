@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Ingredient;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -48,6 +49,10 @@ class IngredientType extends AbstractType
             ])
             ->add('energy', NumberType::class, [
                 'label' => 'Énergie (kcal) *',
+            ])
+            ->add('comment', TextareaType::class, [
+                'label' => 'Commentaire',
+                'required' => false,
             ])
         ;
     }

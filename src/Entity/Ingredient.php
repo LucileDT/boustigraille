@@ -67,6 +67,11 @@ class Ingredient
      */
     private $energy;
 
+    /**
+     * @ORM\Column(type="string", length=1000, nullable=true)
+     */
+    private $comment;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -188,6 +193,18 @@ class Ingredient
     public function setBarCode(?string $barCode): self
     {
         $this->barCode = $barCode;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }
