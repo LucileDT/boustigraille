@@ -130,7 +130,7 @@
                                 {% if app.user is not null and app.user.energy > 0 %}
                                     {% set percentageDifference = (((recipe.energy - app.user.energy) / app.user.energy) * 100) | round %}
                                     <small class="text-muted">
-                                        / {{ app.user.energy }} g
+                                        / {{ app.user.energy }} kcal
                                         {% if recipe.energy < app.user.energy %}
                                             (<i class="ri-arrow-down-circle-fill text-success"></i>
                                             {{ percentageDifference}}%)
