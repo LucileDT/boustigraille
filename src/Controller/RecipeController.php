@@ -45,7 +45,7 @@ class RecipeController extends AbstractController
             $entityManager->persist($recipe);
             $entityManager->flush();
 
-            return $this->redirectToRoute('recipe_index');
+            return $this->redirectToRoute('recipe_show',['id' => $recipe->getId()]);
         }
 
         return $this->render('recipe/new.html.twig', [
@@ -106,7 +106,7 @@ class RecipeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('recipe_index');
+            return $this->redirectToRoute('recipe_show',['id' => $recipe->getId()]);
         }
 
         return $this->render('recipe/edit.html.twig', [
