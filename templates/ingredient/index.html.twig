@@ -67,22 +67,27 @@
                             <td>{{ ingredient.portionSize }} {{ ingredient.measureType }}</td>
                             <td class="text-center">
                                 {% if ingredient.energy > 0 %}
-                                    {% if ingredient.proteins / ingredient.energy > 0.15 %}
+                                    {% set proteinRatio = ingredient.proteins / ingredient.energy %}
+                                    {% if proteinRatio > 0.15 %}
                                         <i class="ri-checkbox-blank-circle-fill text-success"
                                            data-toggle="tooltip"
-                                           title="Très riche en protéines"></i>
-                                    {% elseif ingredient.proteins / ingredient.energy > 0.1 %}
+                                           data-html="true"
+                                           title="Très riche en protéines<br>({{ (proteinRatio * 100) | round }}%)"></i>
+                                    {% elseif proteinRatio > 0.1 %}
                                         <i class="ri-checkbox-blank-circle-fill text-info"
                                            data-toggle="tooltip"
-                                           title="Riche en protéines"></i>
-                                    {% elseif ingredient.proteins / ingredient.energy > 0.05 %}
+                                           data-html="true"
+                                           title="Riche en protéines<br>({{ (proteinRatio * 100) | round }}%)"></i>
+                                    {% elseif proteinRatio > 0.05 %}
                                         <i class="ri-checkbox-blank-circle-fill text-muted"
                                            data-toggle="tooltip"
-                                           title="Moyennement riche en protéines"></i>
+                                           data-html="true"
+                                           title="Moyennement riche en protéines<br>({{ (proteinRatio * 100) | round }}%)"></i>
                                     {% else %}
                                         <i class="ri-checkbox-blank-circle-line text-muted"
                                            data-toggle="tooltip"
-                                           title="Presque pas de protéines"
+                                           data-html="true"
+                                           title="Presque pas de protéines<br>({{ (proteinRatio * 100) | round }}%)"
                                            ></i>
                                     {% endif %}
                                 {% else %}
