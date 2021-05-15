@@ -5,10 +5,12 @@ namespace App\Form;
 use App\Entity\Recipe;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class RecipeType extends AbstractType
 {
@@ -17,6 +19,24 @@ class RecipeType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom *',
+            ])
+            ->add('main_picture', FileType::class, [
+                'label' => 'Photo de couverture',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024M',
+                        'mimeTypes' => [
+                            'image/gif',
+                            'image/png',
+                            'image/jpeg',
+                            'image/bmp',
+                            'image/webp'
+                        ],
+                        'mimeTypesMessage' => 'Prière de téléverser une image valide.',
+                    ])
+                ],
             ])
             ->add('ingredients', CollectionType::class, [
                 'entry_type' => IngredientQuantityForRecipeType::class,

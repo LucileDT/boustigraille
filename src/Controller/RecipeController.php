@@ -9,6 +9,7 @@ use App\Form\MarkRecipeAsFavoriteType;
 use App\FormDataObject\RecipeFDO;
 use App\FormDataObject\FavoriteRecipeFDO;
 use App\Repository\RecipeRepository;
+use App\Service\RecipeService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +41,19 @@ class RecipeController extends AbstractController
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $mainPicture = $form->get('main_picture')->getData();
+            if ($mainPicture)
+            {
+                $filename = RecipeService::saveMainPicture(
+                        $mainPicture,
+                        $recipe->getName(),
+                        $this->getParameter('pictures_directory')
+                );
+                $recipe->setMainPictureFilename($filename);
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($recipe);
             $entityManager->flush();
@@ -103,7 +116,19 @@ class RecipeController extends AbstractController
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $mainPicture = $form->get('main_picture')->getData();
+            if ($mainPicture)
+            {
+                $filename = RecipeService::saveMainPicture(
+                        $mainPicture,
+                        $recipe->getName(),
+                        $this->getParameter('pictures_directory')
+                );
+                $recipe->setMainPictureFilename($filename);
+            }
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('recipe_show',['id' => $recipe->getId()]);
