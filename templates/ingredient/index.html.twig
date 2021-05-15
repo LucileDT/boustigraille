@@ -66,18 +66,20 @@
                             <td>{{ ingredient.measureType }}</td>
                             <td>{{ ingredient.portionSize }} {{ ingredient.measureType }}</td>
                             <td class="text-center">
-                                {% if ingredient.proteins / ingredient.energy > 0.15 %}
-                                    <i class="ri-checkbox-blank-circle-fill text-success"
-                                       data-toggle="tooltip"
-                                       title="Très riche en protéines"></i>
-                                {% elseif ingredient.proteins / ingredient.energy > 0.1 %}
-                                    <i class="ri-checkbox-blank-circle-fill text-info"
-                                       data-toggle="tooltip"
-                                       title="Riche en protéines"></i>
-                                {% elseif ingredient.proteins / ingredient.energy > 0.05 %}
-                                    <i class="ri-checkbox-blank-circle-fill text-muted"
-                                       data-toggle="tooltip"
-                                       title="Moyennement riche en protéines"></i>
+                                {% if ingredient.energy > 0 %}
+                                    {% if ingredient.proteins / ingredient.energy > 0.15 %}
+                                        <i class="ri-checkbox-blank-circle-fill text-success"
+                                           data-toggle="tooltip"
+                                           title="Très riche en protéines"></i>
+                                    {% elseif ingredient.proteins / ingredient.energy > 0.1 %}
+                                        <i class="ri-checkbox-blank-circle-fill text-info"
+                                           data-toggle="tooltip"
+                                           title="Riche en protéines"></i>
+                                    {% elseif ingredient.proteins / ingredient.energy > 0.05 %}
+                                        <i class="ri-checkbox-blank-circle-fill text-muted"
+                                           data-toggle="tooltip"
+                                           title="Moyennement riche en protéines"></i>
+                                    {% endif %}
                                 {% endif %}
                             </td>
                             <td>{{ ingredient.proteins }} g</td>
