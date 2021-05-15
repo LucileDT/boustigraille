@@ -93,6 +93,19 @@ class IngredientController extends AbstractController
             catch (\Exception $ex)
             {
                 $this->addFlash('danger', $ex->getMessage());
+
+                // try to get the previous page or fallback on home page
+                $referer = $request->headers->get('referer');
+                if (empty($referer))
+                {
+                    $url = $this->generateUrl('home');
+                }
+                else
+                {
+                    $url = $referer;
+                }
+
+                return $this->redirect($url);
             }
 
             return $this->redirectToRoute(
