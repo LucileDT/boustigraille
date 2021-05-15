@@ -110,6 +110,17 @@
                             <td>{{ ingredient.fat }} g</td>
                             <td>{{ ingredient.energy }} kcal</td>
                             <td class="text-right">
+                                {% if ingredient.barCode is not empty %}
+                                    <a
+                                        class="btn btn-secondary btn-sm"
+                                        href="https://fr.openfoodfacts.org/produit/{{ ingredient.barCode }}"
+                                        target="_blank"
+                                        data-toggle="tooltip"
+                                        title="Voir sur OpenFoodFacts"
+                                        >
+                                        <i class="ri-bar-chart-box-fill"></i>
+                                    </a>
+                                {% endif %}
                                 <a
                                     class="btn-primary btn btn-sm"
                                     href="{{ path('ingredient_show', {'id': ingredient.id}) }}"

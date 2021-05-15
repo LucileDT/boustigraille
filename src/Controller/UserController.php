@@ -21,7 +21,7 @@ class UserController extends AbstractController
 {
     /**
      * @Route("/", name="user_index", methods={"GET"})
-     * @Security("not is_anonymous()")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function index(UserRepository $userRepository): Response
     {
@@ -32,7 +32,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/new", name="user_new", methods={"GET","POST"})
-     * @Security("not is_anonymous()")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function new(UserPasswordEncoderInterface $passwordEncoder, Request $request): Response
     {
@@ -94,7 +94,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}", name="user_show", methods={"GET"})
-     * @Security("not is_anonymous()")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function show(User $user): Response
     {
@@ -105,7 +105,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
-     * @Security("not is_anonymous()")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function edit(UserPasswordEncoderInterface $passwordEncoder, Request $request, User $user): Response
     {
@@ -130,7 +130,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}", name="user_delete", methods={"POST"})
-     * @Security("not is_anonymous()")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function delete(Request $request, User $user): Response
     {

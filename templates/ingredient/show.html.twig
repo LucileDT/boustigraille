@@ -23,11 +23,28 @@
             <h1>{{ ingredient.label }}</h1>
         </div>
         {% if app.user is not null %}
-            <div class="col-1 text-right">
-                {{ include('ingredient/_delete_form.html.twig') }}
-            </div>
-            <div class="col-1 text-right">
-                <a class="btn btn-primary btn-large" href="{{ path('ingredient_edit', {'id': ingredient.id}) }}">Éditer</a>
+            <div class="col-2 text-center">
+                <div class="row">
+                    <div class="col p-0">
+                        {{ include('ingredient/_delete_form.html.twig') }}
+                    </div>
+                    <div class="col p-0">
+                        <a class="btn btn-primary btn-large" href="{{ path('ingredient_edit', {'id': ingredient.id}) }}">Éditer</a>
+                    </div>
+                    {% if ingredient.barCode is not empty %}
+                        <div class="col-3 p-0">
+                            <a
+                                class="btn btn-secondary btn-large"
+                                href="https://fr.openfoodfacts.org/produit/{{ ingredient.barCode }}"
+                                target="_blank"
+                                data-toggle="tooltip"
+                                title="Voir sur OpenFoodFacts"
+                                >
+                                <i class="ri-bar-chart-box-fill"></i>
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         {% endif %}
     </div>

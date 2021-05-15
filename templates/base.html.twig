@@ -86,23 +86,25 @@
                             </ul>
                             <ul class="navbar-nav ml-auto">
                                 {% if app.user is not null %}
-                                    <li class="nav-item dropdown">
-                                        <a
-                                            class="nav-link dropdown-toggle"
-                                            href="#"
-                                            id="dropdown-user"
-                                            role="button"
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true"
-                                            aria-expanded="false"
-                                            >
-                                            Administration
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user">
-                                            <a class="dropdown-item" href="{{ path('user_new') }}">Créer un nouveau compte</a>
-                                            <a class="dropdown-item" href="{{ path('user_index') }}">Voir la liste des comptes</a>
-                                        </div>
-                                    </li>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <li class="nav-item dropdown">
+                                            <a
+                                                class="nav-link dropdown-toggle"
+                                                href="#"
+                                                id="dropdown-user"
+                                                role="button"
+                                                data-toggle="dropdown"
+                                                aria-haspopup="true"
+                                                aria-expanded="false"
+                                                >
+                                                Administration
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user">
+                                                <a class="dropdown-item" href="{{ path('user_new') }}">Créer un nouveau compte</a>
+                                                <a class="dropdown-item" href="{{ path('user_index') }}">Voir la liste des comptes</a>
+                                            </div>
+                                        </li>
+                                    {% endif %}
                                     <li class="nav-item dropdown">
                                         <a
                                             class="nav-link dropdown-toggle"
