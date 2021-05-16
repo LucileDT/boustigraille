@@ -37,7 +37,7 @@
                         {{
                             form_widget(
                                 ingredientQuantityForRecipeForm.quantity,
-                                {'attr': { 'placeholder': 'Quantité *'}}
+                                {'attr': { 'placeholder': 'Quantité *', 'class': 'ingredient-quantity'}}
                             )
                         }}
                         {{ form_help(ingredientQuantityForRecipeForm.quantity) }}
@@ -64,8 +64,10 @@
 
         {{ form_row(form.main_picture) }}
 
+        {{ include('recipe/_nutritional_values.html.twig', {'title': 'Valeurs nutritionnelles', 'paddingTop': 0}) }}
+
         <div class="form-group">
-            <div class="mb-4">Ingrédients</div>
+            <div class="my-4">Ingrédients</div>
             <div
                 id="ingredients"
                 class="ingredients"
