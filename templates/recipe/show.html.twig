@@ -77,11 +77,21 @@
                         <label for="staticEmail2">Ingrédients pour</label>
                         <select class="form-control ml-4">
                             <option value="1">1 part</option>
+                            {% for i in 2..10 %}
+                                <option
+                                    value="{{ i }}"
+                                    {% if i == 4 %}
+                                        selected="selected"
+                                    {% endif %}
+                                    >
+                                    {{ i }} parts
+                                </option>
+                            {% endfor %}
                         </select>
                     </div>
                 </form>
             </h3>
-            <div class="ml-5 my-4">
+            <div class="my-4">
                 <form>
                     {% for ingredientQuantity in recipe.ingredients %}
                         {% set ingredient = ingredientQuantity.ingredient %}
@@ -102,9 +112,9 @@
                     {% endfor %}
                 </form>
             </div>
-            <h3 class="mt-5 pt-2">Valeurs nutritionnelles pour une part</h3>
-            <div class="my-4">
-                <table class="table table-bordered text-center">
+            <h3 class="mt-5 pt-5">Valeurs nutritionnelles pour une part</h3>
+            <div class="mt-4">
+                <table class="table table-bordered text-center mb-0">
                     <thead class="thead-light">
                         <tr>
                             <th>Protéines</th>
