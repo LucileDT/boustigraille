@@ -79,139 +79,51 @@
     <div class="row">
         <div class="col-5">
             <div class="bg-light p-5">
-            <h3 class="">
-                <form class="form-inline">
-                    <div class="form-group mb-2">
-                        <label for="staticEmail2">Ingrédients pour</label>
-                        <select id="ingredients-quantity" class="form-control ml-4">
-                            <option value="1">1 part</option>
-                            {% for i in 2..10 %}
-                                <option
-                                    value="{{ i }}"
-                                    {% if i == 4 %}
-                                        selected="selected"
-                                    {% endif %}
-                                    >
-                                    {{ i }} parts
-                                </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </form>
-            </h3>
-            <div class="my-4">
-                <form id="ingredients">
-                    {% for ingredientQuantity in recipe.ingredients %}
-                        {% set ingredient = ingredientQuantity.ingredient %}
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="ingredient-check-{{ ingredient.id }}">
-                            <label class="custom-control-label" for="ingredient-check-{{ ingredient.id }}">
-                                <span class="quantity"
-                                      data-quantity-for-one-portion="{{ ingredientQuantity.quantity }}">
-                                    {{ ingredientQuantity.quantity }}
-                                </span>
-                                {{ ingredient.measureType }}
-                                de
-                                <span class="text-lowercase">{{ ingredient.label }}</span>
-                                <a href="{{ path('ingredient_show', {'id': ingredient.id}) }}"
-                                   target="_blank"
-                                    class="text-muted">
-                                    <small>Voir la fiche ingrédient</small>
-                                </a>
-                            </label>
+                <h3 class="">
+                    <form class="form-inline">
+                        <div class="form-group mb-2">
+                            <label for="staticEmail2">Ingrédients pour</label>
+                            <select id="ingredients-quantity" class="form-control ml-4">
+                                <option value="1">1 part</option>
+                                {% for i in 2..10 %}
+                                    <option
+                                        value="{{ i }}"
+                                        {% if i == 4 %}
+                                            selected="selected"
+                                        {% endif %}
+                                        >
+                                        {{ i }} parts
+                                    </option>
+                                {% endfor %}
+                            </select>
                         </div>
-                    {% endfor %}
-                </form>
-            </div>
-            <h3 class="mt-5 pt-5">Valeurs nutritionnelles pour une part</h3>
-            <div class="mt-4">
-                <table class="table table-bordered text-center mb-0">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>Protéines</th>
-                            <th>Lipides</th>
-                            <th>Glucides</th>
-                            <th>Énergie</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white">
-                        <tr>
-                            <th>
-                                {{ recipe.proteins | round }} g
-                                {% if app.user is not null and app.user.proteins > 0 %}
-                                    {% set percentageDifference = (((recipe.proteins - app.user.proteins) / app.user.proteins) * 100) | round %}
-                                    <small class="text-muted">
-                                        / {{ app.user.proteins }} g
-                                        {% if recipe.proteins >= app.user.proteins %}
-                                            <br>
-                                            (<i class="ri-arrow-up-circle-fill text-success"></i>
-                                            +{{ percentageDifference}}%)
-                                        {% else %}
-                                            <br>
-                                            (<i class="ri-arrow-down-circle-fill text-danger"></i>
-                                            {{ percentageDifference}}%)
-                                        {% endif %}
-                                    </small>
-                                {% endif %}
-                            </th>
-                            <td>
-                                {{ recipe.fat | round }} g
-                                {% if app.user is not null and app.user.fat > 0 %}
-                                    {% set percentageDifference = (((recipe.fat - app.user.fat) / app.user.fat) * 100) | round %}
-                                    <small class="text-muted">
-                                        / {{ app.user.fat }} g
-                                        {% if recipe.fat >= app.user.fat %}
-                                            <br>
-                                            (<i class="ri-arrow-up-circle-fill"></i>
-                                            +{{ percentageDifference}}%)
-                                        {% else %}
-                                            <br>
-                                            (<i class="ri-arrow-down-circle-fill"></i>
-                                            {{ percentageDifference}}%)
-                                        {% endif %}
-                                    </small>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {{ recipe.carbohydrates | round }} g
-                                {% if app.user is not null and app.user.carbohydrates > 0 %}
-                                    {% set percentageDifference = (((recipe.carbohydrates - app.user.carbohydrates) / app.user.carbohydrates) * 100) | round %}
-                                    <small class="text-muted">
-                                        / {{ app.user.carbohydrates }} g
-                                        {% if recipe.carbohydrates >= app.user.carbohydrates %}
-                                            <br>
-                                            (<i class="ri-arrow-up-circle-fill"></i>
-                                            +{{ percentageDifference}}%)
-                                        {% else %}
-                                            <br>
-                                            (<i class="ri-arrow-down-circle-fill"></i>
-                                            {{ percentageDifference}}%)
-                                        {% endif %}
-                                    </small>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {{ recipe.energy | round }} kcal
-                                {% if app.user is not null and app.user.energy > 0 %}
-                                    {% set percentageDifference = (((recipe.energy - app.user.energy) / app.user.energy) * 100) | round %}
-                                    <small class="text-muted">
-                                        / {{ app.user.energy }} kcal
-                                        {% if recipe.energy < app.user.energy %}
-                                            <br>
-                                            (<i class="ri-arrow-down-circle-fill text-success"></i>
-                                            {{ percentageDifference}}%)
-                                        {% else %}
-                                            <br>
-                                            (<i class="ri-arrow-up-circle-fill text-danger"></i>
-                                            +{{ percentageDifference}}%)
-                                        {% endif %}
-                                    </small>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                    </form>
+                </h3>
+                <div class="my-4">
+                    <form id="ingredients">
+                        {% for ingredientQuantity in recipe.ingredients %}
+                            {% set ingredient = ingredientQuantity.ingredient %}
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="ingredient-check-{{ ingredient.id }}">
+                                <label class="custom-control-label" for="ingredient-check-{{ ingredient.id }}">
+                                    <span class="quantity"
+                                        data-quantity-for-one-portion="{{ ingredientQuantity.quantity }}">
+                                        {{ ingredientQuantity.quantity }}
+                                    </span>
+                                    {{ ingredient.measureType }}
+                                    de
+                                    <span class="text-lowercase">{{ ingredient.label }}</span>
+                                    <a href="{{ path('ingredient_show', {'id': ingredient.id}) }}"
+                                    target="_blank"
+                                        class="text-muted">
+                                        <small>Voir la fiche ingrédient</small>
+                                    </a>
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </form>
+                </div>
+                {{ include('recipe/_nutritional_values.html.twig', {'title': 'Valeurs nutritionnelles pour une part', 'paddingTop': 5}) }}
             </div>
         </div>
         <div class="col">

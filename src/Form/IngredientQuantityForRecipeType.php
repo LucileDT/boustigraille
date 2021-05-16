@@ -7,6 +7,7 @@ use App\Entity\IngredientQuantityForRecipe;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\ChoiceList;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -35,6 +36,17 @@ class IngredientQuantityForRecipeType extends AbstractType
                                 ->createQueryBuilder('i')
                                 ->orderBy('i.label', 'ASC');
                     },
+                'choice_attr' => ChoiceList::attr($this, function (?Ingredient $ingredient) {
+                    return $ingredient ? [
+                        'data-proteins' => $ingredient->getProteins(),
+                        'data-fat' => $ingredient->getFat(),
+                        'data-carbohydrates' => $ingredient->getCarbohydrates(),
+                        'data-energy' => $ingredient->getEnergy(),
+                    ] : [];
+                }),
+                'attr' => [
+                    'class' => 'ingredient-select',
+                ],
                 ])
         ;
     }
