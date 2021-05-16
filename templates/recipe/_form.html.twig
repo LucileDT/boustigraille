@@ -15,15 +15,6 @@
                             x
                         </button>
                     </div>
-                    <div class="col-2">
-                        {{
-                            form_label(
-                                ingredientQuantityForRecipeForm.ingredient,
-                                null,
-                                {'label_attr': {'class': 'w-100 pt-3 text-right'}}
-                            )
-                        }}
-                    </div>
                     <div class="col">
                         {{ form_widget(ingredientQuantityForRecipeForm.ingredient) }}
                         {{ form_help(ingredientQuantityForRecipeForm.ingredient) }}
@@ -71,7 +62,10 @@
             {{ form_errors(form.name) }}
         </div>
 
+        {{ form_row(form.main_picture) }}
+
         <div class="form-group">
+            <div class="mb-4">Ingrédients</div>
             <div
                 id="ingredients"
                 class="ingredients"
