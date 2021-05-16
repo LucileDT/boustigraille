@@ -51,10 +51,13 @@ class RecipeService
      */
     private static function _resizeImage(string $filepath)
     {
+        $finalHeight = 230;
+        $finalWidth = 300;
+
         list($imageWidth, $imageHeight) = getimagesize($filepath);
         $imageRatio = $imageWidth / $imageHeight;
-        $newWidth = 300;
-        $newHeight = 300;
+        $newWidth = $finalWidth;
+        $newHeight = $finalHeight;
         if ($newWidth / $newHeight < $imageRatio)
         {
             $newWidth = $newHeight * $imageRatio;
@@ -70,13 +73,13 @@ class RecipeService
 
         if ($newHeight > $newWidth)
         {
-            $cropStartY = ($newHeight - 300) / 2;
-            $photo->crop(new Point(0, $cropStartY), new Box(300, 300));
+            $cropStartY = ($newHeight - $finalHeight) / 2;
+            $photo->crop(new Point(0, $cropStartY), new Box($finalWidth, $finalHeight));
         }
         else
         {
-            $cropStartX = ($newWidth - 300) / 2;
-            $photo->crop(new Point($cropStartX, 0), new Box(300, 300));
+            $cropStartX = ($newWidth - $finalWidth) / 2;
+            $photo->crop(new Point($cropStartX, 0), new Box($finalWidth, $finalHeight));
         }
 
         $photo->save($filepath);

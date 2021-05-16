@@ -32,15 +32,15 @@
 
     <div class="row">
         {% for recipe in recipes %}
-            <div class="col-2">
+            <div class="col-3 mb-5">
                 <div class="recipe card h-100 text-center border-0 text-black">
                     {% if recipe.mainPictureFilename is empty %}
                         <img src="{{ asset('image/default-recipe-main-picture.jpg') }}" class="card-img" alt="">
                     {% else %}
                         <img src="{{ asset('uploads/pictures/' ~ recipe.mainPictureFilename) }}" class="card-img" alt="">
                     {% endif %}
-                    <div class="card-img-overlay">
-                        <div class="card-body mb-5">
+                    <div class="card-img-overlay d-flex flex-column justify-content-between">
+                        <div class="card-body mb-5 d-flex flex-column justify-content-between">
                             <h5 class="card-title">{{ recipe.name }}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">
                                 {{ recipe.energy | round }} kcal
@@ -54,7 +54,7 @@
                                     Voir
                                 </a>
                             </div>
-                            <div class="mb-2">
+                            <div class="">
                                 <a
                                     href="{{ path('recipe_edit', {'id': recipe.id}) }}"
                                     class="btn btn-secondary w-50">
