@@ -75,7 +75,7 @@
                 <form class="form-inline">
                     <div class="form-group mb-2">
                         <label for="staticEmail2">Ingrédients pour</label>
-                        <select class="form-control ml-4">
+                        <select id="ingredients-quantity" class="form-control ml-4">
                             <option value="1">1 part</option>
                             {% for i in 2..10 %}
                                 <option
@@ -92,13 +92,16 @@
                 </form>
             </h3>
             <div class="my-4">
-                <form>
+                <form id="ingredients">
                     {% for ingredientQuantity in recipe.ingredients %}
                         {% set ingredient = ingredientQuantity.ingredient %}
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" id="ingredient-check-{{ ingredient.id }}">
                             <label class="custom-control-label" for="ingredient-check-{{ ingredient.id }}">
-                                {{ ingredientQuantity.quantity }}
+                                <span class="quantity"
+                                      data-quantity-for-one-portion="{{ ingredientQuantity.quantity }}">
+                                    {{ ingredientQuantity.quantity }}
+                                </span>
                                 {{ ingredient.measureType }}
                                 de
                                 <span class="text-lowercase">{{ ingredient.label }}</span>
