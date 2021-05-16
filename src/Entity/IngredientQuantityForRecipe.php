@@ -38,7 +38,7 @@ class IngredientQuantityForRecipe
 
     public function __construct()
     {
-        $this->recipe = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -70,7 +70,7 @@ class IngredientQuantityForRecipe
         return $this;
     }
 
-    public function getRecipe(): Recipe
+    public function getRecipe(): ?Recipe
     {
         return $this->recipe;
     }

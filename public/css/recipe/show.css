@@ -1,0 +1,47 @@
+.recipe-header {
+    width: 100%;
+    overflow: hidden;
+    height: 230px;
+}
+
+.recipe-header .image-background {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: -850px;
+    filter: blur(30px) contrast(50%) brightness(0.8);
+}
+
+.recipe-header .image-foreground {
+    position: relative;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    width: 300px;
+    z-index: 2;
+}
+
+.recipe-header .recipe-name {
+    position: relative;
+    z-index: 3;
+    top: calc(-230px + 1rem);
+    left: 1rem;
+    font-weight: bold;
+}
+
+.recipe-header .recipe-name i#toggle-favorite-button {
+    position: relative;
+    top: -0.3rem;
+    z-index: 3;
+}
+
+.recipe-header .recipe-controls {
+    position: relative;
+    text-align: center;
+    top: -110px;
+    z-index: 3;
+}
+
+.recipe-header .recipe-controls .btn {
+    width: 8%;
+}

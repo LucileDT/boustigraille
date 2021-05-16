@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/recipe/show.css') }}">
+{% endblock %}
+
 {% block javascript %}
     <script src="{{ asset('javascript/recipe/show.js') }}"></script>
 {% endblock %}
@@ -22,156 +26,82 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row mt-5 mb-4">
+    <div class="row my-5">
         <div class="col">
-            <div class="row">
-                {% if recipe.mainPictureFilename is not empty %}
-                    <div class="col-2">
-                        <div>
-                            <img class="img-fluid" src="{{ asset('uploads/pictures/' ~ recipe.mainPictureFilename) }}">
-                        </div>
-                        <small class="text-muted font-italic">Miam !</small>
-                    </div>
-                {% endif %}
-                <div class="col">
-                    <h1>
-                        {{ recipe.name }}
-                        {% if app.user is not null %}
-                            <small class="font-italic">(id : {{ recipe.id }})</small>
-                        {% endif %}
+            <div class="recipe-header">
+                <img class="image-foreground" src="{{ asset('uploads/pictures/' ~ recipe.mainPictureFilename) }}">
+                <div class="recipe-name row">
+                    <div class="col">
+                    <h1 class="text-white">
                         {% if app.user is not null %}
                             {% if app.user.hasFaved(recipe) %}
                                 <i
                                     id="toggle-favorite-button"
-                                    class="action-icon ri-heart-fill text-primary"
+                                    class="action-icon ri-heart-fill text-white"
                                     data-toggle="tooltip"
                                     title="Retirer de mes favoris"></i>
                             {% else %}
                                 <i
                                     id="toggle-favorite-button"
-                                    class="action-icon ri-heart-add-line text-primary"
+                                    class="action-icon ri-heart-add-line text-whites"
                                     data-toggle="tooltip"
                                     title="Ajouter à mes favoris"></i>
                             {% endif %}
 
                             {{ include('recipe/_toggle_favorite_form.html.twig') }}
                         {% endif %}
+                        {{ recipe.name }}
                     </h1>
+                    </div>
+                    {% if app.user is not null %}
+                        <div class="col-2 text-right pr-5 mr-5">
+                            {{ include('recipe/_delete_form.html.twig') }}
+                        </div>
+                    {% endif %}
                 </div>
+                <div class="recipe-controls">
+                    {% if app.user is not null %}
+                        <a class="btn btn-primary btn-large" href="{{ path('recipe_edit', {'id': recipe.id}) }}">Éditer</a>
+                    {% endif %}
+                </div>
+                <img class="image-background" src="{{ asset('uploads/pictures/' ~ recipe.mainPictureFilename) }}">
             </div>
         </div>
-        {% if app.user is not null %}
-            <div class="col-2 text-right">
-                <div class="row">
-                    <div class="col pr-0">
-                        {{ include('recipe/_delete_form.html.twig') }}
-                    </div>
-                    <div class="col-5 pl-0">
-                        <a class="btn btn-secondary btn-large" href="{{ path('recipe_edit', {'id': recipe.id}) }}">Éditer</a>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
     </div>
-
     <div class="row">
-        <div class="col">
-            <h2 class="mt-5 pt-2">Valeurs nutritionnelles</h2>
+        <div class="col-5">
+            <div class="bg-light p-5">
+            <h3 class="">
+                <form class="form-inline">
+                    <div class="form-group mb-2">
+                        <label for="staticEmail2">Ingrédients pour</label>
+                        <select id="ingredients-quantity" class="form-control ml-4">
+                            <option value="1">1 part</option>
+                            {% for i in 2..10 %}
+                                <option
+                                    value="{{ i }}"
+                                    {% if i == 4 %}
+                                        selected="selected"
+                                    {% endif %}
+                                    >
+                                    {{ i }} parts
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </form>
+            </h3>
             <div class="my-4">
-                <table class="table table-bordered text-center">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>Protéines</th>
-                            <th>Lipides</th>
-                            <th>Glucides</th>
-                            <th>Énergie</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th>
-                                {{ recipe.proteins | round }} g
-                                {% if app.user is not null and app.user.proteins > 0 %}
-                                    {% set percentageDifference = (((recipe.proteins - app.user.proteins) / app.user.proteins) * 100) | round %}
-                                    <small class="text-muted">
-                                        / {{ app.user.proteins }} g
-                                        {% if recipe.proteins >= app.user.proteins %}
-                                            (<i class="ri-arrow-up-circle-fill text-success"></i>
-                                            +{{ percentageDifference}}%)
-                                        {% else %}
-                                            (<i class="ri-arrow-down-circle-fill text-danger"></i>
-                                            {{ percentageDifference}}%)
-                                        {% endif %}
-                                    </small>
-                                {% endif %}
-                            </th>
-                            <td>
-                                {{ recipe.fat | round }} g
-                                {% if app.user is not null and app.user.fat > 0 %}
-                                    {% set percentageDifference = (((recipe.fat - app.user.fat) / app.user.fat) * 100) | round %}
-                                    <small class="text-muted">
-                                        / {{ app.user.fat }} g
-                                        {% if recipe.fat >= app.user.fat %}
-                                            (<i class="ri-arrow-up-circle-fill"></i>
-                                            +{{ percentageDifference}}%)
-                                        {% else %}
-                                            (<i class="ri-arrow-down-circle-fill"></i>
-                                            {{ percentageDifference}}%)
-                                        {% endif %}
-                                    </small>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {{ recipe.carbohydrates | round }} g
-                                {% if app.user is not null and app.user.carbohydrates > 0 %}
-                                    {% set percentageDifference = (((recipe.carbohydrates - app.user.carbohydrates) / app.user.carbohydrates) * 100) | round %}
-                                    <small class="text-muted">
-                                        / {{ app.user.carbohydrates }} g
-                                        {% if recipe.carbohydrates >= app.user.carbohydrates %}
-                                            (<i class="ri-arrow-up-circle-fill"></i>
-                                            +{{ percentageDifference}}%)
-                                        {% else %}
-                                            (<i class="ri-arrow-down-circle-fill"></i>
-                                            {{ percentageDifference}}%)
-                                        {% endif %}
-                                    </small>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {{ recipe.energy | round }} kcal
-                                {% if app.user is not null and app.user.energy > 0 %}
-                                    {% set percentageDifference = (((recipe.energy - app.user.energy) / app.user.energy) * 100) | round %}
-                                    <small class="text-muted">
-                                        / {{ app.user.energy }} kcal
-                                        {% if recipe.energy < app.user.energy %}
-                                            (<i class="ri-arrow-down-circle-fill text-success"></i>
-                                            {{ percentageDifference}}%)
-                                        {% else %}
-                                            (<i class="ri-arrow-up-circle-fill text-danger"></i>
-                                            +{{ percentageDifference}}%)
-                                        {% endif %}
-                                    </small>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <h2 class="mt-5 pt-2">
-                Ingrédients pour une part
-            </h2>
-            <div class="ml-5 my-4">
-                <form>
+                <form id="ingredients">
                     {% for ingredientQuantity in recipe.ingredients %}
                         {% set ingredient = ingredientQuantity.ingredient %}
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" id="ingredient-check-{{ ingredient.id }}">
                             <label class="custom-control-label" for="ingredient-check-{{ ingredient.id }}">
-                                {{ ingredientQuantity.quantity }}
+                                <span class="quantity"
+                                      data-quantity-for-one-portion="{{ ingredientQuantity.quantity }}">
+                                    {{ ingredientQuantity.quantity }}
+                                </span>
                                 {{ ingredient.measureType }}
                                 de
                                 <span class="text-lowercase">{{ ingredient.label }}</span>
@@ -185,11 +115,99 @@
                     {% endfor %}
                 </form>
             </div>
+            <h3 class="mt-5 pt-5">Valeurs nutritionnelles pour une part</h3>
+            <div class="mt-4">
+                <table class="table table-bordered text-center mb-0">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Protéines</th>
+                            <th>Lipides</th>
+                            <th>Glucides</th>
+                            <th>Énergie</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        <tr>
+                            <th>
+                                {{ recipe.proteins | round }} g
+                                {% if app.user is not null and app.user.proteins > 0 %}
+                                    {% set percentageDifference = (((recipe.proteins - app.user.proteins) / app.user.proteins) * 100) | round %}
+                                    <small class="text-muted">
+                                        / {{ app.user.proteins }} g
+                                        {% if recipe.proteins >= app.user.proteins %}
+                                            <br>
+                                            (<i class="ri-arrow-up-circle-fill text-success"></i>
+                                            +{{ percentageDifference}}%)
+                                        {% else %}
+                                            <br>
+                                            (<i class="ri-arrow-down-circle-fill text-danger"></i>
+                                            {{ percentageDifference}}%)
+                                        {% endif %}
+                                    </small>
+                                {% endif %}
+                            </th>
+                            <td>
+                                {{ recipe.fat | round }} g
+                                {% if app.user is not null and app.user.fat > 0 %}
+                                    {% set percentageDifference = (((recipe.fat - app.user.fat) / app.user.fat) * 100) | round %}
+                                    <small class="text-muted">
+                                        / {{ app.user.fat }} g
+                                        {% if recipe.fat >= app.user.fat %}
+                                            <br>
+                                            (<i class="ri-arrow-up-circle-fill"></i>
+                                            +{{ percentageDifference}}%)
+                                        {% else %}
+                                            <br>
+                                            (<i class="ri-arrow-down-circle-fill"></i>
+                                            {{ percentageDifference}}%)
+                                        {% endif %}
+                                    </small>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ recipe.carbohydrates | round }} g
+                                {% if app.user is not null and app.user.carbohydrates > 0 %}
+                                    {% set percentageDifference = (((recipe.carbohydrates - app.user.carbohydrates) / app.user.carbohydrates) * 100) | round %}
+                                    <small class="text-muted">
+                                        / {{ app.user.carbohydrates }} g
+                                        {% if recipe.carbohydrates >= app.user.carbohydrates %}
+                                            <br>
+                                            (<i class="ri-arrow-up-circle-fill"></i>
+                                            +{{ percentageDifference}}%)
+                                        {% else %}
+                                            <br>
+                                            (<i class="ri-arrow-down-circle-fill"></i>
+                                            {{ percentageDifference}}%)
+                                        {% endif %}
+                                    </small>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ recipe.energy | round }} kcal
+                                {% if app.user is not null and app.user.energy > 0 %}
+                                    {% set percentageDifference = (((recipe.energy - app.user.energy) / app.user.energy) * 100) | round %}
+                                    <small class="text-muted">
+                                        / {{ app.user.energy }} kcal
+                                        {% if recipe.energy < app.user.energy %}
+                                            <br>
+                                            (<i class="ri-arrow-down-circle-fill text-success"></i>
+                                            {{ percentageDifference}}%)
+                                        {% else %}
+                                            <br>
+                                            (<i class="ri-arrow-up-circle-fill text-danger"></i>
+                                            +{{ percentageDifference}}%)
+                                        {% endif %}
+                                    </small>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
         </div>
-    </div>
-    <div class="row">
         <div class="col">
-            <h2 class="mt-5 pt-2">Préparation</h2>
+            <h2 class="">Préparation</h2>
             <div class="ml-5 my-4">
                 {% if recipe.process | length > 0 %}
                     {{ recipe.process | markdown_to_html }}
@@ -197,16 +215,12 @@
                     Vas-y à l'instinct c:
                 {% endif %}
             </div>
-        </div>
-    </div>
-    {% if recipe.comment | length > 0 %}
-        <div class="row">
-            <div class="col">
+            {% if recipe.comment | length > 0 %}
                 <h2 class="mt-5 pt-2">Notes</h2>
-                <div class="ml-5 my-4">
+                <div class="ml-5 my-4 text-muted font-italic">
                     {{ recipe.comment }}
                 </div>
-            </div>
+            {% endif %}
         </div>
-    {% endif %}
+    </div>
 {% endblock %}
