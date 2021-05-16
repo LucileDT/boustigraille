@@ -1,5 +1,5 @@
 .recipe > .card-img {
-    filter: contrast(30%) brightness(1.8);
+    filter: contrast(50%) brightness(1.5);
 }
 
 .recipe > .card-img-overlay > .card-body {

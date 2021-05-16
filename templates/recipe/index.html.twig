@@ -47,20 +47,22 @@
                             </h6>
                         </div>
                         <div class="card-footer border-0 p-0 bg-transparent">
-                            <div class="mb-4">
+                            <div class="">
                                 <a
                                     href="{{ path('recipe_show', {'id': recipe.id}) }}"
                                     class="btn btn-primary w-50">
                                     Voir
                                 </a>
                             </div>
-                            <div class="">
-                                <a
-                                    href="{{ path('recipe_edit', {'id': recipe.id}) }}"
-                                    class="btn btn-secondary w-50">
-                                    Éditer
-                                </a>
-                            </div>
+                            {% if app.user is not null %}
+                                <div class="mt-4">
+                                    <a
+                                        href="{{ path('recipe_edit', {'id': recipe.id}) }}"
+                                        class="btn btn-secondary w-50">
+                                        Éditer
+                                    </a>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
