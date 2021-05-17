@@ -108,9 +108,9 @@ class OpenFoodFactService
         {
             $ingredient->setPortionSize($product->serving_quantity);
         }
-        else
+        if (isset($product->product_quantity))
         {
-            $ingredient->setPortionSize(-1);
+            $ingredient->setShopBatchSize($product->product_quantity);
         }
 
         // Nutriments
