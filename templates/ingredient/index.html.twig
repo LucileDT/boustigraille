@@ -39,18 +39,39 @@
                 <thead class="thead-light">
                     <tr>
                         {% if app.user is not null %}
-                            <th>Id</th>
+                            <th class="text-center align-middle">Id</th>
                         {% endif %}
-                        <th>Label</th>
-                        <th>Marque</th>
-                        <th>Magasin</th>
-                        <th>Manière de mesurer<br>(g, ml, l, unité, ...)</th>
-                        <th>Taille d'une portion</th>
-                        <th class="text-center">Apport<br>en protéines</th>
-                        <th>Protéines</th>
-                        <th>Glucides</th>
-                        <th>Lipides</th>
-                        <th>Énergie</th>
+                        <th class="align-middle">Label</th>
+                        <th class="text-center align-middle">Marque</th>
+                        <th class="text-center align-middle">Magasin</th>
+                        <th class="text-center align-middle">
+                            Manière<br>de mesurer
+                            <i class="ri-question-fill"
+                               data-toggle="tooltip"
+                               title="Comment on mesure cet ingrédient
+                                        (par exemple
+                                        g, ml, l, unité, ...)"></i>
+                        </th>
+                        <th class="text-center align-middle">
+                            Taille d'une<br>part moyenne
+                            <i class="ri-question-fill"
+                               data-toggle="tooltip"
+                               title="Cette quantité correspond à peu près
+                                        à ce qu'une personne mangerait en un repas
+                                        (par exemple 45g de riz cru correspond à
+                                        ce que je mangerais en un repas)."></i>
+                        </th>
+                        <th class="text-center align-middle">
+                            Apport en<br>protéines
+                            <i class="ri-question-fill"
+                               data-toggle="tooltip"
+                               title="Ratio protéines / énergie, plus le ratio
+                                        est élevé, plus l'indicateur sera vert."></i>
+                        </th>
+                        <th class="text-center align-middle">Protéines</th>
+                        <th class="text-center align-middle">Glucides</th>
+                        <th class="text-center align-middle">Lipides</th>
+                        <th class="text-center align-middle">Énergie</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -58,10 +79,10 @@
                     {% for ingredient in ingredients %}
                         <tr>
                             {% if app.user is not null %}
-                                <td>{{ ingredient.id }}</td>
+                                <td class="text-center align-middle">{{ ingredient.id }}</td>
                             {% endif %}
                             <td><strong>{{ ingredient.label }}</strong></td>
-                            <td>
+                            <td class="text-center align-middle">
                                 {% if ingredient.brand is empty %}
                                     <small class="text-muted font-italic">
                                         Générique
@@ -70,10 +91,14 @@
                                     {{ ingredient.brand }}
                                 {% endif %}
                             </td>
-                            <td>{{ ingredient.shop }}</td>
-                            <td>{{ ingredient.measureType }}</td>
-                            <td>{{ ingredient.portionSize }} {{ ingredient.measureType }}</td>
-                            <td class="text-center">
+                            <td class="text-center align-middle">{{ ingredient.shop }}</td>
+                            <td class="text-center align-middle">{{ ingredient.measureType }}</td>
+                            <td class="text-center align-middle">
+                                {% if ingredient.portionSize is not empty %}
+                                    {{ ingredient.portionSize }} {{ ingredient.measureType }}
+                                {% endif %}
+                            </td>
+                            <td class="text-center align-middle">
                                 {% if ingredient.energy > 0 %}
                                     {% set proteinRatio = ingredient.proteins / ingredient.energy %}
                                     {% if proteinRatio > 0.15 %}
@@ -105,11 +130,11 @@
                                        ></i>
                                 {% endif %}
                             </td>
-                            <td>{{ ingredient.proteins }} g</td>
-                            <td>{{ ingredient.carbohydrates }} g</td>
-                            <td>{{ ingredient.fat }} g</td>
-                            <td>{{ ingredient.energy }} kcal</td>
-                            <td class="text-right">
+                            <td class="text-center align-middle">{{ ingredient.proteins }} g</td>
+                            <td class="text-center align-middle">{{ ingredient.carbohydrates }} g</td>
+                            <td class="text-center align-middle">{{ ingredient.fat }} g</td>
+                            <td class="text-center align-middle">{{ ingredient.energy }} kcal</td>
+                            <td class="text-right align-middle">
                                 {% if ingredient.barCode is not empty %}
                                     <a
                                         class="btn btn-secondary btn-sm"
