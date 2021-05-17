@@ -92,6 +92,14 @@
                 </td>
             </tr>
             <tr>
+                <th>Taille d'une unité</th>
+                <td>
+                    {% if ingredient.unitySize is not empty %}
+                        {{ ingredient.unitySize }} {{ ingredient.measureType }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
                 <th>Taille d'une part moyenne</th>
                 <td>
                     {% if ingredient.portionSize is not empty %}

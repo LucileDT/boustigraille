@@ -34,13 +34,20 @@ class IngredientType extends AbstractType
             ->add('measureType', TextType::class, [
                 'label' => 'Manière de mesurer (g, ml, l, ...) *',
             ])
+            ->add('unitySize', IntegerType::class, [
+                'label' => 'Taille d\'une unité',
+                'required' => false,
+                'help' => 'Par exemple pour des barres de céréales, le poids d\'une barre.',
+            ])
             ->add('portionSize', IntegerType::class, [
                 'label' => 'Taille d\'une part moyenne',
                 'required' => false,
+                'help' => 'Par exemple pour du riz cru, le poids de ce que je mangerais en un repas.',
             ])
             ->add('shopBatchSize', NumberType::class, [
                 'label' => 'Vendus par paquets de',
                 'required' => false,
+                'help' => 'Par exemple pour des pâtes, le poids d\'un paquet tel que vendu.',
             ])
             ->add('proteins', NumberType::class, [
                 'label' => 'Protéines (g) *',
