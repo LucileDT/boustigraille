@@ -24,12 +24,21 @@ class IngredientQuantityForRecipeType extends AbstractType
                 'label' => 'Ingrédient *',
                 'class' => Ingredient::class,
                 'choice_label' => function($ingredient, $key, $index) {
-                    return sprintf(
-                            '%s (une part ≃ %s %s)',
-                            $ingredient->getLabel(),
-                            $ingredient->getPortionSize(),
-                            $ingredient->getMeasureType()
-                    );
+                    $message = '';
+                    if (empty($ingredient->getPortionSize()))
+                    {
+                        $message = $ingredient->getLabel();
+                    }
+                    else
+                    {
+                        $message = sprintf(
+                                '%s (une part moyenne ≃ %s %s)',
+                                $ingredient->getLabel(),
+                                $ingredient->getPortionSize(),
+                                $ingredient->getMeasureType()
+                        );
+                    }
+                    return $message;
                 },
                 'query_builder' => function (EntityRepository $entityRepository) {
                         return $entityRepository

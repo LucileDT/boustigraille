@@ -35,7 +35,7 @@ class IngredientType extends AbstractType
                 'label' => 'Manière de mesurer (g, ml, l, ...) *',
             ])
             ->add('portionSize', IntegerType::class, [
-                'label' => 'Taille d\'une portion',
+                'label' => 'Taille d\'une part moyenne',
                 'required' => false,
             ])
             ->add('proteins', NumberType::class, [
