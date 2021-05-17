@@ -84,8 +84,20 @@
                 <td>{{ ingredient.measureType }}</td>
             </tr>
             <tr>
+                <th>Vendu par paquets de</th>
+                <td>
+                    {% if ingredient.shopBatchSize is not empty %}
+                        {{ ingredient.shopBatchSize }} {{ ingredient.measureType }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
                 <th>Taille d'une part moyenne</th>
-                <td>{{ ingredient.portionSize }} {{ ingredient.measureType }}</td>
+                <td>
+                    {% if ingredient.portionSize is not empty %}
+                        {{ ingredient.portionSize }} {{ ingredient.measureType }}
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <th>Protéines</th>

@@ -38,6 +38,10 @@ class IngredientType extends AbstractType
                 'label' => 'Taille d\'une part moyenne',
                 'required' => false,
             ])
+            ->add('shopBatchSize', NumberType::class, [
+                'label' => 'Vendus par paquets de',
+                'required' => false,
+            ])
             ->add('proteins', NumberType::class, [
                 'label' => 'Protéines (g) *',
             ])
