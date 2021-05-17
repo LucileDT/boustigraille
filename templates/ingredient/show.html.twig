@@ -84,8 +84,28 @@
                 <td>{{ ingredient.measureType }}</td>
             </tr>
             <tr>
-                <th>Taille d'une portion</th>
-                <td>{{ ingredient.portionSize }} {{ ingredient.measureType }}</td>
+                <th>Vendu par paquets de</th>
+                <td>
+                    {% if ingredient.shopBatchSize is not empty %}
+                        {{ ingredient.shopBatchSize }} {{ ingredient.measureType }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Taille d'une unité</th>
+                <td>
+                    {% if ingredient.unitySize is not empty %}
+                        {{ ingredient.unitySize }} {{ ingredient.measureType }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Taille d'une part moyenne</th>
+                <td>
+                    {% if ingredient.portionSize is not empty %}
+                        {{ ingredient.portionSize }} {{ ingredient.measureType }}
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <th>Protéines</th>

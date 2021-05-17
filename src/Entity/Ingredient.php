@@ -72,6 +72,16 @@ class Ingredient
      */
     private $comment;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $shopBatchSize;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $unitySize;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -205,6 +215,30 @@ class Ingredient
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getShopBatchSize(): ?float
+    {
+        return $this->shopBatchSize;
+    }
+
+    public function setShopBatchSize(?float $shopBatchSize): self
+    {
+        $this->shopBatchSize = $shopBatchSize;
+
+        return $this;
+    }
+
+    public function getUnitySize(): ?float
+    {
+        return $this->unitySize;
+    }
+
+    public function setUnitySize(?float $unitySize): self
+    {
+        $this->unitySize = $unitySize;
 
         return $this;
     }

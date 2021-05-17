@@ -24,12 +24,41 @@ class IngredientQuantityForRecipeType extends AbstractType
                 'label' => 'Ingrédient *',
                 'class' => Ingredient::class,
                 'choice_label' => function($ingredient, $key, $index) {
-                    return sprintf(
-                            '%s (une part ≃ %s %s)',
-                            $ingredient->getLabel(),
-                            $ingredient->getPortionSize(),
-                            $ingredient->getMeasureType()
-                    );
+                    $message = $ingredient->getLabel();
+                    if (!empty($ingredient->getPortionSize()) || !empty($ingredient->getUnitySize()))
+                    {
+                        $message .= ' (';
+                    }
+
+                    if (!empty($ingredient->getUnitySize()))
+                    {
+                        $message .= sprintf(
+                                'une unité = %s %s',
+                                $ingredient->getUnitySize(),
+                                $ingredient->getMeasureType()
+                        );
+                    }
+
+                    if (!empty($ingredient->getPortionSize()))
+                    {
+                        if (!empty($ingredient->getUnitySize()))
+                        {
+                            $message .= ' & ';
+                        }
+
+                        $message .= sprintf(
+                                'une part moyenne ≃ %s %s',
+                                $ingredient->getPortionSize(),
+                                $ingredient->getMeasureType()
+                        );
+                    }
+
+                    if (!empty($ingredient->getPortionSize()) || !empty($ingredient->getUnitySize()))
+                    {
+                        $message .= ')';
+                    }
+
+                    return $message;
                 },
                 'query_builder' => function (EntityRepository $entityRepository) {
                         return $entityRepository
