@@ -5,19 +5,21 @@ jQuery(document).ready(function () {
             $ingredientForm.remove();
 
             // update nutritional values
-            updateNutritionalValues();
+            updateRecipeNutritionalValues();
         });
     }
 
     function bindNutritionalValueUpdateToInputChange($ingredientForm) {
         $ingredientForm.find('.ingredient-quantity').on('input', function (e) {
-            updateNutritionalValues();
+            updateRecipeNutritionalValues();
+            updateIngredientNutritionalValues($(this).closest('.ingredient'));
         });
     }
 
     function bindNutritionalValueUpdateToSelectChange($ingredientForm) {
         $ingredientForm.find('.ingredient-select').on('change', function (e) {
-            updateNutritionalValues();
+            updateRecipeNutritionalValues();
+            updateIngredientNutritionalValues($(this).closest('.ingredient'));
         });
     }
 
@@ -55,25 +57,24 @@ jQuery(document).ready(function () {
         bindNutritionalValueUpdateToSelectChange($newIngredientForm);
     }
 
-    function updateNutritionalValues() {
+    function updateRecipeNutritionalValues() {
         let recipeData = calculateRecipeNutritionalValues();
 
-        updateNutritionalValue('proteins', Math.round(recipeData.proteins));
-        updateNutritionalValue('carbohydrates',  Math.round(recipeData.carbohydrates));
-        updateNutritionalValue('fat',  Math.round(recipeData.fat));
-        updateNutritionalValue('energy',  Math.round(recipeData.energy));
+        updateRecipeNutritionalValue('proteins', Math.round(recipeData.proteins));
+        updateRecipeNutritionalValue('carbohydrates',  Math.round(recipeData.carbohydrates));
+        updateRecipeNutritionalValue('fat',  Math.round(recipeData.fat));
+        updateRecipeNutritionalValue('energy',  Math.round(recipeData.energy));
     }
 
-    function updateNutritionalValue(nutritionalValueName, recipeNutritionalValue) {
+    function updateRecipeNutritionalValue(nutritionalValueName, recipeNutritionalValue) {
         // Find the recipe nutritional value span
         let recipeDataSpan = $('#recipe-' + nutritionalValueName);
 
         // Update the recipe nutritional value on screen
         recipeDataSpan.text(recipeNutritionalValue);
 
+        // If the user is connected, update user nutritional data comparison
         let percentageDataSpan = $('#percentage-' + nutritionalValueName);
-
-        // If the user is connected
         if (percentageDataSpan != undefined) {
             // Get user nutritional value
             let userNutritionalValue = $('#user-' + nutritionalValueName).text();
@@ -115,6 +116,24 @@ jQuery(document).ready(function () {
         }
     }
 
+    function updateIngredientNutritionalValues(ingredient) {
+        let selectedIngredient = $(ingredient).find('option:selected');
+        let ingredientQuantity = $(ingredient).find('.ingredient-quantity').val();
+
+        updateIngredientNutritionalValue(ingredient, 'proteins', Math.round(selectedIngredient.data('proteins') / 100 * ingredientQuantity) + ' g');
+        updateIngredientNutritionalValue(ingredient, 'carbohydrates', Math.round(selectedIngredient.data('carbohydrates') / 100 * ingredientQuantity) + ' g');
+        updateIngredientNutritionalValue(ingredient, 'fat', Math.round(selectedIngredient.data('fat') / 100 * ingredientQuantity) + ' g');
+        updateIngredientNutritionalValue(ingredient, 'energy', Math.round(selectedIngredient.data('energy') / 100 * ingredientQuantity) + ' kcal');
+    }
+
+    function updateIngredientNutritionalValue(ingredient, nutritionalValueName, ingredientNutritionalValue) {
+        // Find the ingredient nutritional value span
+        let ingredientDataSpan = $(ingredient).find('#ingredient-' + nutritionalValueName);
+
+        // Update the ingredient nutritional value on screen
+        ingredientDataSpan.text(ingredientNutritionalValue);
+    }
+
     function calculateRecipeNutritionalValues() {
         let recipeData = {
             'proteins': 0,
@@ -133,8 +152,6 @@ jQuery(document).ready(function () {
             recipeData['energy'] += (parseFloat(selectedIngredient.data('energy')) / 100) * ingredientQuantity;
         });
 
-        console.debug(recipeData);
-
         return recipeData;
     }
 
@@ -145,7 +162,10 @@ jQuery(document).ready(function () {
     }
 
     // Update the recipe nutritional values on page start
-    updateNutritionalValues();
+    updateRecipeNutritionalValues();
+    $('.ingredient').each(function () {
+        updateIngredientNutritionalValues($(this));
+    });
 
     // get the element that holds the collection of ingredients
     var $collectionHolder = $('#ingredients');

@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="col ml-2">
-                <div class="form-row">
+                <div class="form-row text-center">
                     <div class="col-1 mr-4 sr-only">
                         {{
                             form_label(
@@ -42,6 +42,26 @@
                         }}
                         {{ form_help(ingredientQuantityForRecipeForm.quantity) }}
                         {{ form_errors(ingredientQuantityForRecipeForm.quantity) }}
+                    </div>
+                    <div class="col">
+                        <div class="bg-light h-100 d-flex flex-column justify-content-center">
+                            <span id="ingredient-proteins"></span>
+                        </div>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center">
+                        <div class="bg-light h-100 d-flex flex-column justify-content-center">
+                            <span id="ingredient-carbohydrates"></span>
+                        </div>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center">
+                        <div class="bg-light h-100 d-flex flex-column justify-content-center">
+                            <span id="ingredient-fat"></span>
+                        </div>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center">
+                        <div class="bg-light h-100 d-flex flex-column justify-content-center">
+                            <span id="ingredient-energy"></span>
+                        </div>
                     </div>
                 </div>
             </div>
