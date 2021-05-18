@@ -1,6 +1,170 @@
 {% if app.user is not null %}
     {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+    <div class="card border-0 mb-5">
+        <div class="card-body bg-light">
+            <h5 class="card-title">Information d'identification de l'ingrédient</h5>
+            <div class="form-row">
+                <div class="col-6">
+                    <div class="form-group mb-0">
+                        <label for="recipe_name">
+                            {{ form_label(form.label) }}
+                        </label>
+                        {{ form_widget(form.label, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.label) }}
+                        {{ form_errors(form.label) }}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group mb-0">
+                        <label for="recipe_name">
+                            {{ form_label(form.barcode) }}
+                        </label>
+                        {{ form_widget(form.barcode, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.barcode) }}
+                        {{ form_errors(form.barcode) }}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group mb-0">
+                        <label for="recipe_name">
+                            {{ form_label(form.brand) }}
+                        </label>
+                        {{ form_widget(form.brand, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.brand) }}
+                        {{ form_errors(form.brand) }}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group mb-0">
+                        <label for="recipe_name">
+                            {{ form_label(form.shop) }}
+                        </label>
+                        {{ form_widget(form.shop, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.shop) }}
+                        {{ form_errors(form.shop) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 mb-5">
+        <div class="card-body bg-light">
+            <h5 class="card-title">Information de mesure de l'ingrédient</h5>
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group mb-0">
+                        <label for="recipe_name">
+                            {{ form_label(form.measureType) }}
+                        </label>
+                        {{ form_widget(form.measureType, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.measureType) }}
+                        {{ form_errors(form.measureType) }}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group mb-0">
+                        <label for="recipe_name">
+                            {{ form_label(form.unitySize) }}
+                        </label>
+                        {{ form_widget(form.unitySize, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.unitySize) }}
+                        {{ form_errors(form.unitySize) }}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group mb-0">
+                        <label for="recipe_name">
+                            {{ form_label(form.portionSize) }}
+                        </label>
+                        {{ form_widget(form.portionSize, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.portionSize) }}
+                        {{ form_errors(form.portionSize) }}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group mb-0">
+                        <label for="recipe_name">
+                            {{ form_label(form.shopBatchSize) }}
+                        </label>
+                        {{ form_widget(form.shopBatchSize, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.shopBatchSize) }}
+                        {{ form_errors(form.shopBatchSize) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 mb-5">
+        <div class="card-body bg-light">
+            <h5 class="card-title">Information nutritionnelles de l'ingrédient</h5>
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group mb-0">
+                        <label for="recipe_name">
+                            {{ form_label(form.proteins) }}
+                        </label>
+                        {{ form_widget(form.proteins, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.proteins) }}
+                        {{ form_errors(form.proteins) }}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group mb-0">
+                        <label for="recipe_name">
+                            {{ form_label(form.carbohydrates) }}
+                        </label>
+                        {{ form_widget(form.carbohydrates, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.carbohydrates) }}
+                        {{ form_errors(form.carbohydrates) }}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group mb-0">
+                        <label for="recipe_name">
+                            {{ form_label(form.fat) }}
+                        </label>
+                        {{ form_widget(form.fat, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.fat) }}
+                        {{ form_errors(form.fat) }}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group mb-0">
+                        <label for="recipe_name">
+                            {{ form_label(form.energy) }}
+                        </label>
+                        {{ form_widget(form.energy, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.energy) }}
+                        {{ form_errors(form.energy) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 mb-5">
+        <div class="card-body bg-light">
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group mb-0">
+                        <label for="recipe_name">
+                            {{ form_label(form.comment) }}
+                        </label>
+                        {{ form_widget(form.comment, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.comment) }}
+                        {{ form_errors(form.comment) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col text-right">
+            <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+        </div>
+    </div>
     {{ form_end(form) }}
 {% endif %}
