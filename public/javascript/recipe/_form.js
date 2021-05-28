@@ -173,9 +173,24 @@ jQuery(document).ready(function () {
 
     function updateIngredientMeasureType(ingredient) {
         let selectedIngredient = $(ingredient).find('.ingredient-select option:selected');
-        let ingredientMeasureTypeOption = $(ingredient).find('.ingredient-quantity-type > .ingredient-measure-type');
+        let ingredientMeasureTypeSelect = $(ingredient).find('.ingredient-quantity-type');
+        let ingredientMeasureTypeOption = ingredientMeasureTypeSelect.find('.ingredient-measure-type');
 
         ingredientMeasureTypeOption.html(selectedIngredient.data('measure-type'));
+
+        if (!selectedIngredient.data('has-unit-measure-saved')) {
+            ingredientMeasureTypeSelect.find('option').each(function() {
+                if ($(this).hasClass('ingredient-measure-type')) {
+                    $(this).prop('disabled', false);
+                } else {
+                    $(this).prop('disabled', true);
+                }
+            })
+        } else {
+            ingredientMeasureTypeSelect.find('option').each(function() {
+                $(this).prop('disabled', false);
+            })
+        }
     }
 
     // Update the recipe nutritional values on page start

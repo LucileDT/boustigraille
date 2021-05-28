@@ -73,6 +73,7 @@ class IngredientQuantityForRecipeType extends AbstractType
                         'data-carbohydrates' => $ingredient->getCarbohydrates(),
                         'data-energy' => $ingredient->getEnergy(),
                         'data-measure-type' => $ingredient->getMeasureType(),
+                        'data-has-unit-measure-saved' => $ingredient->getUnitySize() > 0,
                     ] : [];
                 }),
                 'attr' => [
