@@ -23,6 +23,12 @@ jQuery(document).ready(function () {
         });
     }
 
+    function bindMeasureTypeUpdateToSelectChange($ingredientForm) {
+        $ingredientForm.find('.ingredient-select').on('change', function (e) {
+            updateIngredientMeasureType($(this).closest('.ingredient'));
+        });
+    }
+
     function addFormToCollection($collectionHolderClass) {
         // get container of all ingredient forms
         var $collectionHolder = $('.' + $collectionHolderClass);
@@ -55,6 +61,10 @@ jQuery(document).ready(function () {
 
         // watch for ingredient select change
         bindNutritionalValueUpdateToSelectChange($newIngredientForm);
+        bindMeasureTypeUpdateToSelectChange($newIngredientForm);
+
+        // update ingredient measure type selector
+        updateIngredientMeasureType($newIngredientForm);
     }
 
     function updateRecipeNutritionalValues() {
@@ -161,10 +171,18 @@ jQuery(document).ready(function () {
         return percentageDifference;
     }
 
+    function updateIngredientMeasureType(ingredient) {
+        let selectedIngredient = $(ingredient).find('.ingredient-select option:selected');
+        let ingredientMeasureTypeOption = $(ingredient).find('.ingredient-quantity-type > .ingredient-measure-type');
+
+        ingredientMeasureTypeOption.html(selectedIngredient.data('measure-type'));
+    }
+
     // Update the recipe nutritional values on page start
     updateRecipeNutritionalValues();
     $('.ingredient').each(function () {
         updateIngredientNutritionalValues($(this));
+        updateIngredientMeasureType($(this));
     });
 
     // get the element that holds the collection of ingredients

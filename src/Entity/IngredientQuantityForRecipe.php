@@ -36,6 +36,11 @@ class IngredientQuantityForRecipe
      */
     private $recipe;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isMeasuredByUnit;
+
     public function __construct()
     {
 
@@ -78,6 +83,18 @@ class IngredientQuantityForRecipe
     public function setRecipe(?Recipe $recipe): self
     {
         $this->recipe = $recipe;
+
+        return $this;
+    }
+
+    public function getIsMeasuredByUnit(): ?bool
+    {
+        return $this->isMeasuredByUnit;
+    }
+
+    public function setIsMeasuredByUnit(bool $isMeasuredByUnit): self
+    {
+        $this->isMeasuredByUnit = $isMeasuredByUnit;
 
         return $this;
     }

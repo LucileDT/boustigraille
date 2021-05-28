@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\ChoiceList;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -71,12 +72,26 @@ class IngredientQuantityForRecipeType extends AbstractType
                         'data-fat' => $ingredient->getFat(),
                         'data-carbohydrates' => $ingredient->getCarbohydrates(),
                         'data-energy' => $ingredient->getEnergy(),
+                        'data-measure-type' => $ingredient->getMeasureType(),
                     ] : [];
                 }),
                 'attr' => [
                     'class' => 'ingredient-select',
                 ],
                 ])
+            ->add('isMeasuredByUnit', ChoiceType::class, [
+                'choices'  => [
+                    'g' => false,
+                    'unité' => true,
+                ],
+                'choice_attr' => [
+                    'g' => ['class' => 'ingredient-measure-type'],
+                    'unité' => ['class' => 'absolute-unit'],
+                ],
+                'attr' => [
+                    'class' => 'ingredient-quantity-type',
+                ],
+            ])
         ;
     }
 
