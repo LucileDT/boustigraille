@@ -110,8 +110,9 @@
                                         data-quantity-for-one-portion="{{ ingredientQuantity.quantity }}">
                                         {{ ingredientQuantity.quantity }}
                                     </span>
-                                    {{ ingredient.measureType }}
-                                    de
+                                    {% if not ingredientQuantity.isMeasuredByUnit %}
+                                        {{ ingredient.measureType }} de
+                                    {% endif %}
                                     <span class="text-lowercase">{{ ingredient.label }}</span>
                                     <a href="{{ path('ingredient_show', {'id': ingredient.id}) }}"
                                     target="_blank"
