@@ -210,6 +210,7 @@ jQuery(document).ready(function () {
         bindIngredientDeletionToButton($(this));
         bindNutritionalValueUpdateToInputChange($(this));
         bindNutritionalValueUpdateToSelectChange($(this));
+        bindMeasureTypeUpdateToSelectChange($(this));
     });
 
     // count the current ingredients we have and
