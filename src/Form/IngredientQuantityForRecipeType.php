@@ -19,7 +19,7 @@ class IngredientQuantityForRecipeType extends AbstractType
     {
         $builder
             ->add('quantity', NumberType::class, [
-                'label' => 'Quantité *'
+                'label' => 'Quantité par part *'
             ])
             ->add('ingredient', EntityType::class, [
                 'label' => 'Ingrédient *',
