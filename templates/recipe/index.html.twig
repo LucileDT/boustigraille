@@ -33,42 +33,7 @@
     <div class="row">
         {% for recipe in recipes %}
             <div class="col-2 mb-5">
-                <div class="card h-100 text-center border-0 bg-light">
-                    <a
-                        href="{{ path('recipe_show', {'id': recipe.id}) }}"
-                        data-toggle="tooltip"
-                        title="Voir la recette">
-                        {% if recipe.mainPictureFilename is empty %}
-                            <img src="{{ asset('image/default-recipe-main-picture.jpg') }}" class="card-img-top" alt="">
-                        {% else %}
-                            <img src="{{ asset('uploads/pictures/' ~ recipe.mainPictureFilename) }}" class="card-img-top" alt="">
-                        {% endif %}
-                    </a>
-                    <div class="card-body d-flex flex-column justify-content-between pb-0">
-                        <h6 class="card-title">{{ recipe.name }}</h6>
-                        <span class="card-subtitle mb-2 text-muted">
-                            {{ recipe.energy | round }} kcal
-                        </span>
-                    </div>
-                    <div class="card-footer border-0 bg-light">
-                        <div class="">
-                            <a
-                                href="{{ path('recipe_show', {'id': recipe.id}) }}"
-                                class="btn btn-primary w-75">
-                                Voir
-                            </a>
-                        </div>
-                        {% if app.user is not null %}
-                            <div class="mt-4">
-                                <a
-                                    href="{{ path('recipe_edit', {'id': recipe.id}) }}"
-                                    class="btn btn-secondary w-75">
-                                    Éditer
-                                </a>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
+                {{ include('recipe/_recipe_card.html.twig') }}
             </div>
         {% endfor %}
     </div>
