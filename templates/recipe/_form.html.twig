@@ -22,7 +22,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col ml-2">
+            <div class="col">
                 <div class="form-row text-center">
                     <div class="col-1 mr-4 sr-only">
                         {{
@@ -33,15 +33,20 @@
                             )
                         }}
                     </div>
-                    <div class="col">
+                    <div class="col-3">
                         {{
                             form_widget(
                                 ingredientQuantityForRecipeForm.quantity,
-                                {'attr': { 'placeholder': 'Quantité *', 'class': 'ingredient-quantity'}}
+                                {'attr': { 'placeholder': 'Quantité par part *', 'class': 'ingredient-quantity'}}
                             )
                         }}
                         {{ form_help(ingredientQuantityForRecipeForm.quantity) }}
                         {{ form_errors(ingredientQuantityForRecipeForm.quantity) }}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(ingredientQuantityForRecipeForm.isMeasuredByUnit) }}
+                        {{ form_help(ingredientQuantityForRecipeForm.isMeasuredByUnit) }}
+                        {{ form_errors(ingredientQuantityForRecipeForm.isMeasuredByUnit) }}
                     </div>
                     <div class="col">
                         <div class="bg-light h-100 d-flex flex-column justify-content-center">

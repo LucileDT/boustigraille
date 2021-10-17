@@ -29,20 +29,8 @@
         </div>
         <div class="row mt-2">
             {% for recipe in app.user.favoriteRecipes %}
-                <div class="col-2">
-                    <div class="card h-100 text-center border-0 bg-light">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ recipe.name }}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Recette</h6>
-                        </div>
-                        <div class="card-footer bg-light border-0">
-                            <a
-                                href="{{ path('recipe_show', {'id': recipe.id}) }}"
-                                class="btn btn-secondary">
-                                Voir
-                            </a>
-                        </div>
-                    </div>
+                <div class="col-2 mb-5">
+                    {{ include('recipe/_recipe_card.html.twig') }}
                 </div>
             {% endfor %}
         </div>

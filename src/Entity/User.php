@@ -5,12 +5,9 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User is a class used to connect to the application. It contains the basic
@@ -85,6 +82,7 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToMany(targetEntity=Recipe::class)
+     * @ORM\OrderBy({"name" = "ASC"})
      */
     private $favoriteRecipes;
 
