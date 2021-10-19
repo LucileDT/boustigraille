@@ -6,6 +6,7 @@
 
 {% block javascript %}
     <script src="{{ asset('javascript/recipe/show.js') }}"></script>
+    <script src="{{ asset('javascript/recipe/_toggle_favorite.js') }}"></script>
 {% endblock %}
 
 {% block title %}{{ recipe.name }}{% endblock %}
@@ -38,21 +39,11 @@
                     <div class="col">
                         <h1 class="text-white">
                             {% if app.user is not null %}
-                                {% if app.user.hasFaved(recipe) %}
-                                    <i
-                                        id="toggle-favorite-button"
-                                        class="action-icon ri-heart-fill text-white"
-                                        data-toggle="tooltip"
-                                        title="Retirer de mes favoris"></i>
-                                {% else %}
-                                    <i
-                                        id="toggle-favorite-button"
-                                        class="action-icon ri-heart-add-line text-whites"
-                                        data-toggle="tooltip"
-                                        title="Ajouter à mes favoris"></i>
-                                {% endif %}
-
-                                {{ include('recipe/_toggle_favorite_form.html.twig') }}
+                                <span
+                                    class="toggle-favorite-button text-white"
+                                    data-url="{{ path('api_recipe_toggle_favorite', {'id': recipe.id}) }}"
+                                    data-marked-as-favorite="{{ app.user.hasFaved(recipe) }}"
+                                ></span>
                             {% endif %}
                             {{ recipe.name }}
                         </h1>

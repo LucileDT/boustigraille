@@ -67,7 +67,7 @@ jQuery(document).ready(function () {
         updateIngredientMeasureType($newIngredientForm);
     }
 
-    function updateRecipeNutritionalValues() {
+    function updateRecipeNutritionalValues() {
         let recipeData = calculateRecipeNutritionalValues();
 
         updateRecipeNutritionalValue('proteins', Math.round(recipeData.proteins));
@@ -126,7 +126,7 @@ jQuery(document).ready(function () {
         }
     }
 
-    function updateIngredientNutritionalValues(ingredient) {
+    function updateIngredientNutritionalValues(ingredient) {
         let selectedIngredient = $(ingredient).find('option:selected');
         let ingredientQuantity = $(ingredient).find('.ingredient-quantity').val();
 

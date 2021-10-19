@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block javascript %}
+    <script src="{{ asset('javascript/recipe/_toggle_favorite.js') }}"></script>
+{% endblock %}
+
 {% block title %}Accueil{% endblock %}
 
 {% block breadcrumb %}

@@ -16,6 +16,11 @@ i {
     vertical-align: middle;
 }
 
+i::before {
+    position: relative;
+    top: -0.18rem;
+}
+
 /* Icon which triggers an action */
 .action-icon {
     cursor: pointer;
