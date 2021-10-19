@@ -31,7 +31,6 @@
 
 .recipe-header .recipe-name i#toggle-favorite-button {
     position: relative;
-    top: -0.3rem;
     z-index: 3;
 }
 
