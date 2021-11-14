@@ -9,6 +9,28 @@ jQuery(document).ready(function () {
         });
     }
 
+    function bindLinebreakToInput($ingredientForm) {
+        $ingredientForm.find('.ingredient-quantity').on('keypress', function (e) {
+            if (e.keyCode === 13) {
+                e.preventDefault();
+
+                let $collectionHolderClass = $('.add_item_link').data('collectionHolderClass');
+                let ingredientsList = $('.' + $collectionHolderClass);
+                let currentIngredient = $(this).parents('.ingredient');
+                if (currentIngredient.is(':last-child')) {
+                    // focused input is the last one, add a new ingredient form
+                    addFormToCollection($collectionHolderClass);
+
+                    // switch cursor to the newly created ingredient
+                    ingredientsList.find('.ingredient-quantity').last().focus();
+                } else {
+                    // focused input is in the middle of the list, switch cursor to the next ingredient
+                    currentIngredient.next().find('.ingredient-quantity').focus();
+                }
+            }
+        });
+    }
+
     function bindNutritionalValueUpdateToInputChange($ingredientForm) {
         $ingredientForm.find('.ingredient-quantity').on('input', function (e) {
             updateRecipeNutritionalValues();
@@ -55,6 +77,9 @@ jQuery(document).ready(function () {
 
         // add a delete link to the new form
         bindIngredientDeletionToButton($newIngredientForm);
+
+        // allow pressing enter to move in ingredients list
+        bindLinebreakToInput($newIngredientForm);
 
         // watch for ingredient quantity change
         bindNutritionalValueUpdateToInputChange($newIngredientForm);
@@ -208,6 +233,7 @@ jQuery(document).ready(function () {
     // bind select change to existing ingredient forms
     $collectionHolder.children('div').each(function () {
         bindIngredientDeletionToButton($(this));
+        bindLinebreakToInput($(this));
         bindNutritionalValueUpdateToInputChange($(this));
         bindNutritionalValueUpdateToSelectChange($(this));
         bindMeasureTypeUpdateToSelectChange($(this));
