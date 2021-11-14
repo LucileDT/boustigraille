@@ -75,3 +75,7 @@
 
 # Upload folder
 /public/uploads
+
+# PHPStorm config folder
+/.idea
+
