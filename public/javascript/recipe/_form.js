@@ -51,6 +51,13 @@ jQuery(document).ready(function () {
         });
     }
 
+    function bindNutritionalUpdateToMeasureTypeSelectChange($ingredientForm) {
+        $ingredientForm.find('.ingredient-quantity-type').on('change', function (e) {
+            updateRecipeNutritionalValues();
+            updateIngredientNutritionalValues($(this).closest('.ingredient'));
+        });
+    }
+
     function addFormToCollection($collectionHolderClass) {
         // get container of all ingredient forms
         var $collectionHolder = $('.' + $collectionHolderClass);
@@ -90,6 +97,9 @@ jQuery(document).ready(function () {
 
         // update ingredient measure type selector
         updateIngredientMeasureType($newIngredientForm);
+
+        // watch for measure type select change
+        bindNutritionalUpdateToMeasureTypeSelectChange($newIngredientForm);
     }
 
     function updateRecipeNutritionalValues() {
@@ -154,11 +164,37 @@ jQuery(document).ready(function () {
     function updateIngredientNutritionalValues(ingredient) {
         let selectedIngredient = $(ingredient).find('option:selected');
         let ingredientQuantity = $(ingredient).find('.ingredient-quantity').val();
+        let measureType = $(ingredient).find('.ingredient-quantity-type option:selected');
 
-        updateIngredientNutritionalValue(ingredient, 'proteins', Math.round(selectedIngredient.data('proteins') / 100 * ingredientQuantity) + ' g');
-        updateIngredientNutritionalValue(ingredient, 'carbohydrates', Math.round(selectedIngredient.data('carbohydrates') / 100 * ingredientQuantity) + ' g');
-        updateIngredientNutritionalValue(ingredient, 'fat', Math.round(selectedIngredient.data('fat') / 100 * ingredientQuantity) + ' g');
-        updateIngredientNutritionalValue(ingredient, 'energy', Math.round(selectedIngredient.data('energy') / 100 * ingredientQuantity) + ' kcal');
+        let proteins = parseFloat(selectedIngredient.data('proteins')),
+            carbohydrates = parseFloat(selectedIngredient.data('carbohydrates')),
+            fat = parseFloat(selectedIngredient.data('fat')),
+            energy = parseFloat(selectedIngredient.data('energy')),
+            proteinsQuantity = 0,
+            carbohydratesQuantity = 0,
+            fatQuantity = 0,
+            energyQuantity = 0;
+
+        if (measureType.hasClass('absolute-unit')) {
+            // ingredient is currently measured by unit
+            let conversionRate = parseFloat(selectedIngredient.data('unit-measure-conversion-rate'));
+
+            proteinsQuantity += (proteins * conversionRate) * ingredientQuantity;
+            carbohydratesQuantity += (carbohydrates * conversionRate) * ingredientQuantity;
+            fatQuantity += (fat * conversionRate) * ingredientQuantity;
+            energyQuantity += (energy * conversionRate) * ingredientQuantity;
+        } else {
+            // ingredient is measured by g, ml, ...
+            proteinsQuantity += (proteins / 100) * ingredientQuantity;
+            carbohydratesQuantity += (carbohydrates / 100) * ingredientQuantity;
+            fatQuantity += (fat / 100) * ingredientQuantity;
+            energyQuantity += (energy / 100) * ingredientQuantity;
+        }
+
+        updateIngredientNutritionalValue(ingredient, 'proteins', Math.round(proteinsQuantity) + ' g');
+        updateIngredientNutritionalValue(ingredient, 'carbohydrates', Math.round(carbohydratesQuantity) + ' g');
+        updateIngredientNutritionalValue(ingredient, 'fat', Math.round(fatQuantity) + ' g');
+        updateIngredientNutritionalValue(ingredient, 'energy', Math.round(energyQuantity) + ' kcal');
     }
 
     function updateIngredientNutritionalValue(ingredient, nutritionalValueName, ingredientNutritionalValue) {
@@ -178,22 +214,37 @@ jQuery(document).ready(function () {
         };
 
         $('.ingredient').each(function () {
-            let selectedIngredient = $(this).find('option:selected');
+            let selectedIngredient = $(this).find('.ingredient-select option:selected');
             let ingredientQuantity = $(this).find('.ingredient-quantity').val();
+            let measureType = $(this).find('.ingredient-quantity-type option:selected');
 
-            recipeData['proteins'] += (parseFloat(selectedIngredient.data('proteins')) / 100) * ingredientQuantity;
-            recipeData['carbohydrates'] += (parseFloat(selectedIngredient.data('carbohydrates')) / 100) * ingredientQuantity;
-            recipeData['fat'] += (parseFloat(selectedIngredient.data('fat')) / 100) * ingredientQuantity;
-            recipeData['energy'] += (parseFloat(selectedIngredient.data('energy')) / 100) * ingredientQuantity;
+            let proteins = parseFloat(selectedIngredient.data('proteins')),
+                carbohydrates = parseFloat(selectedIngredient.data('carbohydrates')),
+                fat = parseFloat(selectedIngredient.data('fat')),
+                energy = parseFloat(selectedIngredient.data('energy'));
+
+            if (measureType.hasClass('absolute-unit')) {
+                // ingredient is currently measured by unit
+                let conversionRate = parseFloat(selectedIngredient.data('unit-measure-conversion-rate'));
+
+                recipeData['proteins'] += (proteins * conversionRate) * ingredientQuantity;
+                recipeData['carbohydrates'] += (carbohydrates * conversionRate) * ingredientQuantity;
+                recipeData['fat'] += (fat * conversionRate) * ingredientQuantity;
+                recipeData['energy'] += (energy * conversionRate) * ingredientQuantity;
+            } else {
+                // ingredient is measured by g, ml, ...
+                recipeData['proteins'] += (proteins / 100) * ingredientQuantity;
+                recipeData['carbohydrates'] += (carbohydrates / 100) * ingredientQuantity;
+                recipeData['fat'] += (fat / 100) * ingredientQuantity;
+                recipeData['energy'] += (energy / 100) * ingredientQuantity;
+            }
         });
 
         return recipeData;
     }
 
     function calculatePercentageDifference(recipeData, userData) {
-        let percentageDifference = Math.round(((recipeData - userData) / userData) * 100);
-
-        return percentageDifference;
+        return Math.round(((recipeData - userData) / userData) * 100);
     }
 
     function updateIngredientMeasureType(ingredient) {
@@ -228,15 +279,14 @@ jQuery(document).ready(function () {
     // get the element that holds the collection of ingredients
     var $collectionHolder = $('#ingredients');
 
-    // bind deletion button to existing ingredient forms
-    // bind quantity change to existing ingredient forms
-    // bind select change to existing ingredient forms
+    // bind actions to the different elements
     $collectionHolder.children('div').each(function () {
         bindIngredientDeletionToButton($(this));
         bindLinebreakToInput($(this));
         bindNutritionalValueUpdateToInputChange($(this));
         bindNutritionalValueUpdateToSelectChange($(this));
         bindMeasureTypeUpdateToSelectChange($(this));
+        bindNutritionalUpdateToMeasureTypeSelectChange($(this));
     });
 
     // count the current ingredients we have and
@@ -248,5 +298,5 @@ jQuery(document).ready(function () {
 
         // add a new ingredient form
         addFormToCollection($collectionHolderClass);
-    })
+    });
 });
