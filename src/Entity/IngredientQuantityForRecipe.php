@@ -87,7 +87,7 @@ class IngredientQuantityForRecipe
         return $this;
     }
 
-    public function getIsMeasuredByUnit(): ?bool
+    public function isMeasuredByUnit(): ?bool
     {
         return $this->isMeasuredByUnit;
     }
