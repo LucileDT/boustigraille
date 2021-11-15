@@ -128,9 +128,13 @@ class Recipe
     public function getProteins(): float
     {
         $proteinsCount = (float) 0;
-        foreach ($this->ingredients as $ingredient)
+        foreach ($this->getIngredients() as $ingredient)
         {
-            $proteinsCount += ($ingredient->getIngredient()->getProteins() / 100) * $ingredient->getQuantity();
+            if ($ingredient->isMeasuredByUnit()) {
+                $proteinsCount += ($ingredient->getIngredient()->getProteins() * $ingredient->getIngredient()->getUnitySize() / 100) * $ingredient->getQuantity();
+            } else {
+                $proteinsCount += ($ingredient->getIngredient()->getProteins() / 100) * $ingredient->getQuantity();
+            }
         }
         return $proteinsCount;
     }
@@ -143,9 +147,13 @@ class Recipe
     public function getFat(): float
     {
         $fatCount = (float) 0;
-        foreach ($this->ingredients as $ingredient)
+        foreach ($this->getIngredients() as $ingredient)
         {
-            $fatCount += ($ingredient->getIngredient()->getFat() / 100) * $ingredient->getQuantity();
+            if ($ingredient->isMeasuredByUnit()) {
+                $fatCount += ($ingredient->getIngredient()->getFat() * $ingredient->getIngredient()->getUnitySize() / 100) * $ingredient->getQuantity();
+            } else {
+                $fatCount += ($ingredient->getIngredient()->getFat() / 100) * $ingredient->getQuantity();
+            }
         }
         return $fatCount;
     }
@@ -158,9 +166,13 @@ class Recipe
     public function getCarbohydrates(): float
     {
         $carbohydratesCount = (float) 0;
-        foreach ($this->ingredients as $ingredient)
+        foreach ($this->getIngredients() as $ingredient)
         {
-            $carbohydratesCount += ($ingredient->getIngredient()->getCarbohydrates() / 100) * $ingredient->getQuantity();
+            if ($ingredient->isMeasuredByUnit()) {
+                $carbohydratesCount += ($ingredient->getIngredient()->getCarbohydrates() * $ingredient->getIngredient()->getUnitySize() / 100) * $ingredient->getQuantity();
+            } else {
+                $carbohydratesCount += ($ingredient->getIngredient()->getCarbohydrates() / 100) * $ingredient->getQuantity();
+            }
         }
         return $carbohydratesCount;
     }
@@ -173,9 +185,13 @@ class Recipe
     public function getEnergy(): float
     {
         $energyCount = (float) 0;
-        foreach ($this->ingredients as $ingredient)
+        foreach ($this->getIngredients() as $ingredient)
         {
-            $energyCount += ($ingredient->getIngredient()->getEnergy() / 100) * $ingredient->getQuantity();
+            if ($ingredient->isMeasuredByUnit()) {
+                $energyCount += ($ingredient->getIngredient()->getEnergy() * $ingredient->getIngredient()->getUnitySize() / 100) * $ingredient->getQuantity();
+            } else {
+                $energyCount += ($ingredient->getIngredient()->getEnergy() / 100) * $ingredient->getQuantity();
+            }
         }
         return $energyCount;
     }
