@@ -1,4 +1,4 @@
-jQuery(document).ready(function () {
+$(document).ready(function () {
     function bindIngredientDeletionToButton($ingredientForm) {
         $ingredientForm.find('.ingredient-deletion-button').on('click', function (e) {
             // remove the ingredient from the form

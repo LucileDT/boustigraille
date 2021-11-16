@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/recipe/index.css') }}">
+    {{ encore_entry_link_tags('recipe_index') }}
 {% endblock %}
 
 {% block javascript %}
-    <script src="{{ asset('javascript/recipe/_toggle_favorite.js') }}"></script>
+    {{ encore_entry_script_tags('recipe_toggle_favorite') }}
+    {{ encore_entry_script_tags('recipe_index') }}
 {% endblock %}
 
 {% block title %}Liste des Recettes{% endblock %}
@@ -28,7 +29,7 @@
             <h1>Liste des recettes</h1>
         </div>
         {% if app.user is not null %}
-            <div class="col-6 text-right">
+            <div class="col-6 text-end">
                 <a class="btn btn-primary btn-large" href="{{ path('recipe_new') }}">Créer une nouvelle recette</a>
             </div>
         {% endif %}

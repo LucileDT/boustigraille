@@ -1,3 +1,5 @@
+import '../../styles/recipe/show.scss';
+
 $(document).ready(function () {
     // display ingredients quantity according to portions count
     let initialPortionsCount = $('select#ingredients-quantity').val();

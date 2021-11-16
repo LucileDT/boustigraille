@@ -13,11 +13,7 @@ class IngredientFromOpenFoodFactsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('identifier', TextType::class, [
-                'attr' => [
-                    'placeholder' => 'Identifiant (URL du produit ou numéro du code barre)',
-                ],
-            ])
+            ->add('identifier', TextType::class, [])
         ;
     }
 

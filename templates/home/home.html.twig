@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block javascript %}
-    <script src="{{ asset('javascript/recipe/_toggle_favorite.js') }}"></script>
+    {{ encore_entry_script_tags('recipe_toggle_favorite') }}
 {% endblock %}
 
 {% block title %}Accueil{% endblock %}

@@ -1,0 +1,29 @@
+@import '~bootstrap/scss/bootstrap';
+
+html,
+body {
+    height: calc(100% - 60px);
+}
+
+#page {
+    margin-top: 5rem;
+    min-height: 100%;
+}
+
+#page-content {
+}
+
+/* Align icons with text */
+i {
+    vertical-align: middle;
+}
+
+i::before {
+    position: relative;
+    top: -0.18rem;
+}
+
+/* Icon which triggers an action */
+.action-icon {
+    cursor: pointer;
+}

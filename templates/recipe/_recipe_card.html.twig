@@ -1,10 +1,10 @@
-<div class="card h-100 text-center border-0 bg-light">
+<div class="recipe card h-100 text-center border-0 bg-light">
     <a
         href="{{ path('recipe_show', {'id': recipe.id}) }}"
-        data-toggle="tooltip"
+        data-bs-toggle="tooltip"
         title="Voir la recette">
         {% if recipe.mainPictureFilename is empty %}
-            <img src="{{ asset('image/default-recipe-main-picture.jpg') }}" class="card-img-top" alt="">
+            <img src="{{ asset('image/default-recipe-main-picture.jpg') }}" class="card-img-top recipe-img-placeholder" alt="">
         {% else %}
             <img src="{{ asset('uploads/pictures/' ~ recipe.mainPictureFilename) }}" class="card-img-top" alt="">
         {% endif %}
@@ -33,7 +33,7 @@
             </a>
         </div>
         {% if app.user is not null %}
-            <div class="mt-4">
+            <div class="my-2">
                 <a
                     href="{{ path('recipe_edit', {'id': recipe.id}) }}"
                     class="btn btn-secondary w-75">
