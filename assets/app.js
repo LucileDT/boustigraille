@@ -8,12 +8,15 @@
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
 
-// require jQuery normally
+// require jQuery and make it globally accessible
 import $ from 'jquery';
 global.$ = global.jQuery = window.jQuery = $;
 
-// import * as bootstrap from 'bootstrap';
+// require Bootstrap
 require('bootstrap');
+
+// add Remix Icon
+import 'remixicon/fonts/remixicon.css';
 
 // start the Stimulus application
 import './bootstrap';
