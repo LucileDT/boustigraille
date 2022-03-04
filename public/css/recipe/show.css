@@ -42,5 +42,5 @@
 }
 
 .recipe-header .recipe-controls .btn {
-    width: 8%;
+    min-width: 8%;
 }
