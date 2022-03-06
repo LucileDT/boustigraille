@@ -69,7 +69,7 @@
                                     <a
                                         class="nav-link dropdown-toggle"
                                         href="#"
-                                        id="dropdown-ingredients"
+                                        id="dropdown-recipes"
                                         role="button"
                                         data-toggle="dropdown"
                                         aria-haspopup="true"
@@ -77,11 +77,30 @@
                                         >
                                         Recettes
                                     </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdown-ingredients">
+                                    <div class="dropdown-menu" aria-labelledby="dropdown-recipes">
                                         {% if app.user is not null %}
                                             <a class="dropdown-item" href="{{ path('recipe_new') }}">Enregistrer une nouvelle recette</a>
                                         {% endif %}
                                         <a class="dropdown-item" href="{{ path('recipe_index') }}">Voir la liste des recettes</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a
+                                        class="nav-link dropdown-toggle"
+                                        href="#"
+                                        id="dropdown-meal-list"
+                                        role="button"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                        >
+                                        Listes de repas
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdown-meal-list">
+                                        {% if app.user is not null %}
+                                            <a class="dropdown-item" href="{{ path('meal_list_new') }}">Enregistrer une nouvelle liste de repas</a>
+                                        {% endif %}
+                                        <a class="dropdown-item" href="{{ path('meal_list_index') }}">Voir les listes de repas</a>
                                     </div>
                                 </li>
                             </ul>

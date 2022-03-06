@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle liste de repas{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="/">Accueil</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{{ path('meal_list_index') }}">Liste de repas</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+        Nouvelle liste de repas
+    </li>
+{% endblock %}
+
+{% block body %}
+    <div class="row mt-5 mb-4">
+        <div class="col">
+            <h1>Nouvelle liste de repas</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            {{ include('meal_list/_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}
