@@ -21,8 +21,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-4"></div>
-        <div class="col-4 text-center">
+        <div class="col-md-4 offset-md-4 text-center">
             <form action="{{ path('app_login') }}" method="post">
                 <div class="form-group">
                     <input
@@ -46,13 +45,12 @@
                 <input type="hidden" name="_target_path" value="{{ app.request.headers.get('referer') }}"/>
                 <button
                     type="submit"
-                    class="btn btn-primary center-block"
+                    class="btn btn-primary center-block col-xl-4 col-lg-5 col-12"
                 >
                     Connexion
                 </button>
             </form>
         </div>
-        <div class="col-4"></div>
     </div>
 {% endblock %}
 
