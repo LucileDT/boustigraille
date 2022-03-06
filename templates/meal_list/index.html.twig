@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Listes de repas{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="/">Accueil</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+        Listes de repas
+    </li>
+{% endblock %}
+
+{% block body %}
+    <div class="row mt-5 mb-4">
+        <div class="col-6">
+            <h1>Listes de repas</h1>
+        </div>
+        {% if app.user is not null %}
+            <div class="col-6 text-right">
+                <a class="btn btn-primary btn-large" href="{{ path('meal_list_new') }}">Créer une nouvelle liste de repas</a>
+            </div>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table table-stripped table-sm table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        {% if app.user is not null %}
+                            <th class="text-center align-middle">Id</th>
+                        {% endif %}
+                        <th class="text-center align-middle">Personne</th>
+                        <th class="text-center align-middle">Du</th>
+                        <th class="text-center align-middle">Au</th>
+                        <th class="text-center align-middle">Repas</th>
+                        <th class="text-center align-middle">Commentaire</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for meal_list in meal_lists %}
+                    <tr>
+                        {% if app.user is not null %}
+                            <td class="text-center align-middle">{{ meal_list.id }}</td>
+                        {% endif %}
+                        <td class="text-center align-middle">{{ meal_list.personName }}</td>
+                        <td class="text-center align-middle">
+                            {{ meal_list.startDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
+                        </td>
+                        <td class="text-center align-middle">
+                            {{ meal_list.endDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
+                        </td>
+                        <td class="text-center align-middle">
+                            {% if meal_list.meals|length > 0 %}
+                                <div class="d-inline-block text-left">
+                                    <ul class="pl-4">
+                                        {% for mealQuantityForList in meal_list.meals %}
+                                            <li>
+                                                {{mealQuantityForList.meal.name }}&nbsp;x{{mealQuantityForList.quantity}}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% else %}
+                                Aucun repas n'est prévu (pour le moment)
+                            {% endif %}
+                        </td>
+                        <td class="text-center align-middle">{{ meal_list.comment }}</td>
+                        <td class="text-center align-middle">
+                            <a class="btn btn-primary btn-sm" href="{{ path('meal_list_show', {'id': meal_list.id}) }}">Voir</a>
+                            <a class="btn btn-secondary btn-sm" href="{{ path('meal_list_edit', {'id': meal_list.id}) }}">Éditer</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">Aucun élément trouvé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
