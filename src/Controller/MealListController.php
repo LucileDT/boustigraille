@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\MealList;
+use App\Form\GroceryListType;
 use App\Form\MealListType;
+use App\FormDataObject\GroceryListFDO;
 use App\Repository\MealListRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,8 +19,15 @@ class MealListController extends AbstractController
     #[Route('/', name: 'meal_list_index', methods: ['GET'])]
     public function index(MealListRepository $mealListRepository): Response
     {
+        $groceryListFDO = new GroceryListFDO();
+        $groceryListForm = $this->createForm(GroceryListType::class, $groceryListFDO, [
+            'action' => $this->generateUrl('grocery_list_index'),
+        ]);
+
         return $this->render('meal_list/index.html.twig', [
-            'meal_lists' => $mealListRepository->findAll(),
+            'past_meal_lists' => $mealListRepository->findPastOnes(),
+            'meal_lists' => $mealListRepository->findCurrentAndFutureOnes(),
+            'grocery_list_form' => $groceryListForm->createView(),
         ]);
     }
 

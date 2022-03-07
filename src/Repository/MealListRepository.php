@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\MealList;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -45,32 +46,36 @@ class MealListRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return MealList[] Returns an array of MealList objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return MealList[] Returns an array of past MealList
+     */
+    public function findPastOnes()
     {
+        $now = new DateTime();
+
         return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
+            ->where('m.endDate < :now')
+            ->setParameter('now', $now->format('Y-m-d'))
+            ->orderBy('m.startDate', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?MealList
+   /**
+     * @return MealList[] Returns an array of currents and future MealList
+     */
+    public function findCurrentAndFutureOnes()
     {
+        $now = new DateTime();
+
         return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
+            ->where('m.startDate >= :now')
+            ->orWhere('m.endDate >= :now')
+            ->setParameter('now', $now->format('Y-m-d'))
+            ->orderBy('m.startDate', 'ASC')
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
     }
-    */
 }
