@@ -44,7 +44,7 @@
             <td class="text-center align-middle">
                 <a class="btn btn-primary btn-sm" href="{{ path('meal_list_show', {'id': meal_list.id}) }}">Voir</a>
                 {% if app.user is not null %}
-                    <a class="btn btn-secondary btn-sm" href="{{ path('meal_list_edit', {'id': meal_list.id}) }}">Éditer</a>
+                    <a class="btn btn-secondary btn-sm mt-5 mt-md-0" href="{{ path('meal_list_edit', {'id': meal_list.id}) }}">Éditer</a>
                 {% endif %}
             </td>
         </tr>

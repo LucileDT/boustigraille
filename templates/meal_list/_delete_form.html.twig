@@ -3,6 +3,11 @@
           action="{{ path('meal_list_delete', {'id': meal_list.id}) }}"
           onsubmit="return confirm('Voulez-vous vraiment supprimer cette liste de repas ?');">
         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ meal_list.id) }}">
-        <button class="btn btn-danger">Supprimer</button>
+        <button
+            class="btn btn-danger"
+            data-toggle="tooltip"
+            title="Supprimer la liste de repas">
+            <i class="ri-delete-bin-fill"></i>
+        </button>
     </form>
 {% endif %}

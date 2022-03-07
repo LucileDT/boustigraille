@@ -25,3 +25,7 @@ i::before {
 .action-icon {
     cursor: pointer;
 }
+
+.img-thumbnail.img-thumbnail-small {
+    width: 100px !important;
+}

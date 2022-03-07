@@ -28,7 +28,7 @@
 
 {% block body %}
     <div class="row mt-5 mb-4">
-        <div class="col">
+        <div class="col-md-10 col-12">
             <h1>
                 Liste de repas du
                     {{ meal_list.startDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
@@ -38,7 +38,7 @@
                     {{ meal_list.personName }}
             </h1>
         </div>
-        <div class="col-2 text-center">
+        <div class="col-md-2 col-12 mt-md-0 mt-5 text-center">
             <div class="row">
                 {% if app.user is not null %}
                     <div class="col p-0">
@@ -86,7 +86,12 @@
                                     <ul class="pl-4">
                                         {% for mealQuantityForList in meal_list.meals %}
                                             <li>
-                                                {{mealQuantityForList.meal.name }}&nbsp;x{{mealQuantityForList.quantity}}
+                                                {% if mealQuantityForList.meal.mainPictureFilename is empty %}
+                                                    <img class="img-thumbnail img-thumbnail-small" src="{{ asset('image/default-recipe-main-picture.jpg') }}">
+                                                {% else %}
+                                                    <img class="img-thumbnail img-thumbnail-small" src="{{ asset('uploads/pictures/' ~ mealQuantityForList.meal.mainPictureFilename) }}">
+                                                {% endif %}
+                                                <a href="{{ path('recipe_show', {'id': mealQuantityForList.meal.id}) }}">{{mealQuantityForList.meal.name }}</a>&nbsp;x{{mealQuantityForList.quantity}}
                                             </li>
                                         {% endfor %}
                                     </ul>
