@@ -18,7 +18,8 @@ class MealListController extends AbstractController
     public function index(MealListRepository $mealListRepository): Response
     {
         return $this->render('meal_list/index.html.twig', [
-            'meal_lists' => $mealListRepository->findAll(),
+            'past_meal_lists' => $mealListRepository->findPastOnes(),
+            'meal_lists' => $mealListRepository->findCurrentAndFutureOnes(),
         ]);
     }
 

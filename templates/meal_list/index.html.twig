@@ -22,63 +22,25 @@
             </div>
         {% endif %}
     </div>
+    <div class="row mt-5">
+        <div class="col">
+            <h3>En cours</h3>
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col">
+            {{ include('meal_list/_table.html.twig', {'meal_lists': meal_lists}) }}
+        </div>
+    </div>
+    <hr />
+    <div class="row mt-5">
+        <div class="col">
+            <h3>Passés</h3>
+        </div>
+    </div>
     <div class="row">
         <div class="col">
-            <table class="table table-stripped table-sm table-hover">
-                <thead class="thead-light">
-                    <tr>
-                        {% if app.user is not null %}
-                            <th class="text-center align-middle">Id</th>
-                        {% endif %}
-                        <th class="text-center align-middle">Personne</th>
-                        <th class="text-center align-middle">Du</th>
-                        <th class="text-center align-middle">Au</th>
-                        <th class="text-center align-middle">Repas</th>
-                        <th class="text-center align-middle">Commentaire</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for meal_list in meal_lists %}
-                    <tr>
-                        {% if app.user is not null %}
-                            <td class="text-center align-middle">{{ meal_list.id }}</td>
-                        {% endif %}
-                        <td class="text-center align-middle">{{ meal_list.personName }}</td>
-                        <td class="text-center align-middle">
-                            {{ meal_list.startDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
-                        </td>
-                        <td class="text-center align-middle">
-                            {{ meal_list.endDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
-                        </td>
-                        <td class="text-center align-middle">
-                            {% if meal_list.meals|length > 0 %}
-                                <div class="d-inline-block text-left">
-                                    <ul class="pl-4">
-                                        {% for mealQuantityForList in meal_list.meals %}
-                                            <li>
-                                                {{mealQuantityForList.meal.name }}&nbsp;x{{mealQuantityForList.quantity}}
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            {% else %}
-                                Aucun repas n'est prévu (pour le moment)
-                            {% endif %}
-                        </td>
-                        <td class="text-center align-middle">{{ meal_list.comment }}</td>
-                        <td class="text-center align-middle">
-                            <a class="btn btn-primary btn-sm" href="{{ path('meal_list_show', {'id': meal_list.id}) }}">Voir</a>
-                            <a class="btn btn-secondary btn-sm" href="{{ path('meal_list_edit', {'id': meal_list.id}) }}">Éditer</a>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="6">Aucun élément trouvé</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            {{ include('meal_list/_table.html.twig', {'meal_lists': past_meal_lists}) }}
         </div>
     </div>
 {% endblock %}
