@@ -1,6 +1,12 @@
+{% if form is defined and app.user is not null %}
+    {{ form_start(form, {'attr': {'id': 'grocery-list-form'}}) }}
+{% endif %}
 <table class="table table-stripped table-sm table-hover">
     <thead class="thead-light">
         <tr>
+            {% if form is defined and app.user is not null %}
+                <th class="text-center align-middle"></th>
+            {% endif %}
             {% if app.user is not null %}
                 <th class="text-center align-middle">Id</th>
             {% endif %}
@@ -9,12 +15,23 @@
             <th class="text-center align-middle">Au</th>
             <th class="text-center align-middle">Repas</th>
             <th class="text-center align-middle">Commentaire</th>
-            <th></th>
+            {% if show_action_buttons == true %}
+                <th></th>
+            {% endif %}
         </tr>
     </thead>
     <tbody>
     {% for meal_list in meal_lists %}
         <tr>
+            {% if form is defined and app.user is not null %}
+                <td class="text-center align-middle">
+                    {% for child in form.mealLists %}
+                        {% if child.vars.value == meal_list.id %}
+                            {{ form_widget(child) }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            {% endif %}
             {% if app.user is not null %}
                 <td class="text-center align-middle">{{ meal_list.id }}</td>
             {% endif %}
@@ -41,12 +58,14 @@
                 {% endif %}
             </td>
             <td class="text-center align-middle">{{ meal_list.comment }}</td>
-            <td class="text-center align-middle">
-                <a class="btn btn-primary btn-sm" href="{{ path('meal_list_show', {'id': meal_list.id}) }}">Voir</a>
-                {% if app.user is not null %}
-                    <a class="btn btn-secondary btn-sm mt-5 mt-md-0" href="{{ path('meal_list_edit', {'id': meal_list.id}) }}">Éditer</a>
-                {% endif %}
-            </td>
+            {% if show_action_buttons == true %}
+                <td class="text-center align-middle">
+                    <a class="btn btn-primary btn-sm" href="{{ path('meal_list_show', {'id': meal_list.id}) }}">Voir</a>
+                    {% if app.user is not null %}
+                        <a class="btn btn-secondary btn-sm mt-5 mt-md-0" href="{{ path('meal_list_edit', {'id': meal_list.id}) }}">Éditer</a>
+                    {% endif %}
+                </td>
+            {% endif %}
         </tr>
     {% else %}
         <tr>
@@ -59,3 +78,14 @@
     {% endfor %}
     </tbody>
 </table>
+{% if form is defined and app.user is not null %}
+    {{ form_row(form._token) }}
+    <div class="row text-right">
+        <div class="col">
+            <button class="btn btn-primary text-right">
+                Générer la liste des courses correspondante
+            </button>
+        </div>
+    </div>
+    {{ form_end(form, {'render_rest': false}) }}
+{% endif %}

@@ -29,7 +29,7 @@
     </div>
     <div class="row mb-5">
         <div class="col table-responsive">
-            {{ include('meal_list/_table.html.twig', {'meal_lists': meal_lists}) }}
+            {{ include('meal_list/_table.html.twig', {'meal_lists': meal_lists, 'form': grocery_list_form, 'show_action_buttons': true}) }}
         </div>
     </div>
     <hr />
@@ -40,7 +40,7 @@
     </div>
     <div class="row">
         <div class="col table-responsive">
-            {{ include('meal_list/_table.html.twig', {'meal_lists': past_meal_lists}) }}
+            {{ include('meal_list/_table.html.twig', {'meal_lists': past_meal_lists, 'show_action_buttons': true}) }}
         </div>
     </div>
 {% endblock %}
