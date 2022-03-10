@@ -1,6 +1,4 @@
-$klassy-main-color: #fb5849;
-$mobile-navbar-color-default: white;
-$mobile-navbar-color-sticky: #f7f7f7;
+@use "variables";
 
 .header-area {
     background-color: #fff;
@@ -8,6 +6,8 @@ $mobile-navbar-color-sticky: #f7f7f7;
     top: 0;
     left: 0;
     right: 0;
+    padding-right: var(--bs-gutter-x, 0.75rem);
+    padding-left: var(--bs-gutter-x, 0.75rem);
     z-index: 100;
     height: 100px;
     -webkit-transition: all .5s ease 0s;
@@ -18,7 +18,7 @@ $mobile-navbar-color-sticky: #f7f7f7;
     // header is visible on scroll and stick to the top
     &.header-sticky {
         position: fixed !important;
-        min-height: $header-height;
+        min-height: variables.$header-height;
         top: 0;
         left: 0;
         right: 0;
@@ -51,7 +51,7 @@ $mobile-navbar-color-sticky: #f7f7f7;
                 &:hover,
                 &.active {
                     > a {
-                        color: $klassy-main-color;
+                        color: variables.$klassy-primary-color;
                     }
                 }
 
@@ -96,7 +96,7 @@ $mobile-navbar-color-sticky: #f7f7f7;
                 a {
                     display: block;
                     font-weight: 600;
-                    font-size: 15px;
+                    font-size: 0.95rem;
                     color: #2a2a2a;
                     -webkit-transition: all 0.3s ease 0s;
                     -moz-transition: all 0.3s ease 0s;
@@ -107,7 +107,7 @@ $mobile-navbar-color-sticky: #f7f7f7;
 
                     &:hover,
                     &.active {
-                        color: $klassy-main-color !important;
+                        color: variables.$klassy-primary-color !important;
                         background-color: transparent;
                     }
                 }
@@ -127,7 +127,7 @@ $mobile-navbar-color-sticky: #f7f7f7;
             right: 40px;
             display: none;
 
-            &.active {
+            &[aria-expanded="true"] {
                 span {
                     background-color: transparent;
 
@@ -193,25 +193,58 @@ $mobile-navbar-color-sticky: #f7f7f7;
     }
 }
 
-@media (max-width: 767px) {
+@media (min-width: 992px) and (max-width: 1200px) {
     .header-area {
-        background-color: $mobile-navbar-color-default;
+        > div {
+            #top-navbar {
+                #top-navbar-links {
+                    > form > input {
+                        /* reduce form width to avoid breaking line */
+                        max-width: 9rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+    .header-area {
+        #top-navbar {
+            .logo > img {
+                width: 9rem;
+            }
+
+            #top-navbar-links {
+                > ul > li {
+                    a {
+                        font-size: 0.85rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .header-area {
+        background-color: variables.$mobile-navbar-color-default;
         padding: 0 15px;
         height: 100px;
         box-shadow: none;
         text-align: center;
 
         &.header-sticky {
-            background-color: $mobile-navbar-color-sticky;
+            background-color: variables.$mobile-navbar-color-sticky;
 
-            .container #top-navbar #top-navbar-links {
-                background-color: $mobile-navbar-color-sticky;
+            > div #top-navbar #top-navbar-links {
+                background-color: variables.$mobile-navbar-color-sticky;
 
                 > ul {
                     > li {
                         &.submenu {
                             > ul.dropdown-menu[data-bs-popper] {
-                                background-color: $mobile-navbar-color-sticky;
+                                background-color: variables.$mobile-navbar-color-sticky;
                             }
                         }
                     }
@@ -219,7 +252,7 @@ $mobile-navbar-color-sticky: #f7f7f7;
             }
         }
 
-        .container {
+        > div {
             padding: 0;
 
             #top-navbar {
@@ -235,7 +268,9 @@ $mobile-navbar-color-sticky: #f7f7f7;
                 }
 
                 #top-navbar-links {
-                    background-color: $mobile-navbar-color-default;
+                    background-color: variables.$mobile-navbar-color-default;
+                    margin-right: 0.5rem;
+                    margin-left: 0.5rem;
                     float: none;
                     width: 100%;
                     display: none;
@@ -243,7 +278,6 @@ $mobile-navbar-color-sticky: #f7f7f7;
                     -moz-transition: all 0s ease 0s;
                     -o-transition: all 0s ease 0s;
                     transition: all 0s ease 0s;
-                    margin-left: 0;
 
                     &.show {
                         display: block;
@@ -280,7 +314,7 @@ $mobile-navbar-color-sticky: #f7f7f7;
                                     margin: 0;
                                     border: none;
                                     border-radius: 0;
-                                    background-color: $mobile-navbar-color-default;
+                                    background-color: variables.$mobile-navbar-color-default;
 
                                     &:after {
                                         content: none;
@@ -322,8 +356,10 @@ $mobile-navbar-color-sticky: #f7f7f7;
     }
 }
 
-@media (min-width: 767px) {
-    .header-area #top-navbar #top-navbar-links {
-        display: flex !important;
-    }
-}
+
+
+//@media (min-width: 767px) {
+//    .header-area #top-navbar #top-navbar-links {
+//        display: flex !important;
+//    }
+//}
