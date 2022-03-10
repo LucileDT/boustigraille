@@ -15,6 +15,27 @@ Encore
     //.setManifestKeyPrefix('build/')
 
     /*
+     * Copy Klassy Cafe theme pictures
+     */
+    .copyFiles({
+        from: './assets/klassy_cafe/assets/images',
+
+        // optional target path, relative to the output dir
+        to: 'image/klassy-cafe/[path][name].[ext]',
+
+        // if versioning is enabled, add the file hash too
+        //to: 'images/[path][name].[hash:8].[ext]',
+
+        // only copy pictures
+        pattern: /\.(png|jpg|jpeg|svg)$/
+    })
+    .copyFiles({
+        from: './assets/images',
+        to: 'image/[path][name].[ext]',
+        pattern: /\.(png|jpg|jpeg|svg)$/
+    })
+
+    /*
      * ENTRY CONFIG
      *
      * Each entry will result in one JavaScript file (e.g. app.js)
@@ -25,7 +46,6 @@ Encore
     .addEntry('recipe_form', './assets/javascript/recipe/_form.js')
     .addEntry('recipe_toggle_favorite', './assets/javascript/recipe/_toggle_favorite.js')
     .addEntry('recipe_show', './assets/javascript/recipe/show.js')
-    .addEntry('recipe_index', './assets/javascript/recipe/index.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
