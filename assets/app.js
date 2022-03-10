@@ -18,5 +18,8 @@ require('bootstrap');
 // add Remix Icon
 import 'remixicon/fonts/remixicon.css';
 
+// Klassy Cafe theme
+require('./klassy_cafe/assets/js/base');
+
 // start the Stimulus application
 import './bootstrap';
