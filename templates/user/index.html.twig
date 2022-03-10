@@ -19,7 +19,7 @@
         <div class="col-6">
             <h1>Liste des comptes</h1>
         </div>
-        <div class="col-6 text-right">
+        <div class="col-6 text-end">
             <a class="btn btn-primary btn-large" href="{{ path('user_new') }}">Créer un nouveau compte</a>
         </div>
     </div>
@@ -45,7 +45,7 @@
                                     <span>{{ responsibility.label }}</span>
                                 {% endfor %}
                             </td>
-                            <td class="text-right">
+                            <td class="text-end">
                                 <a class="btn-primary btn" href="{{ path('user_show', {'id': user.id}) }}">Voir</a>
                                 <a class="btn-secondary btn" href="{{ path('user_edit', {'id': user.id}) }}">Éditer</a>
                             </td>

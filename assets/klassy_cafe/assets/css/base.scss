@@ -1,0 +1,17 @@
+@use "variables";
+
+@use './preloader';
+@use './fonts';
+@use './reset';
+@use './card';
+@use './header';
+@use './footer';
+
+*,
+*:before,
+*:after {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

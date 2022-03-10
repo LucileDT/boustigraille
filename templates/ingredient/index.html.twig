@@ -20,7 +20,7 @@
             <h1>Liste des ingrédients</h1>
         </div>
         {% if app.user is not null %}
-            <div class="col-6 text-right">
+            <div class="col-6 text-end">
                 <a class="btn btn-primary btn-large" href="{{ path('ingredient_new') }}">Créer un nouvel ingrédient</a>
             </div>
         {% endif %}
@@ -47,7 +47,7 @@
                         <th class="text-center align-middle">
                             Manière<br>de mesurer
                             <i class="ri-question-fill"
-                               data-toggle="tooltip"
+                               data-bs-toggle="tooltip"
                                title="Comment on mesure cet ingrédient
                                         (par exemple
                                         g, ml, l, unité, ...)"></i>
@@ -55,7 +55,7 @@
                         <th class="text-center align-middle">
                             Taille d'une<br>part moyenne
                             <i class="ri-question-fill"
-                               data-toggle="tooltip"
+                               data-bs-toggle="tooltip"
                                title="Cette quantité correspond à peu près
                                         à ce qu'une personne mangerait en un repas
                                         (par exemple 45g de riz cru correspond à
@@ -64,7 +64,7 @@
                         <th class="text-center align-middle">
                             Apport en<br>protéines
                             <i class="ri-question-fill"
-                               data-toggle="tooltip"
+                               data-bs-toggle="tooltip"
                                title="Ratio protéines / énergie, plus le ratio
                                         est élevé, plus l'indicateur sera vert."></i>
                         </th>
@@ -81,7 +81,7 @@
                             {% if app.user is not null %}
                                 <td class="text-center align-middle">{{ ingredient.id }}</td>
                             {% endif %}
-                            <td><strong>{{ ingredient.label }}</strong></td>
+                            <td class="align-middle"><strong>{{ ingredient.label }}</strong></td>
                             <td class="text-center align-middle">
                                 {% if ingredient.brand is empty %}
                                     <small class="text-muted font-italic">
@@ -103,29 +103,29 @@
                                     {% set proteinRatio = ingredient.proteins / ingredient.energy %}
                                     {% if proteinRatio > 0.15 %}
                                         <i class="ri-checkbox-blank-circle-fill text-success"
-                                           data-toggle="tooltip"
-                                           data-html="true"
+                                           data-bs-toggle="tooltip"
+                                           data-bs-html="true"
                                            title="Très riche en protéines<br>({{ (proteinRatio * 100) | round }}%)"></i>
                                     {% elseif proteinRatio > 0.1 %}
                                         <i class="ri-checkbox-blank-circle-fill text-info"
-                                           data-toggle="tooltip"
-                                           data-html="true"
+                                           data-bs-toggle="tooltip"
+                                           data-bs-html="true"
                                            title="Riche en protéines<br>({{ (proteinRatio * 100) | round }}%)"></i>
                                     {% elseif proteinRatio > 0.05 %}
                                         <i class="ri-checkbox-blank-circle-fill text-muted"
-                                           data-toggle="tooltip"
-                                           data-html="true"
+                                           data-bs-toggle="tooltip"
+                                           data-bs-html="true"
                                            title="Moyennement riche en protéines<br>({{ (proteinRatio * 100) | round }}%)"></i>
                                     {% else %}
                                         <i class="ri-checkbox-blank-circle-line text-muted"
-                                           data-toggle="tooltip"
-                                           data-html="true"
+                                           data-bs-toggle="tooltip"
+                                           data-bs-html="true"
                                            title="Presque pas de protéines<br>({{ (proteinRatio * 100) | round }}%)"
                                            ></i>
                                     {% endif %}
                                 {% else %}
                                     <i class="ri-checkbox-blank-circle-fill text-light"
-                                       data-toggle="tooltip"
+                                       data-bs-toggle="tooltip"
                                        title="Apport en protéines non calculable"
                                        ></i>
                                 {% endif %}
@@ -134,13 +134,13 @@
                             <td class="text-center align-middle">{{ ingredient.carbohydrates }} g</td>
                             <td class="text-center align-middle">{{ ingredient.fat }} g</td>
                             <td class="text-center align-middle">{{ ingredient.energy }} kcal</td>
-                            <td class="text-right align-middle">
+                            <td class="text-end align-middle">
                                 {% if ingredient.barCode is not empty %}
                                     <a
                                         class="btn btn-secondary btn-sm"
                                         href="https://fr.openfoodfacts.org/produit/{{ ingredient.barCode }}"
                                         target="_blank"
-                                        data-toggle="tooltip"
+                                        data-bs-toggle="tooltip"
                                         title="Voir sur OpenFoodFacts"
                                         >
                                         <i class="ri-bar-chart-box-fill"></i>

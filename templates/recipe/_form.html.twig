@@ -1,12 +1,12 @@
 {% block javascripts %}
-    <script src="{{ asset('javascript/recipe/_form.js') }}"></script>
+    {{ encore_entry_script_tags('recipe_form') }}
 {% endblock %}
 
 {% macro renderIngredientQuantityType(ingredientQuantityForRecipeForm) %}
-    <div class="form-group">
-        <div class="form-row">
+    <div class="mb-3 mb-2">
+        <div class="row g-1">
             <div class="col">
-                <div class="form-row">
+                <div class="row g-1">
                     <div class="col-1">
                         <button
                             class="btn btn-secondary ingredient-deletion-button w-100"
@@ -23,8 +23,8 @@
                 </div>
             </div>
             <div class="col">
-                <div class="form-row text-center">
-                    <div class="col-1 mr-4 sr-only">
+                <div class="row g-1 text-center">
+                    <div class="col-1 me-4 visually-hidden">
                         {{
                             form_label(
                                 ingredientQuantityForRecipeForm.quantity,
@@ -78,7 +78,7 @@
 
 {% if app.user is not null %}
     {{ form_start(form) }}
-        <div class="form-group">
+        <div class="mb-3">
             <label for="recipe_name">
                 {{ form_label(form.name) }}
             </label>
@@ -91,7 +91,7 @@
 
         {{ include('recipe/_nutritional_values.html.twig', {'title': 'Valeurs nutritionnelles', 'paddingTop': 0}) }}
 
-        <div class="form-group">
+        <div class="mb-3">
             <div class="my-4">Ingrédients</div>
             <div
                 id="ingredients"

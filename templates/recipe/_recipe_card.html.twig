@@ -1,45 +1,53 @@
-<div class="card h-100 text-center border-0 bg-light">
-    <a
-        href="{{ path('recipe_show', {'id': recipe.id}) }}"
-        data-toggle="tooltip"
-        title="Voir la recette">
-        {% if recipe.mainPictureFilename is empty %}
-            <img src="{{ asset('image/default-recipe-main-picture.jpg') }}" class="card-img-top" alt="">
-        {% else %}
-            <img src="{{ asset('uploads/pictures/' ~ recipe.mainPictureFilename) }}" class="card-img-top" alt="">
-        {% endif %}
-    </a>
-    <div class="card-body d-flex flex-column justify-content-between pb-0">
-        <h6 class="card-title">
-            {% if app.user is not null %}
+<div
+    class="card klassy-cafe-card mb-4 mx-0"
+    {% if recipe.mainPictureFilename is empty %}
+        style="background-image: url({{ asset('build/image/default-recipe-main-picture.jpg') }}"
+    {% else %}
+        style="background-image: url({{ asset('uploads/pictures/' ~ recipe.mainPictureFilename) }}"
+    {% endif %}
+    >
+    <div class="top-box">
+        <h6 class="energy-box d-flex justify-content-center align-items-center">
+            <span>
+                <span class="energy-count">
+                    {{ recipe.energy | round }}
+                </span><br>
+                <span class="energy-unit">
+                    kcal
+                </span>
+            </span>
+        </h6>
+        {% if app.user is not null %}
+            <h6 class="fav-box d-flex justify-content-center align-items-center">
                 <span
                     class="toggle-favorite-button"
                     data-url="{{ path('api_recipe_toggle_favorite', {'id': recipe.id}) }}"
                     data-marked-as-favorite="{{ app.user.hasFaved(recipe) }}"
                 ></span>
-            {% endif %}
-            {{ recipe.name }}
-        </h6>
-        <span class="card-subtitle mb-2 text-muted">
-            {{ recipe.energy | round }} kcal
-        </span>
-    </div>
-    <div class="card-footer border-0 bg-light">
-        <div class="">
-            <a
-                href="{{ path('recipe_show', {'id': recipe.id}) }}"
-                class="btn btn-primary w-75">
-                Voir
-            </a>
-        </div>
-        {% if app.user is not null %}
-            <div class="mt-4">
-                <a
-                    href="{{ path('recipe_edit', {'id': recipe.id}) }}"
-                    class="btn btn-secondary w-75">
-                    Éditer
-                </a>
-            </div>
+            </h6>
         {% endif %}
+    </div>
+    <div class="info-box d-flex flex-column justify-content-between">
+        <h1 class="title">
+            {{ recipe.name }}
+        </h1>
+{#        <p class="description">description</p>#}
+        <div class="main-text-button">
+            <a
+                class="btn mb-2"
+                href="{{ path('recipe_show', {'id': recipe.id}) }}"
+                >
+                Voir la recette
+            </a>
+            {% if app.user is not null %}
+                <br>
+                <a
+                    class="btn"
+                    href="{{ path('recipe_edit', {'id': recipe.id}) }}"
+                    >
+                    Éditer la recette
+                </a>
+            {% endif %}
+        </div>
     </div>
 </div>

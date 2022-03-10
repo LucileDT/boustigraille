@@ -3,9 +3,9 @@
     <div class="card border-0 mb-5">
         <div class="card-body bg-light">
             <h5 class="card-title">Information d'identification de l'ingrédient</h5>
-            <div class="form-row">
+            <div class="row">
                 <div class="col-6">
-                    <div class="form-group mb-0">
+                    <div class="mb-3 mb-0">
                         <label for="recipe_name">
                             {{ form_label(form.label) }}
                         </label>
@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group mb-0">
+                    <div class="mb-3 mb-0">
                         <label for="recipe_name">
                             {{ form_label(form.barcode) }}
                         </label>
@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group mb-0">
+                    <div class="mb-3 mb-0">
                         <label for="recipe_name">
                             {{ form_label(form.brand) }}
                         </label>
@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group mb-0">
+                    <div class="mb-3 mb-0">
                         <label for="recipe_name">
                             {{ form_label(form.shop) }}
                         </label>
@@ -51,9 +51,9 @@
     <div class="card border-0 mb-5">
         <div class="card-body bg-light">
             <h5 class="card-title">Information de mesure de l'ingrédient</h5>
-            <div class="form-row">
+            <div class="row">
                 <div class="col">
-                    <div class="form-group mb-0">
+                    <div class="mb-3 mb-0">
                         <label for="recipe_name">
                             {{ form_label(form.measureType) }}
                         </label>
@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group mb-0">
+                    <div class="mb-3 mb-0">
                         <label for="recipe_name">
                             {{ form_label(form.unitySize) }}
                         </label>
@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group mb-0">
+                    <div class="mb-3 mb-0">
                         <label for="recipe_name">
                             {{ form_label(form.portionSize) }}
                         </label>
@@ -83,7 +83,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group mb-0">
+                    <div class="mb-3 mb-0">
                         <label for="recipe_name">
                             {{ form_label(form.shopBatchSize) }}
                         </label>
@@ -99,9 +99,9 @@
     <div class="card border-0 mb-5">
         <div class="card-body bg-light">
             <h5 class="card-title">Information nutritionnelles de l'ingrédient</h5>
-            <div class="form-row">
+            <div class="row">
                 <div class="col">
-                    <div class="form-group mb-0">
+                    <div class="mb-3 mb-0">
                         <label for="recipe_name">
                             {{ form_label(form.proteins) }}
                         </label>
@@ -111,7 +111,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group mb-0">
+                    <div class="mb-3 mb-0">
                         <label for="recipe_name">
                             {{ form_label(form.carbohydrates) }}
                         </label>
@@ -121,7 +121,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group mb-0">
+                    <div class="mb-3 mb-0">
                         <label for="recipe_name">
                             {{ form_label(form.fat) }}
                         </label>
@@ -131,7 +131,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group mb-0">
+                    <div class="mb-3 mb-0">
                         <label for="recipe_name">
                             {{ form_label(form.energy) }}
                         </label>
@@ -146,9 +146,9 @@
 
     <div class="card border-0 mb-5">
         <div class="card-body bg-light">
-            <div class="form-row">
+            <div class="row">
                 <div class="col">
-                    <div class="form-group mb-0">
+                    <div class="mb-3 mb-0">
                         <label for="recipe_name">
                             {{ form_label(form.comment) }}
                         </label>
@@ -161,8 +161,8 @@
         </div>
     </div>
 
-    <div class="form-row">
-        <div class="col text-right">
+    <div class="row">
+        <div class="col text-end">
             <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
         </div>
     </div>

@@ -1,11 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/recipe/index.css') }}">
-{% endblock %}
-
 {% block javascript %}
-    <script src="{{ asset('javascript/recipe/_toggle_favorite.js') }}"></script>
+    {{ encore_entry_script_tags('recipe_toggle_favorite') }}
 {% endblock %}
 
 {% block title %}Liste des Recettes{% endblock %}
@@ -28,17 +24,15 @@
             <h1>Liste des recettes</h1>
         </div>
         {% if app.user is not null %}
-            <div class="col-6 text-right">
+            <div class="col-6 text-end">
                 <a class="btn btn-primary btn-large" href="{{ path('recipe_new') }}">Créer une nouvelle recette</a>
             </div>
         {% endif %}
     </div>
 
-    <div class="row">
+    <div id="klassy-cards-container" class="d-flex justify-content-between flex-wrap">
         {% for recipe in recipes %}
-            <div class="col-xl-2 col-lg-4 col-sm-6 col-12 mb-5">
-                {{ include('recipe/_recipe_card.html.twig') }}
-            </div>
+            {{ include('recipe/_recipe_card.html.twig') }}
         {% endfor %}
     </div>
 {% endblock %}

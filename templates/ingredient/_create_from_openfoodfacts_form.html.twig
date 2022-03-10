@@ -1,15 +1,22 @@
 {% if app.user is not null %}
-    {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
-        <div class="input-group input-group w-100">
-            <label class="sr-only" for="ingredient_from_open_food_facts_identifier">
-                {{ form_label(form.identifier) }}
-            </label>
-            {{ form_widget(form.identifier, {'attr': {'class': 'form-control'}}) }}
+    {{ form_start(form, {'attr': {'class': 'd-flex g-0 align-items-center'}}) }}
+        <div class="flex-grow-1 me-2">
+            {{ form_widget(form.identifier, {'attr': { 'class': 'form-control', 'placeholder': 'Identifiant (URL du produit ou numéro du code barre)'}}) }}
             {{ form_help(form.identifier) }}
             {{ form_errors(form.identifier) }}
-            <span class="input-group-btn">
-                <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
-            </span>
+{#            <div class="input-group input-group w-100">#}
+{#                <label class="visually-hidden" for="ingredient_from_open_food_facts_identifier">#}
+{#                    {{ form_label(form.identifier) }}#}
+{#                </label>#}
+{#                <span class="input-group-btn">#}
+{#                    <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>#}
+{#                </span>#}
+{#            </div>#}
+        </div>
+        <div class="">
+            <button type="submit" class="btn btn-primary">
+                {{ button_label|default('Enregistrer') }}
+            </button>
         </div>
     {{ form_end(form) }}
 {% endif %}

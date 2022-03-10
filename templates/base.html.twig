@@ -1,197 +1,314 @@
 <!DOCTYPE html>
-<html>
+<html
+    lang="fr-FR"
+    >
     <head>
         <meta charset="UTF-8" />
         <meta content='maximum-scale=1.0, initial-scale=1.0, width=device-width' name='viewport'>
         <title>Boustigraille - {% block title %}{% endblock %}</title>
         {% block global_css %}
-            <link rel="stylesheet" href="{{ asset('css/library/bootstrap.min.css') }}">
-            <link rel="stylesheet" href="{{ asset('font/library/remixicon/fonts/remixicon.css') }}">
-            <link rel="stylesheet" href="{{ asset('css/global.css') }}">
+            {{ encore_entry_link_tags('app') }}
         {% endblock %}
         {% block global_js %}
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-{#            <script src="{{ asset('javascript/library/jQuery/jquery.min.js') }}"></script>#}
-            <script src="{{ asset('javascript/library/bootstrap.bundle.min.js') }}"></script>
-            <script src="{{ asset('javascript/global.js') }}"></script>
+            {{ encore_entry_script_tags('app') }}
+            {{ encore_entry_script_tags('global') }}
         {% endblock %}
         {% block javascript %}{% endblock %}
-{#        <link rel="stylesheet" href="{{ asset('css/base.css') }}">#}
         {% block stylesheets %}{% endblock %}
-{#        <link rel="icon" type="image/png" href="{{ asset('boustigraille.png') }}" />#}
     </head>
     <body>
+        <div id="preloader"><div class="jumper"><div></div><div></div><div></div></div></div>
         <div id="page" class="container-fluid">
             {# ------------------------------------ #}
             {# ------------- Top menu ------------- #}
             {# ------------------------------------ #}
-            <header>
-                <div class="container">
-                    <nav id="top-navbar" class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-                        <a class="navbar-brand" href="{{ path('home') }}">Accueil <span class="sr-only">(page courante)</span></a>
-                        <button
-                            class="navbar-toggler"
-                            type="button"
-                            data-toggle="collapse"
-                            data-target="#navbar-top-menu"
-                            aria-controls="navbar-top-menu"
-                            aria-expanded="false"
-                            aria-label="Ouvrir le menu de navigation"
-                            >
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-
-                        <div
-                            class="collapse navbar-collapse"
-                            id="navbar-top-menu"
-                            >
-                            <ul class="navbar-nav mr-auto">
-                                <li class="nav-item dropdown">
-                                    <a
-                                        class="nav-link dropdown-toggle"
-                                        href="#"
-                                        id="dropdown-ingredients"
-                                        role="button"
-                                        data-toggle="dropdown"
-                                        aria-haspopup="true"
-                                        aria-expanded="false"
-                                        >
-                                        Ingrédients
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdown-ingredients">
-                                        {% if app.user is not null %}
-                                            <a class="dropdown-item" href="{{ path('ingredient_new') }}">Enregistrer un nouvel ingrédient</a>
-                                        {% endif %}
-                                        <a class="dropdown-item" href="{{ path('ingredient_index') }}">Voir la liste des ingrédients</a>
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a
-                                        class="nav-link dropdown-toggle"
-                                        href="#"
-                                        id="dropdown-recipes"
-                                        role="button"
-                                        data-toggle="dropdown"
-                                        aria-haspopup="true"
-                                        aria-expanded="false"
-                                        >
-                                        Recettes
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdown-recipes">
-                                        {% if app.user is not null %}
-                                            <a class="dropdown-item" href="{{ path('recipe_new') }}">Enregistrer une nouvelle recette</a>
-                                        {% endif %}
-                                        <a class="dropdown-item" href="{{ path('recipe_index') }}">Voir la liste des recettes</a>
-                                    </div>
-                                </li>
-                                {% if app.user is not null %}
-                                    <li class="nav-item dropdown">
-                                        <a
-                                            class="nav-link dropdown-toggle"
-                                            href="#"
-                                            id="dropdown-meal-list"
-                                            role="button"
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true"
-                                            aria-expanded="false"
-                                            >
-                                            Listes de repas
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="dropdown-meal-list">
-                                            <a class="dropdown-item" href="{{ path('meal_list_new') }}">Enregistrer une nouvelle liste de repas</a>
-                                            <a class="dropdown-item" href="{{ path('meal_list_index') }}">Voir les listes de repas</a>
-                                        </div>
-                                    </li>
-                                {% endif %}
-                            </ul>
-                            <ul class="navbar-nav ml-auto">
-                                {% if app.user is not null %}
-                                    {% if is_granted('ROLE_ADMIN') %}
-                                        <li class="nav-item dropdown">
+            <header class="header-area header-sticky">
+                <div class="container-xxl">
+                    <div class="row">
+                        <div class="col-12">
+                            <nav id="top-navbar" class="navbar navbar-expand-md main-nav">
+                                <a class="logo" href="{{ path('home') }}">
+                                    <img src="{{ asset('build/image/klassy-cafe/klassy-logo.png') }}">
+                                </a>
+                                <button
+                                    class="navbar-toggler menu-trigger"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#top-navbar-links"
+                                    aria-controls="top-navbar-links"
+                                    aria-expanded="false"
+                                    aria-label="Ouvrir la navigation"
+                                >
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div id="top-navbar-links" class="collapse navbar-collapse nav">
+                                    <ul class="navbar-nav me-auto">
+                                        <li class="nav-item dropdown submenu">
                                             <a
+                                                id="ingredients-dropdown"
                                                 class="nav-link dropdown-toggle"
                                                 href="#"
-                                                id="dropdown-user"
                                                 role="button"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true"
+                                                data-bs-toggle="dropdown"
                                                 aria-expanded="false"
-                                                >
-                                                Administration
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user">
-                                                <a class="dropdown-item" href="{{ path('user_new') }}">Créer un nouveau compte</a>
-                                                <a class="dropdown-item" href="{{ path('user_index') }}">Voir la liste des comptes</a>
-                                            </div>
-                                        </li>
-                                    {% endif %}
-                                    <li class="nav-item dropdown">
-                                        <a
-                                            class="nav-link dropdown-toggle"
-                                            href="#"
-                                            id="dropdown-user"
-                                            role="button"
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true"
-                                            aria-expanded="false"
                                             >
-                                            {{ app.user.username }}
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="{{ path('user_edit_nutritional_data') }}">Éditer mes valeurs nutritionnelles</a>
-                                            <a class="dropdown-item" href="{{ path('app_logout') }}">Me déconnecter</a>
-                                        </div>
-                                    </li>
-                                {% else %}
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{ path('app_login') }}">Me connecter</a>
-                                    </li>
-                                {% endif %}
-                            </ul>
-
+                                                Ingrédients
+                                            </a>
+                                            <ul
+                                                aria-labelledby="ingredients-dropdown"
+                                                class="dropdown-menu"
+                                            >
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ path('ingredient_index') }}">
+                                                        Voir la liste des ingrédients
+                                                    </a>
+                                                </li>
+                                                {% if app.user is not null %}
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ path('ingredient_new') }}">
+                                                            Enregistrer un nouvel ingrédient
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </li>
+                                        <li class="nav-item dropdown submenu">
+                                            <a
+                                                id="recipes-dropdown"
+                                                class="nav-link dropdown-toggle"
+                                                href="#"
+                                                role="button"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                            >
+                                                Recettes
+                                            </a>
+                                            <ul
+                                                class="dropdown-menu"
+                                                aria-labelledby="recipes-dropdown"
+                                            >
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ path('recipe_index') }}">
+                                                        Voir la liste des recettes
+                                                    </a>
+                                                </li>
+                                                {% if app.user is not null %}
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ path('recipe_new') }}">
+                                                            Enregistrer une nouvelle recette
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </li>
+                                        {% if app.user is not null %}
+                                            <li class="nav-item dropdown submenu">
+                                                <a
+                                                        id="meals-dropdown"
+                                                        class="nav-link dropdown-toggle"
+                                                        href="#"
+                                                        role="button"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false"
+                                                >
+                                                    Listes de repas
+                                                </a>
+                                                <ul
+                                                        class="dropdown-menu"
+                                                        aria-labelledby="meals-dropdown"
+                                                >
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ path('meal_list_index') }}">
+                                                            Voir les listes de repas
+                                                        </a>
+                                                    </li>
+                                                    {% if app.user is not null %}
+                                                        <li>
+                                                            <a class="dropdown-item" href="{{ path('meal_list_new') }}">
+                                                                Enregistrer une nouvelle liste de repas
+                                                            </a>
+                                                        </li>
+                                                    {% endif %}
+                                                </ul>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                    {% if app.user is not null %}
+                                        <ul class="navbar-nav ms-auto mb-0">
+                                            {% if is_granted('ROLE_ADMIN') %}
+                                                <li class="nav-item dropdown submenu">
+                                                    <a
+                                                        id="administration-dropdown"
+                                                        class="nav-link dropdown-toggle"
+                                                        href="#"
+                                                        role="button"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false"
+                                                    >
+                                                        Administration
+                                                    </a>
+                                                    <ul
+                                                        class="dropdown-menu"
+                                                        aria-labelledby="administration-dropdown"
+                                                    >
+                                                        <li>
+                                                            <a class="dropdown-item" href="{{ path('user_new') }}">
+                                                                Créer un nouveau compte
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="{{ path('user_index') }}">
+                                                                Voir la liste des comptes
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            {% endif %}
+                                            <li class="nav-item dropdown submenu">
+                                                <a
+                                                    id="user-dropdown"
+                                                    class="nav-link dropdown-toggle"
+                                                    href="#"
+                                                    role="button"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false"
+                                                >
+                                                    {{ app.user.username }}
+                                                </a>
+                                                <ul
+                                                    class="dropdown-menu"
+                                                    aria-labelledby="user-dropdown"
+                                                >
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ path('user_edit_nutritional_data') }}">
+                                                            Éditer mes valeurs nutritionnelles
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ path('app_logout') }}">
+                                                            Me déconnecter
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    {% else %}
+                                        <form class="ms-auto d-none d-xl-flex" action="{{ path('app_login') }}" method="post">
+                                            <input
+                                                type="text"
+                                                class="form-control me-2"
+                                                id="username"
+                                                name="username"
+                                                placeholder="Username"
+                                                value="{% if username is defined %}{{ username }}{% endif %}"
+                                            >
+                                            <input
+                                                type="password"
+                                                class="form-control me-2"
+                                                id="password"
+                                                name="password"
+                                                placeholder="Mot de passe"
+                                            >
+                                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                                            <button
+                                                type="submit"
+                                                class="btn btn-outline-primary"
+                                            >
+                                                Connexion
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </nav>
                         </div>
-                    </nav>
+                    </div>
                 </div>
             </header>
 
-            <div id="container-alert-messages" class="container-fluid">
-                {% for type, messages in app.session.flashbag.all() %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ type }} alert-dismissible" role="alert">
-                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            {{ message | raw }}
-                        </div>
+            <div id="top">
+                <div id="container-alert-messages" class="container-fluid">
+                    {% for type, messages in app.session.flashbag.all() %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+                                {{ message | raw }}
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
-            </div>
+                </div>
 
-            <div class="container-fluid">
-                <nav aria-label="Fil d'ariane">
-                    <ol class="breadcrumb">
-                        {% block breadcrumb %}
-                            <li class="breadcrumb-item active" aria-current="page">Accueil</li>
-                        {% endblock %}
-                    </ol>
-                </nav>
-            </div>
+                <div class="container-fluid">
+                    <nav aria-label="Fil d'ariane" class="px-4 py-3 bg-light mt-2 mb-4">
+                        <ol class="breadcrumb mb-0">
+                            {% block breadcrumb %}
+                                <li class="breadcrumb-item active" aria-current="page">Accueil</li>
+                            {% endblock %}
+                        </ol>
+                    </nav>
+                </div>
 
-            <div id="page-content" class="container-fluid">
-                {% block body %}{% endblock %}
+                <div id="page-content" class="container-fluid">
+                    {% block body %}{% endblock %}
+                </div>
             </div>
         </div>
-        <footer class="page-footer mt-4">
-            <nav class="nav bg-primary justify-content-center text-light py-2">
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="#">
-                        Site réalisé sous licence AGPL v3
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="https://github.com/LucileDT/boustigraille">
-                        Voir le code source
-                    </a>
-                </li>
-            </nav>
+
+        <footer class="page-footer">
+            <div class="container-md">
+                <div class="row">
+                    <div class="col-12 col-sm-4">
+                        <div class="right-text-content">
+                            <ul class="social-icons">
+                                <li>
+                                    <a href="https://fr.openfoodfacts.org">
+                                        <i class="ri-bar-chart-box-fill"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://github.com/LucileDT/boustigraille">
+                                        <i class="ri-github-fill"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <div class="logo">
+                            <a href="/">
+                                <img src="{{ asset('build/image/klassy-cafe/klassy-logo-white.png') }}" alt="">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <div class="left-text-content">
+                            <p>
+                                <strong>AGPL v3</strong>
+                                <br>
+                                <small>
+                                    <a class="text-white" href="https://www.gnu.org/licenses/agpl-3.0.fr.html">
+                                        Voir la licence
+                                    </a>
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+{#            <nav class="nav bg-primary justify-content-center text-light py-2">#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link text-light" href="https://www.gnu.org/licenses/agpl-3.0.fr.html">#}
+{#                        Site réalisé sous licence AGPL v3#}
+{#                    </a>#}
+{#                </li>#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link text-light" href="https://github.com/LucileDT/boustigraille">#}
+{#                        Voir le code source#}
+{#                    </a>#}
+{#                </li>#}
+{#            </nav>#}
         </footer>
 
         {% block javascripts %}{% endblock %}

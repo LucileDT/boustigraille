@@ -13,10 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/meal/list')]
+#[Route('/meal')]
 class MealListController extends AbstractController
 {
-    #[Route('/', name: 'meal_list_index', methods: ['GET'])]
+    #[Route('/list', name: 'meal_list_index', methods: ['GET'])]
     #[Security('not is_anonymous()')]
     public function index(MealListRepository $mealListRepository): Response
     {

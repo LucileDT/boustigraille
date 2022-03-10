@@ -1,12 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/recipe/show.css') }}">
+    {{ encore_entry_link_tags('recipe_show') }}
 {% endblock %}
 
 {% block javascript %}
-    <script src="{{ asset('javascript/recipe/show.js') }}"></script>
-    <script src="{{ asset('javascript/recipe/_toggle_favorite.js') }}"></script>
+    {{ encore_entry_script_tags('recipe_toggle_favorite') }}
 {% endblock %}
 
 {% block title %}{{ recipe.name }}{% endblock %}
@@ -27,11 +26,11 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row my-5">
+    <div class="row mt-4 mb-5">
         <div class="col">
             <div class="recipe-header">
                 {% if recipe.mainPictureFilename is empty %}
-                    <img class="image-foreground" src="{{ asset('image/default-recipe-main-picture.jpg') }}">
+                    <img class="image-foreground" src="{{ asset('build/image/default-recipe-main-picture.jpg') }}">
                 {% else %}
                     <img class="image-foreground" src="{{ asset('uploads/pictures/' ~ recipe.mainPictureFilename) }}">
                 {% endif %}
@@ -60,7 +59,7 @@
                     {% endif %}
                 </div>
                 {% if recipe.mainPictureFilename is empty %}
-                    <img class="image-background" src="{{ asset('image/default-recipe-main-picture.jpg') }}">
+                    <img class="image-background" src="{{ asset('build/image/default-recipe-main-picture.jpg') }}">
                 {% else %}
                     <img class="image-background" src="{{ asset('uploads/pictures/' ~ recipe.mainPictureFilename) }}">
                 {% endif %}
@@ -70,24 +69,22 @@
     <div class="row">
         <div class="col-lg-5 col-12">
             <div class="bg-light p-5">
-                <h3 class="">
-                    <form class="form-inline">
-                        <div class="form-group mb-2">
-                            <label for="staticEmail2">Ingrédients pour</label>
-                            <select id="ingredients-quantity" class="form-control ml-4">
-                                <option value="1">1 part</option>
-                                {% for i in 2..10 %}
-                                    <option
-                                        value="{{ i }}"
-                                        {% if i == 4 %}
-                                            selected="selected"
-                                        {% endif %}
-                                        >
-                                        {{ i }} parts
-                                    </option>
-                                {% endfor %}
-                            </select>
-                        </div>
+                <h3 class="mb-3 mb-2">
+                    <form class="d-flex align-items-center">
+                        <label class="" for="staticEmail2">Ingrédients pour</label>
+                        <select class="flex-grow-1 ms-3 form-select w-auto" id="ingredients-quantity">
+                            <option value="1">1 part</option>
+                            {% for i in 2..10 %}
+                                <option
+                                    value="{{ i }}"
+                                    {% if i == 4 %}
+                                        selected="selected"
+                                    {% endif %}
+                                    >
+                                    {{ i }} parts
+                                </option>
+                            {% endfor %}
+                        </select>
                     </form>
                 </h3>
                 <div class="my-4">
@@ -120,12 +117,12 @@
                         {% endfor %}
                     </form>
                 </div>
-                {{ include('recipe/_nutritional_values.html.twig', {'title': 'Valeurs nutritionnelles pour une part', 'paddingTop': 5}) }}
+                {{ include('recipe/_nutritional_values.html.twig', {'title': 'Valeurs nutritionnelles pour une part', 'paddingTop': 2}) }}
             </div>
         </div>
         <div class="col">
             <h2 class="">Préparation</h2>
-            <div class="ml-5 my-4">
+            <div class="ms-5 my-4">
                 {% if recipe.process | length > 0 %}
                     {{ recipe.process | markdown_to_html }}
                 {% else %}
@@ -134,7 +131,7 @@
             </div>
             {% if recipe.comment | length > 0 %}
                 <h2 class="mt-5 pt-2">Notes</h2>
-                <div class="ml-5 my-4 text-muted font-italic">
+                <div class="ms-5 my-4 text-muted font-italic">
                     {{ recipe.comment }}
                 </div>
             {% endif %}
