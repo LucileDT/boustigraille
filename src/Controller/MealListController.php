@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MealListController extends AbstractController
 {
     #[Route('/', name: 'meal_list_index', methods: ['GET'])]
+    #[Security('not is_anonymous()')]
     public function index(MealListRepository $mealListRepository): Response
     {
         $groceryListFDO = new GroceryListFDO();
