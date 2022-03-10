@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des courses{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="/">Accueil</a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">
+        Liste des courses
+    </li>
+{% endblock %}
+
+{% block body %}
+    <div class="row mt-5 mb-4">
+        <div class="col">
+            <h4>Pour les repas ci-dessous</h4>
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col table-responsive">
+            {{ include('meal_list/_table.html.twig', {'meal_lists': meal_lists, 'show_action_buttons': false}) }}
+        </div>
+    </div>
+    <hr />
+    <div class="row mt-5 mb-4">
+        <div class="col">
+            <h4>Il vous faudra les éléments suivants :</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <form id="groceries">
+                {% for grocery in grocery_list %}
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="grocery-check-{{ grocery.id }}">
+                        <label class="custom-control-label" for="grocery-check-{{ grocery.id }}">
+                            {% if grocery.isMeasuredByUnit %}
+                                {{ grocery.unitQuantity }}
+                            {% else %}
+                                {{ grocery.quantity }} {{ grocery.measureType }} de
+                            {% endif %}
+                            {{ grocery.label }}
+                            {% if grocery.isMeasuredByUnit %}
+                                ({{ grocery.quantity }} {{ grocery.measureType }})
+                            {% endif %}
+                            <a href="{{ path('ingredient_show', {'id': grocery.id}) }}"
+                                target="_blank"
+                                class="text-muted">
+                                <small>Voir la fiche ingrédient</small>
+                            </a>
+                        </label>
+                    </div>
+                {% endfor %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

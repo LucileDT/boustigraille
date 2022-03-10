@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Listes de repas{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="/">Accueil</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+        Listes de repas
+    </li>
+{% endblock %}
+
+{% block body %}
+    <div class="row mt-5 mb-4">
+        <div class="col-6">
+            <h1>Listes de repas</h1>
+        </div>
+        {% if app.user is not null %}
+            <div class="col-6 text-right">
+                <a class="btn btn-primary btn-large" href="{{ path('meal_list_new') }}">Créer une nouvelle liste de repas</a>
+            </div>
+        {% endif %}
+    </div>
+    <div class="row mt-5">
+        <div class="col">
+            <h3>En cours</h3>
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col table-responsive">
+            {{ include('meal_list/_table.html.twig', {'meal_lists': meal_lists, 'form': grocery_list_form, 'show_action_buttons': true}) }}
+        </div>
+    </div>
+    <hr />
+    <div class="row mt-5">
+        <div class="col">
+            <h3>Passés</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col table-responsive">
+            {{ include('meal_list/_table.html.twig', {'meal_lists': past_meal_lists, 'show_action_buttons': true}) }}
+        </div>
+    </div>
+{% endblock %}

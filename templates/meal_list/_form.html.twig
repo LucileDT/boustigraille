@@ -1,0 +1,123 @@
+{% block javascripts %}
+    <script src="{{ asset('javascript/meal_list/_form.js') }}"></script>
+{% endblock %}
+
+{% macro renderMealQuantityType(mealQuantityForMealListForm) %}
+    <div class="form-group">
+        <div class="form-row">
+            <div class="col">
+                <div class="form-row">
+                    <div class="col-1">
+                        <button
+                            class="btn btn-secondary meal-deletion-button w-100"
+                            type="button"
+                            >
+                            x
+                        </button>
+                    </div>
+                    <div class="col">
+                        {{
+                            form_widget(mealQuantityForMealListForm.meal,
+                            {'attr': { 'class': 'meal-select'}})
+                        }}
+                        {{ form_help(mealQuantityForMealListForm.meal) }}
+                        {{ form_errors(mealQuantityForMealListForm.meal) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-1 mr-4 sr-only">
+                {{
+                    form_label(
+                        mealQuantityForMealListForm.quantity,
+                        null,
+                        {'label_attr': {'class': 'w-100 pt-3 text-left'}}
+                    )
+                }}
+            </div>
+            <div class="col-3">
+                {{
+                    form_widget(
+                        mealQuantityForMealListForm.quantity,
+                        {'attr': { 'placeholder': 'Nombre de fois *', 'class': 'meal-quantity'}}
+                    )
+                }}
+                {{ form_help(mealQuantityForMealListForm.quantity) }}
+                {{ form_errors(mealQuantityForMealListForm.quantity) }}
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% import _self as renderMealQuantityTypeMacro %}
+
+{% if app.user is not null %}
+    {{ form_start(form) }}
+        <div class="form-group">
+                {{ form_label(form.personName) }}
+                {{ form_widget(form.personName, {'attr': {'class': 'form-control'}}) }}
+                {{ form_help(form.personName) }}
+                {{ form_errors(form.personName) }}
+        </div>
+
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-3">
+                    {{ form_label(form.startDate) }}
+                    {{ form_widget(form.startDate) }}
+                    {{ form_help(form.startDate) }}
+                    {{ form_errors(form.startDate) }}
+                </div>
+                <div class="col">
+                    {{ form_label(form.isStartingAtLunch) }}
+                    {{ form_widget(form.isStartingAtLunch, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_help(form.isStartingAtLunch) }}
+                    {{ form_errors(form.isStartingAtLunch) }}
+                </div>
+                <div class="col-3">
+                    {{ form_label(form.endDate) }}
+                    {{ form_widget(form.endDate) }}
+                    {{ form_help(form.endDate) }}
+                    {{ form_errors(form.endDate) }}
+                </div>
+                <div class="col">
+                    {{ form_label(form.isEndingAtLunch) }}
+                    {{ form_widget(form.isEndingAtLunch, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_help(form.isEndingAtLunch) }}
+                    {{ form_errors(form.isEndingAtLunch) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="my-4">Repas</div>
+            <div
+                id="meals"
+                class="meals"
+                data-prototype="{{ renderMealQuantityTypeMacro.renderMealQuantityType(form.meals.vars.prototype) | e('html_attr') }}"
+                >
+                {% for mealQuantity in form.meals %}
+                    <div class="meal">
+                        {{ renderMealQuantityTypeMacro.renderMealQuantityType(mealQuantity) }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            {# prevent displaying Meals label #}
+            {% if form.meals|length == 0 %}
+                {{ form_widget(form.meals) }}
+            {% endif %}
+            <button
+                type="button"
+                class="add_item_link btn btn-outline-secondary w-100"
+                data-collection-holder-class="meals">
+                Ajouter un repas
+            </button>
+        </div>
+
+        {{ form_widget(form) }}
+
+        <button class="btn btn-primary w-100">
+            {{ button_label|default('Enregistrer') }}
+        </button>
+    {{ form_end(form) }}
+{% endif %}

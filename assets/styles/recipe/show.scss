@@ -17,8 +17,9 @@
     display: block;
     margin-right: auto;
     margin-left: auto;
-    width: 300px;
+    width: auto;
     z-index: 2;
+    max-height: 100%;
 }
 
 .recipe-header .recipe-name {
@@ -42,5 +43,5 @@
 }
 
 .recipe-header .recipe-controls .btn {
-    width: 8%;
+    min-width: 8%;
 }

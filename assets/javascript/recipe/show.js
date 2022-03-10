@@ -16,5 +16,11 @@ function updateIngredientsQuantity(portionsCount) {
         let quantityElement = $(inputLabel).children('span.quantity');
         let quantityForOnePortion = quantityElement.data('quantity-for-one-portion');
         quantityElement.html(quantityForOnePortion * portionsCount);
+
+        let quantityForUnityElement = $(inputLabel).children('span.quantity-for-unity');
+        if (quantityForUnityElement.length > 0) {
+            let unitySize = quantityForUnityElement.data('unity-size');
+            quantityForUnityElement.html(quantityForOnePortion * portionsCount * unitySize);
+        }
     });
 }

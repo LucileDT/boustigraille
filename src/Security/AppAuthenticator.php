@@ -109,9 +109,9 @@ class AppAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
                 'info', sprintf('Bienvenue %s.', $username)
         );
 
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey))
+        if (!empty($request->get('_target_path')))
         {
-            return new RedirectResponse($targetPath);
+            return new RedirectResponse($request->get('_target_path'));
         }
 
         return new RedirectResponse($this->urlGenerator->generate('home'));

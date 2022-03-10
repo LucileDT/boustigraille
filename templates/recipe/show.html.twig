@@ -48,7 +48,7 @@
                         </h1>
                     </div>
                     {% if app.user is not null %}
-                        <div class="col-2 text-end pr-5 me-5">
+                        <div class="col-lg-2 col-4 text-right pr-5 mr-5">
                             {{ include('recipe/_delete_form.html.twig') }}
                         </div>
                     {% endif %}
@@ -67,7 +67,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-5">
+        <div class="col-lg-5 col-12">
             <div class="bg-light p-5">
                 <h3 class="mb-3 mb-2">
                     <form class="d-flex align-items-center">
@@ -102,6 +102,11 @@
                                         {{ ingredient.measureType }} de
                                     {% endif %}
                                     <span class="text-lowercase">{{ ingredient.label }}</span>
+                                    {% if ingredientQuantity.isMeasuredByUnit %}
+                                        (<span class="quantity-for-unity" data-unity-size="{{ ingredient.unitySize }}">
+                                            {{ ingredientQuantity.quantity * ingredient.unitySize }}
+                                        </span> {{ ingredient.measureType }})
+                                    {% endif %}
                                     <a href="{{ path('ingredient_show', {'id': ingredient.id}) }}"
                                     target="_blank"
                                         class="text-muted">

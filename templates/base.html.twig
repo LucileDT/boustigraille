@@ -101,6 +101,37 @@
                                                 {% endif %}
                                             </ul>
                                         </li>
+                                        {% if app.user is not null %}
+                                            <li class="nav-item dropdown submenu">
+                                                <a
+                                                        id="meals-dropdown"
+                                                        class="nav-link dropdown-toggle"
+                                                        href="#"
+                                                        role="button"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false"
+                                                >
+                                                    Listes de repas
+                                                </a>
+                                                <ul
+                                                        class="dropdown-menu"
+                                                        aria-labelledby="meals-dropdown"
+                                                >
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ path('meal_list_index') }}">
+                                                            Voir les listes de repas
+                                                        </a>
+                                                    </li>
+                                                    {% if app.user is not null %}
+                                                        <li>
+                                                            <a class="dropdown-item" href="{{ path('meal_list_new') }}">
+                                                                Enregistrer une nouvelle liste de repas
+                                                            </a>
+                                                        </li>
+                                                    {% endif %}
+                                                </ul>
+                                            </li>
+                                        {% endif %}
                                     </ul>
                                     {% if app.user is not null %}
                                         <ul class="navbar-nav ms-auto mb-0">

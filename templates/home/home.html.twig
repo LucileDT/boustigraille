@@ -31,11 +31,9 @@
                 <h1>Recettes favorites</h1>
             </div>
         </div>
-        <div class="row mt-2">
+        <div id="klassy-cards-container" class="d-flex justify-content-between flex-wrap">
             {% for recipe in app.user.favoriteRecipes %}
-                <div class="col-2 mb-4">
-                    {{ include('recipe/_recipe_card.html.twig') }}
-                </div>
+                {{ include('recipe/_recipe_card.html.twig') }}
             {% endfor %}
         </div>
     {% endif %}
