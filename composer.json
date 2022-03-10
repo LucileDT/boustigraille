@@ -90,13 +90,7 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
-            "@auto-scripts",
-            "mkdir -p ./vendor/remix-icon/ && wget https://github.com/Remix-Design/RemixIcon/archive/refs/tags/v2.5.0.zip -O ./vendor/remixicon.zip",
-            "unzip -o vendor/remixicon.zip -d vendor/",
-            "rm -r -f vendor/remixicon",
-            "mv vendor/RemixIcon-2.5.0 vendor/remixicon",
-            "rm -f vendor/remixicon.zip",
-            "mkdir -p ./public/font/library && ln -sf ../../../vendor/remixicon ./public/font/library/remixicon"
+            "@auto-scripts"
         ],
         "post-update-cmd": [
             "@auto-scripts"
