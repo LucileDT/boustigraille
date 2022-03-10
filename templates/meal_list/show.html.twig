@@ -87,7 +87,7 @@
                                         {% for mealQuantityForList in meal_list.meals %}
                                             <li>
                                                 {% if mealQuantityForList.meal.mainPictureFilename is empty %}
-                                                    <img class="img-thumbnail img-thumbnail-small" src="{{ asset('image/default-recipe-main-picture.jpg') }}">
+                                                    <img class="img-thumbnail img-thumbnail-small" src="{{ asset('build/image/default-recipe-main-picture.jpg') }}">
                                                 {% else %}
                                                     <img class="img-thumbnail img-thumbnail-small" src="{{ asset('uploads/pictures/' ~ mealQuantityForList.meal.mainPictureFilename) }}">
                                                 {% endif %}

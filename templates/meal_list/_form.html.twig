@@ -1,12 +1,12 @@
-{% block javascripts %}
-    <script src="{{ asset('javascript/meal_list/_form.js') }}"></script>
+{% block javascript %}
+    {{ encore_entry_script_tags('meal_list_form') }}
 {% endblock %}
 
 {% macro renderMealQuantityType(mealQuantityForMealListForm) %}
-    <div class="form-group">
-        <div class="form-row">
+    <div class="mb-3">
+        <div class="row g-1">
             <div class="col">
-                <div class="form-row">
+                <div class="row g-1">
                     <div class="col-1">
                         <button
                             class="btn btn-secondary meal-deletion-button w-100"
@@ -24,15 +24,6 @@
                         {{ form_errors(mealQuantityForMealListForm.meal) }}
                     </div>
                 </div>
-            </div>
-            <div class="col-1 mr-4 sr-only">
-                {{
-                    form_label(
-                        mealQuantityForMealListForm.quantity,
-                        null,
-                        {'label_attr': {'class': 'w-100 pt-3 text-left'}}
-                    )
-                }}
             </div>
             <div class="col-3">
                 {{
@@ -52,15 +43,15 @@
 
 {% if app.user is not null %}
     {{ form_start(form) }}
-        <div class="form-group">
+        <div class="mb-3">
                 {{ form_label(form.personName) }}
                 {{ form_widget(form.personName, {'attr': {'class': 'form-control'}}) }}
                 {{ form_help(form.personName) }}
                 {{ form_errors(form.personName) }}
         </div>
 
-        <div class="form-group">
-            <div class="form-row">
+        <div class="mb-3">
+            <div class="row g-1">
                 <div class="col-3">
                     {{ form_label(form.startDate) }}
                     {{ form_widget(form.startDate) }}
@@ -88,8 +79,8 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="my-4">Repas</div>
+        <div class="mb-3">
+            <div class="mb-3 mt-4 fw-bold">Repas</div>
             <div
                 id="meals"
                 class="meals"
