@@ -1,12 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    {{ encore_entry_link_tags('recipe_index') }}
-{% endblock %}
-
 {% block javascript %}
     {{ encore_entry_script_tags('recipe_toggle_favorite') }}
-    {{ encore_entry_script_tags('recipe_index') }}
 {% endblock %}
 
 {% block title %}Liste des Recettes{% endblock %}
@@ -35,11 +30,9 @@
         {% endif %}
     </div>
 
-    <div class="row">
+    <div id="klassy-cards-container" class="d-flex justify-content-between flex-wrap">
         {% for recipe in recipes %}
-            <div class="col-2 mb-5">
-                {{ include('recipe/_recipe_card.html.twig') }}
-            </div>
+            {{ include('recipe/_recipe_card.html.twig') }}
         {% endfor %}
     </div>
 {% endblock %}

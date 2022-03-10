@@ -33,7 +33,7 @@
         </div>
         <div class="row mt-2">
             {% for recipe in app.user.favoriteRecipes %}
-                <div class="col-2 mb-5">
+                <div class="col-2 mb-4">
                     {{ include('recipe/_recipe_card.html.twig') }}
                 </div>
             {% endfor %}

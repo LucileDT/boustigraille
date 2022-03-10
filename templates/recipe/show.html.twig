@@ -1,12 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-{#    <link rel="stylesheet" href="{{ asset('css/recipe/show.scss') }}">#}
     {{ encore_entry_link_tags('recipe_show') }}
 {% endblock %}
 
 {% block javascript %}
-{#    {{ encore_entry_script_tags('recipe_form') }}#}
     {{ encore_entry_script_tags('recipe_toggle_favorite') }}
 {% endblock %}
 
@@ -32,7 +30,7 @@
         <div class="col">
             <div class="recipe-header">
                 {% if recipe.mainPictureFilename is empty %}
-                    <img class="image-foreground" src="{{ asset('image/default-recipe-main-picture.jpg') }}">
+                    <img class="image-foreground" src="{{ asset('build/image/default-recipe-main-picture.jpg') }}">
                 {% else %}
                     <img class="image-foreground" src="{{ asset('uploads/pictures/' ~ recipe.mainPictureFilename) }}">
                 {% endif %}
@@ -61,7 +59,7 @@
                     {% endif %}
                 </div>
                 {% if recipe.mainPictureFilename is empty %}
-                    <img class="image-background" src="{{ asset('image/default-recipe-main-picture.jpg') }}">
+                    <img class="image-background" src="{{ asset('build/image/default-recipe-main-picture.jpg') }}">
                 {% else %}
                     <img class="image-background" src="{{ asset('uploads/pictures/' ~ recipe.mainPictureFilename) }}">
                 {% endif %}
