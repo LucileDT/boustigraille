@@ -1,0 +1,135 @@
+@use "variables";
+
+#klassy-cards-container {
+    &:after {
+        content: "";
+        flex: auto;
+    }
+}
+
+.card.klassy-cafe-card {
+    margin-right: 1rem !important;
+    max-width: 100%;
+    height: variables.$card-height;
+    width: variables.$card-width;
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    border-radius: variables.$card-border-radius !important;
+    border: none !important;
+    background-position: center;
+
+    .top-box {
+        .energy-box {
+            position: absolute;
+            width: variables.$energy-box-size;
+            height: variables.$energy-box-size;
+            background-color: variables.$klassy-primary-color;
+            font-size: calc(variables.$energy-box-size / 3.5);
+            color: #fff;
+            border-radius: variables.$card-border-radius;
+            text-align: center;
+            line-height: 0.8;
+
+            .energy-count {
+                font-weight: 700;
+            }
+
+            .energy-unit {
+                font-weight: 300;
+                font-size: calc((variables.$energy-box-size / 3.5) - 0.2rem);
+            }
+        }
+
+        .fav-box {
+            position: absolute;
+            right: calc((variables.$energy-box-size - variables.$fav-box-size) / 2);
+            top: calc((variables.$energy-box-size - variables.$fav-box-size) / 2);
+            width: variables.$fav-box-size;
+            height: variables.$fav-box-size;
+            font-size: 2rem;
+            color: variables.$klassy-secondary-color;
+            line-height: 1;
+
+            i:before {
+                top: initial;
+            }
+        }
+    }
+
+    .info-box {
+        &:hover,
+        &:focus,
+        &.active {
+            transform: translate(0, 0);
+        }
+
+        position: relative;
+        width: 100%;
+        height: variables.$card-height;
+        background-color: variables.$klassy-primary-color;
+        border: 1px solid variables.$klassy-primary-color;
+        transform: translate(0, calc(variables.$card-height - variables.$card-info-height));
+        transition: transform 0.3s ease-out;
+        padding: 1.2rem;
+
+        .title {
+            margin: 0;
+            font-size: calc(variables.$card-height / 15);
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            color: #fff;
+        }
+
+        .main-text-button {
+            text-align: center;
+
+            a {
+                font-size: 13px;
+                color: variables.$klassy-primary-color;
+                background-color: #fff;
+                font-weight: 600;
+                transition: all .3s;
+                width: 100%;
+
+                &:hover {
+                    opacity: 0.9;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+    $card-sm-height: calc(variables.$card-height * 1.1);
+    $card-sm-width: calc(variables.$card-width * 1.1);
+    .card.klassy-cafe-card {
+        margin-right: 0 !important;
+        height: $card-sm-height;
+        width: $card-sm-width;
+
+        .info-box {
+            height: $card-sm-height;
+            transform: translate(0, calc($card-sm-height - variables.$card-info-height));
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    $card-xs-height: calc(variables.$card-height * 1.1);
+    $card-xs-width: 100%;
+    .card.klassy-cafe-card {
+        margin-right: 0 !important;
+        height: $card-xs-height;
+        width: $card-xs-width;
+
+        .info-box {
+            height: $card-xs-height;
+            transform: translate(0, calc($card-xs-height - variables.$card-info-height));
+        }
+    }
+}

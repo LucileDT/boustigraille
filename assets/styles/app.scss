@@ -1,29 +1,84 @@
+// customize Bootstrap
+$font-family-sans-serif: 'Poppins', sans-serif;
+$min-contrast-ratio: 2;
+$primary:               #678EDB;
+$secondary:             #BC6ECC;
+$success:               #7BBF48;
+$info:                  #4EA7C5;
+$warning:               #FB7F37;
+$danger:                #F35A5A;
+$alert-bg-scale:        0;
+$alert-border-scale:    0;
+$alert-color-scale:     0;
 @import '~bootstrap/scss/bootstrap';
 
-html,
+// import Klassy Cafe
+@import '../klassy_cafe/assets/css/base';
+
+$header-height: 100px;
+$footer-height-padding: calc(3rem + 3rem + 55px);
+$footer-height-margin: 1.5rem;
+$footer-total-height: calc($footer-height-margin + $footer-height-padding + 16px + 24px);
+
 body {
-    height: calc(100% - 60px);
+    min-height: calc(100vh - $header-height);
+}
+
+/* Avoid content being hidden by the top sticky navbar on anchor clicks */
+*[id] {
+    scroll-margin-top: $header-height;
+}
+
+header {
+    input {
+        max-width: 13rem;
+    }
 }
 
 #page {
-    margin-top: 5rem;
-    min-height: 100%;
+    margin-top: $header-height;
+    padding-top: 1rem;
+    min-height: calc(100vh - $header-height - $footer-total-height);
 }
 
 #page-content {
 }
 
-/* Align icons with text */
+/* align icons with text */
 i {
     vertical-align: middle;
+
+    &::before {
+        position: relative;
+        top: -0.07rem;
+    }
 }
 
-i::before {
-    position: relative;
-    top: -0.18rem;
-}
-
-/* Icon which triggers an action */
+/* icon which triggers an action */
 .action-icon {
     cursor: pointer;
+}
+
+/* dropdown icon use remix icon arrow-drop-down-line instead of Bootstrap 5 default */
+.dropdown-toggle {
+    padding-right: 1.2rem !important;
+    &:after {
+        font-style: normal !important;
+        border-top: initial !important;
+        border-bottom: initial !important;
+        border-left: initial !important;
+        border-right: initial !important;
+        margin-left: initial !important;
+        font-weight: initial !important;
+        letter-spacing: initial !important;
+        line-height: initial !important;
+        display: inline-block;
+        color: #2a2a2a !important;
+        content: '\EA50' !important;
+        font-family: 'remixicon', sans-serif !important;
+        font-size: 20px !important;
+        position: absolute !important;
+        right: 0 !important;
+        top: 0.5rem !important;
+    }
 }
