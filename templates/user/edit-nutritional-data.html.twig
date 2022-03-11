@@ -2,25 +2,24 @@
 
 {% block title %}Édition de mes valeurs nutritionnelles{% endblock %}
 
-{% block breadcrumb %}
-    <li class="breadcrumb-item">
-        <a href="/">Accueil</a>
-    </li>
-    <li class="breadcrumb-item">
-        <a href="#">Profil</a>
-    </li>
-    <li class="breadcrumb-item active" aria-current="page">
-        Édition de mes valeurs nutritionnelles
-    </li>
+{% block page_title %}
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="page-heading">
+                    <h6>
+                        <a href="{{ path('home') }}">Accueil</a>
+                        / Mon compte
+                        / Édition de mes valeurs nutritionnelles
+                    </h6>
+                    <h2>Édition de mes valeurs nutritionnelles</h2>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block body %}
-    <div class="row mt-5 mb-4">
-        <div class="col">
-            <h1>Édition de mes valeurs nutritionnelles</h1>
-        </div>
-    </div>
-
     <div class="row">
         <div class="col">
             {{ form_start(form) }}

@@ -17,13 +17,27 @@
     </li>
 {% endblock %}
 
-{% block body %}
-    <div class="row mt-5 mb-4">
-        <div class="col">
-            <h1>Édition du compte {{ user.username }}</h1>
+{% block page_title %}
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="page-heading">
+                    <h6>
+                        <a href="{{ path('home') }}">Accueil</a>
+                        / Administration
+                        /
+                        <a href="{{ path('user_index') }}">Liste des comptes</a>
+                        / Édition du compte {{ user.username }}
+                    </h6>
+                    <h2>Édition du compte {{ user.username }}</h2>
+                </div>
+            </div>
         </div>
     </div>
+{% endblock %}
 
+
+{% block body %}
     <div class="row">
         <div class="col">
             {{ include('user/_form.html.twig', {'button_label': 'Mettre à jour'}) }}

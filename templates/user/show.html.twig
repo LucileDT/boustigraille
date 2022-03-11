@@ -17,19 +17,39 @@
     </li>
 {% endblock %}
 
-{% block body %}
-    <div class="row mt-5 mb-4">
-        <div class="col">
-            <h1>Compte de {{ user.username }}</h1>
-        </div>
-        <div class="col-1 text-end">
-            {{ include('user/_delete_form.html.twig') }}
-        </div>
-        <div class="col-1 text-end">
-            <a class="btn btn-primary btn-large" href="{{ path('user_edit', {'id': user.id}) }}">Éditer</a>
+{% block page_title %}
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="page-heading">
+                    <h6>
+                        <a href="{{ path('home') }}">Accueil</a>
+                        / Administration
+                        /
+                        <a href="{{ path('user_index') }}">Liste des comptes</a>
+                        / Compte de {{ user.username }}
+                    </h6>
+                    <h2>
+                        Compte de {{ user.username }}
+                    </h2>
+                </div>
+            </div>
+            {% if app.user is not null %}
+                <div class="col-12 col-lg-3 text-end">
+                    <div class="d-flex justify-content-end">
+                        {{ include('user/_delete_form.html.twig') }}
+                        <a class="btn btn-primary btn-large ms-2" href="{{ path('user_edit', {'id': user.id}) }}">
+                            Éditer
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
+{% endblock %}
 
+
+{% block body %}
     <div class="row">
         <div class="col">
             <table class="table">

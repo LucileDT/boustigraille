@@ -2,29 +2,29 @@
 
 {% block title %}Liste des ingrédients{% endblock %}
 
-{% block breadcrumb %}
-    <li class="breadcrumb-item">
-        <a href="/">Accueil</a>
-    </li>
-    <li class="breadcrumb-item">
-        <a href="#">Ingrédients</a>
-    </li>
-    <li class="breadcrumb-item active" aria-current="page">
-        Liste des ingrédients
-    </li>
+{% block page_title %}
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="page-heading">
+                    <h6>
+                        <a href="{{ path('home') }}">Accueil</a>
+                        / Ingrédients
+                        / Liste des ingrédients
+                    </h6>
+                    <h2>Liste des ingrédients</h2>
+                </div>
+            </div>
+            {% if app.user is not null %}
+                <div class="col-12 col-lg-4 text-end">
+                    <a class="btn btn-primary btn-large" href="{{ path('ingredient_new') }}">Créer un nouvel ingrédient</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
 
 {% block body %}
-    <div class="row mt-5 mb-4">
-        <div class="col">
-            <h1>Liste des ingrédients</h1>
-        </div>
-        {% if app.user is not null %}
-            <div class="col-6 text-end">
-                <a class="btn btn-primary btn-large" href="{{ path('ingredient_new') }}">Créer un nouvel ingrédient</a>
-            </div>
-        {% endif %}
-    </div>
     {% if app.user is not null %}
         <div class="row mb-4">
             <div class="col">
@@ -72,6 +72,8 @@
                         <th class="text-center align-middle">Glucides</th>
                         <th class="text-center align-middle">Lipides</th>
                         <th class="text-center align-middle">Énergie</th>
+                        <th></th>
+                        <th></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -146,12 +148,16 @@
                                         <i class="ri-bar-chart-box-fill"></i>
                                     </a>
                                 {% endif %}
+                            </td>
+                            <td class="text-end align-middle">
                                 <a
                                     class="btn-primary btn btn-sm"
                                     href="{{ path('ingredient_show', {'id': ingredient.id}) }}"
                                     >
                                     Voir
                                 </a>
+                            </td>
+                            <td class="text-end align-middle">
                                 {% if app.user is not null %}
                                     <a
                                         class="btn-secondary btn btn-sm"

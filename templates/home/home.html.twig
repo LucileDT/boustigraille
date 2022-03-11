@@ -26,12 +26,7 @@
         </div>
     </div>
     {% if app.user is not null %}
-        <div class="row mt-5">
-            <div class="col">
-                <h1>Recettes favorites</h1>
-            </div>
-        </div>
-        <div id="klassy-cards-container" class="d-flex justify-content-between flex-wrap">
+        <div id="klassy-cards-container" class="d-flex justify-content-between flex-wrap mt-5">
             {% for recipe in app.user.favoriteRecipes %}
                 {{ include('recipe/_recipe_card.html.twig') }}
             {% endfor %}

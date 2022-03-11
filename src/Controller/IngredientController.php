@@ -45,6 +45,11 @@ class IngredientController extends AbstractController
         $form = $this->createForm(IngredientType::class, $ingredient);
         $form->handleRequest($request);
 
+        $ingredientFromOpenFoodFactsFDO = new IngredientFromOpenFoodFactsFDO();
+        $formFromOpenFoodFact = $this->createForm(IngredientFromOpenFoodFactsType::class, $ingredientFromOpenFoodFactsFDO, [
+            'action' => $this->generateUrl('ingredient_new_from_openfoodfacts'),
+        ]);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ingredient);
@@ -56,6 +61,8 @@ class IngredientController extends AbstractController
         return $this->render('ingredient/new.html.twig', [
             'ingredient' => $ingredient,
             'form' => $form->createView(),
+            'formFromOpenFoodFact' => $formFromOpenFoodFact->createView(),
+            'addOpenFoodFactsForm' => true,
         ]);
     }
 
@@ -137,6 +144,7 @@ class IngredientController extends AbstractController
         return $this->render('ingredient/edit.html.twig', [
             'ingredient' => $ingredient,
             'form' => $form->createView(),
+            'addOpenFoodFactsForm' => false,
         ]);
     }
 
