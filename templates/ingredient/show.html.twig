@@ -2,53 +2,55 @@
 
 {% block title %}{{ ingredient.label }}{% endblock %}
 
-{% block breadcrumb %}
-    <li class="breadcrumb-item">
-        <a href="/">Accueil</a>
-    </li>
-    <li class="breadcrumb-item">
-        <a href="#">Ingredients</a>
-    </li>
-    <li class="breadcrumb-item">
-        <a href="{{ path('ingredient_index') }}">Liste des ingredients</a>
-    </li>
-    <li class="breadcrumb-item active" aria-current="page">
-        {{ ingredient.label }}
-    </li>
+
+{% block page_title %}
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="page-heading">
+                    <h6>
+                        <a href="{{ path('home') }}">Accueil</a>
+                        / Ingrédients
+                        /
+                        <a href="{{ path('ingredient_index') }}">Liste des ingrédients</a>
+                        / {{ ingredient.label }}
+                    </h6>
+                    <h2>Fiche ingrédient - {{ ingredient.label }}</h2>
+                </div>
+            </div>
+            {% if app.user is not null or ingredient.barCode is not empty %}
+                <div class="col-12 col-lg-3 text-end">
+                    <div class="d-flex justify-content-end">
+                        {% if app.user is not null %}
+                            {{ include('ingredient/_delete_form.html.twig') }}
+                        {% endif %}
+                        {% if ingredient.barCode is not empty %}
+                            <a
+                                class="btn btn-secondary btn-large ms-2"
+                                href="https://fr.openfoodfacts.org/produit/{{ ingredient.barCode }}"
+                                target="_blank"
+                                data-toggle="tooltip"
+                                title="Voir sur OpenFoodFacts"
+                            >
+                                <i class="ri-bar-chart-box-fill"></i>
+                            </a>
+                        {% endif %}
+                        {% if app.user is not null %}
+                            <a
+                                class="btn btn-primary btn-large ms-2"
+                                href="{{ path('ingredient_edit', {'id': ingredient.id}) }}"
+                            >
+                                Éditer
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
 
 {% block body %}
-    <div class="row mt-5 mb-4">
-        <div class="col">
-            <h1>{{ ingredient.label }}</h1>
-        </div>
-        <div class="col-2 text-center">
-            <div class="row">
-                {% if app.user is not null %}
-                    <div class="col p-0">
-                        {{ include('ingredient/_delete_form.html.twig') }}
-                    </div>
-                    <div class="col p-0">
-                        <a class="btn btn-primary btn-large" href="{{ path('ingredient_edit', {'id': ingredient.id}) }}">Éditer</a>
-                    </div>
-                {% endif %}
-                {% if ingredient.barCode is not empty %}
-                    <div class="col-3 p-0">
-                        <a
-                            class="btn btn-secondary btn-large"
-                            href="https://fr.openfoodfacts.org/produit/{{ ingredient.barCode }}"
-                            target="_blank"
-                            data-toggle="tooltip"
-                            title="Voir sur OpenFoodFacts"
-                            >
-                            <i class="ri-bar-chart-box-fill"></i>
-                        </a>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
     <table class="table">
         <tbody>
             <tr>
