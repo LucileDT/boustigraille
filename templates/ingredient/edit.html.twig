@@ -3,22 +3,22 @@
 {% block title %}Édition de l'ingrédient {{ ingredient.label }}{% endblock %}
 
 {% block page_title %}
-<div class="container-fluid mt-3">
-    <div class="row">
-        <div class="col">
-            <div class="page-heading">
-                <h6>
-                    <a href="{{ path('home') }}">Accueil</a>
-                    / Ingrédients
-                    /
-                    <a href="{{ path('ingredient_index') }}">Liste des ingrédients</a>
-                    / Édition de l'ingrédient {{ ingredient.label }}
-                </h6>
-                <h2>Édition de l'ingrédient {{ ingredient.label }}</h2>
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="page-heading">
+                    <h6>
+                        <a href="{{ path('home') }}">Accueil</a>
+                        / Ingrédients
+                        /
+                        <a href="{{ path('ingredient_index') }}">Liste des ingrédients</a>
+                        / Édition de l'ingrédient {{ ingredient.label }}
+                    </h6>
+                    <h2>Édition de l'ingrédient {{ ingredient.label }}</h2>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block body %}
