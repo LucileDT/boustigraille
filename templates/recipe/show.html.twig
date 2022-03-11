@@ -2,11 +2,13 @@
 
 {% block stylesheets %}
     {{ encore_entry_link_tags('recipe_show') }}
+    {{ encore_entry_link_tags('recipe_nutritional_values_ingredients') }}
 {% endblock %}
 
 {% block javascript %}
     {{ encore_entry_script_tags('recipe_toggle_favorite') }}
     {{ encore_entry_script_tags('recipe_show') }}
+    {{ encore_entry_script_tags('recipe_nutritional_values_ingredients') }}
 {% endblock %}
 
 {% block title %}{{ recipe.name }}{% endblock %}
@@ -119,6 +121,7 @@
                     </form>
                 </div>
                 {{ include('recipe/_nutritional_values.html.twig', {'title': 'Valeurs nutritionnelles pour une part', 'paddingTop': 2}) }}
+                {{ include('recipe/_nutritional_values_ingredients.html.twig', {'ingredientQuantities': recipe.ingredients}) }}
             </div>
         </div>
         <div class="col">
