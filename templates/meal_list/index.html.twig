@@ -42,7 +42,18 @@
     </div>
     <div class="row mb-5">
         <div class="col table-responsive">
-            {{ include('meal_list/_table.html.twig', {'meal_lists': meal_lists, 'form': grocery_list_form, 'show_action_buttons': true}) }}
+            {{ include('meal_list/_table.html.twig', {'meal_lists': current_meal_lists, 'show_action_buttons': true}) }}
+        </div>
+    </div>
+    <hr />
+    <div class="row mt-5">
+        <div class="col">
+            <h3>Futures</h3>
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col table-responsive">
+            {{ include('meal_list/_table.html.twig', {'meal_lists': future_meal_lists, 'form': grocery_list_form, 'show_action_buttons': true}) }}
         </div>
     </div>
     <hr />

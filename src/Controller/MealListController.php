@@ -27,7 +27,8 @@ class MealListController extends AbstractController
 
         return $this->render('meal_list/index.html.twig', [
             'past_meal_lists' => $mealListRepository->findPastOnes(),
-            'meal_lists' => $mealListRepository->findCurrentAndFutureOnes(),
+            'current_meal_lists' => $mealListRepository->findCurrentOnes(),
+            'future_meal_lists' => $mealListRepository->findFutureOnes(),
             'grocery_list_form' => $groceryListForm->createView(),
         ]);
     }
