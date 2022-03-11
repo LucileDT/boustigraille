@@ -1,0 +1,104 @@
+<div class="text-center">
+    <button
+        class="btn btn-outline-info"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#ingredients-nutritional-values"
+        aria-expanded="false"
+        aria-controls="ingredients-nutritional-values">
+        Détails
+    </button>
+</div>
+
+<div id="ingredients-nutritional-values" class="mt-4 table-responsive collapse">
+    <table class="table table-bordered text-center">
+        <thead class="thead-light">
+            <tr>
+                <th class="w-25">Ingrédient</th>
+                <th class="w-25">Protéines</th>
+                <th class="w-25">Glucides</th>
+                <th class="w-25">Lipides</th>
+                <th class="w-25">Énergie</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white">
+            {% for ingredientQuantity in ingredientQuantities %}
+                {% set ingredient = ingredientQuantity.ingredient %}
+                <tr>
+                    <td>
+                        {{ ingredient.label }}
+                    </td>
+                    <td>
+                        {% if ingredientQuantity.isMeasuredByUnit %}
+                            {{ (ingredient.proteins / 100 * (ingredientQuantity.quantity * ingredient.unitySize)) | round }}&nbsp;g
+                        {% else %}
+                            {{ (ingredient.proteins / 100 * ingredientQuantity.quantity) | round }}&nbsp;g
+                        {% endif %}
+                        <br>
+                        <span class="text-muted fw-light">
+                            <small>
+                                ({{ ingredient.proteins | round }}&nbsp;g&nbsp;<span class="quantity-scale fw-lighter">/&nbsp;100g</span>)
+                            </small>
+                        </span>
+                    </td>
+                    <td>
+                        {% if ingredientQuantity.isMeasuredByUnit %}
+                            {{ (ingredient.carbohydrates / 100 * (ingredientQuantity.quantity * ingredient.unitySize)) | round }}&nbsp;g
+                        {% else %}
+                            {{ (ingredient.carbohydrates / 100 * ingredientQuantity.quantity) | round }}&nbsp;g
+                        {% endif %}
+                        <br>
+                        <span class="text-muted">
+                            <small>
+                                ({{ ingredient.carbohydrates | round }}&nbsp;g&nbsp;<span class="quantity-scale fw-lighter">/&nbsp;100g</span>)
+                            </small>
+                        </span>
+                    </td>
+                    <td>
+                        {% if ingredientQuantity.isMeasuredByUnit %}
+                            {{ (ingredient.fat / 100 * (ingredientQuantity.quantity * ingredient.unitySize)) | round }}&nbsp;g
+                        {% else %}
+                            {{ (ingredient.fat / 100 * ingredientQuantity.quantity) | round }}&nbsp;g
+                        {% endif %}
+                        <br>
+                        <span class="text-muted">
+                            <small>
+                                ({{ ingredient.fat | round }}&nbsp;g&nbsp;<span class="quantity-scale fw-lighter">/&nbsp;100g</span>)
+                            </small>
+                        </span>
+                    </td>
+                    <td>
+                        {% if ingredientQuantity.isMeasuredByUnit %}
+                            {{ (ingredient.energy / 100 * (ingredientQuantity.quantity * ingredient.unitySize)) | round }}&nbsp;g
+                        {% else %}
+                            {{ (ingredient.energy / 100 * ingredientQuantity.quantity) | round }}&nbsp;g
+                        {% endif %}
+                        <br>
+                        <span class="text-muted">
+                            <small>
+                                ({{ ingredient.energy | round }}&nbsp;g&nbsp;<span class="quantity-scale fw-lighter">/&nbsp;100g</span>)
+                            </small>
+                        </span>
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td>
+                    <strong>TOTAL</strong>
+                </td>
+                <td>
+                    <strong>{{ recipe.proteins | round }}&nbsp;g</strong>
+                </td>
+                <td>
+                    <strong>{{ recipe.carbohydrates | round }}&nbsp;g</strong>
+                </td>
+                <td>
+                    <strong>{{ recipe.fat | round }}&nbsp;g</strong>
+                </td>
+                <td>
+                    <strong>{{ recipe.energy | round }}&nbsp;kcal</strong>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
