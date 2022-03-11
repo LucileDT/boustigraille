@@ -237,15 +237,14 @@
                     {% endfor %}
                 </div>
 
-                <div class="container-fluid">
-                    <nav aria-label="Fil d'ariane" class="px-4 py-3 bg-light mt-2 mb-4">
-                        <ol class="breadcrumb mb-0">
-                            {% block breadcrumb %}
-                                <li class="breadcrumb-item active" aria-current="page">Accueil</li>
-                            {% endblock %}
-                        </ol>
-                    </nav>
-                </div>
+                {% block page_title %}
+                    <div class="container-fluid mt-3">
+                        <div class="page-heading">
+                            <h6>Accueil</h6>
+                            <h2>Retrouvez ici toutes vos recettes favorites</h2>
+                        </div>
+                    </div>
+                {% endblock %}
 
                 <div id="page-content" class="container-fluid">
                     {% block body %}{% endblock %}

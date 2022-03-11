@@ -2,24 +2,19 @@
 
 {% block title %}Connexion{% endblock %}
 
-{% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page">
-        <a href="/">Accueil</a>
-    </li>
-    <li class="breadcrumb-item active" aria-current="page">Connexion</li>
+{% block page_title %}
+    <div class="container-fluid">
+        <div class="page-heading">
+            <h6>
+                <a href="{{ path('home') }}">Accueil</a>
+                / Connexion
+            </h6>
+            <h2>Bienvenue sur Boustigraille, pour accéder au logiciel, identifiez-vous.</h2>
+        </div>
+    </div>
 {% endblock %}
 
 {% block body %}
-    <div class="row mt-5 mb-4">
-        <div class="col">
-            <p class="text-center lead">
-                Bienvenue sur Boustigraille.
-            </p>
-            <p class="text-center lead">
-                Pour accéder au logiciel, identifiez-vous :
-            </p>
-        </div>
-    </div>
     <div class="row">
         <div class="col-md-4 offset-md-4 text-center">
             <form action="{{ path('app_login') }}" method="post">
