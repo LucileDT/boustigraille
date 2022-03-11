@@ -2,27 +2,46 @@
 
 {% block title %}Nouvel ingrédient{% endblock %}
 
-{% block breadcrumb %}
-    <li class="breadcrumb-item">
-        <a href="/">Accueil</a>
-    </li>
-    <li class="breadcrumb-item">
-        <a href="#">Ingrédients</a>
-    </li>
-    <li class="breadcrumb-item" aria-current="page">
-        <a href="{{ path('ingredient_index') }}">Liste des ingrédients</a>
-    </li>
-    <li class="breadcrumb-item active" aria-current="page">
-        Nouvel ingrédient
-    </li>
+{% block page_title %}
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="page-heading">
+                    <h6>
+                        <a href="{{ path('home') }}">Accueil</a>
+                        / Ingrédients
+                        /
+                        <a href="{{ path('ingredient_index') }}">Liste des ingrédients</a>
+                        / Nouvel ingrédient
+                    </h6>
+                    <h2>Nouvel ingrédient</h2>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block body %}
-    <div class="row mt-5 mb-4">
-        <div class="col">
-            <h1>Nouvel ingrédient</h1>
+    {% if app.user is not null and addOpenFoodFactsForm %}
+        <div class="card border-0 mb-5">
+            <div class="card-body bg-light">
+                <h5 class="card-title lh-1 mt-2">
+                    <span class="badge bg-info">Optionnel</span>
+                    Importer un ingrédient depuis
+                    <a href="https://fr.openfoodfacts.org" target="_blank">
+                        <i class="ri-external-link-fill"></i>
+                        Open Food Facts
+                    </a>
+                </h5>
+                <div class="mt-3 mb-3">
+                    {{ include('ingredient/_create_from_openfoodfacts_form.html.twig', {
+                        'button_label': 'Créer depuis Open Food Facts',
+                        'form': formFromOpenFoodFact
+                    }) }}
+                </div>
+            </div>
         </div>
-    </div>
+    {% endif %}
 
     <div class="row">
         <div class="col">
