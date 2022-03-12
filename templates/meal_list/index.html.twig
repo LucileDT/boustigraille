@@ -35,20 +35,25 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row mt-5">
+    <div class="row mt-4">
         <div class="col">
-            <h3>En cours</h3>
+            <div class="page-heading">
+                <h2>En cours</h2>
+            </div>
         </div>
     </div>
     <div class="row mb-5">
-        <div class="col table-responsive">
-            {{ include('meal_list/_table.html.twig', {'meal_lists': current_meal_lists, 'show_action_buttons': true}) }}
-        </div>
+        {% for mealList in current_meal_lists %}
+            <div class="col-12 col-md-6">
+                {{ include('meal_list/_meal_list_card.html.twig', {'meal_list': mealList}) }}
+            </div>
+        {% endfor %}
     </div>
-    <hr />
-    <div class="row mt-5">
+    <div class="row mt-4">
         <div class="col">
-            <h3>Futures</h3>
+            <div class="page-heading">
+                <h2>À venir</h2>
+            </div>
         </div>
     </div>
     <div class="row mb-5">
@@ -56,10 +61,11 @@
             {{ include('meal_list/_table.html.twig', {'meal_lists': future_meal_lists, 'form': grocery_list_form, 'show_action_buttons': true}) }}
         </div>
     </div>
-    <hr />
-    <div class="row mt-5">
+    <div class="row mt-4">
         <div class="col">
-            <h3>Passés</h3>
+            <div class="page-heading">
+                <h2>Archives</h2>
+            </div>
         </div>
     </div>
     <div class="row">
