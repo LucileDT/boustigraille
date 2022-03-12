@@ -1,7 +1,7 @@
 <div class="card w-100 h-100">
     <div class="card-body bg-light">
         <h5 class="card-title">{{ meal_list.personName }}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">
+        <h6 class="card-subtitle mb-3 text-muted">
             Du
             {{ meal_list.startDate | format_date('full', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
             au
@@ -10,7 +10,12 @@
         <p class="card-text">
             <ul>
                 {% for mealQuantityForList in meal_list.meals %}
-                    <li>
+                    <li class="mb-2">
+                        {% if mealQuantityForList.meal.mainPictureFilename is empty %}
+                            <img class="img-thumbnail img-thumbnail-small" src="{{ asset('build/image/default-recipe-main-picture.jpg') }}">
+                        {% else %}
+                            <img class="img-thumbnail img-thumbnail-small" src="{{ asset('uploads/pictures/' ~ mealQuantityForList.meal.mainPictureFilename) }}">
+                        {% endif %}
                         {{ mealQuantityForList.meal.name }}&nbsp;x{{ mealQuantityForList.quantity }}
                     </li>
                 {% endfor %}
