@@ -2,6 +2,14 @@
 
 {% block title %}Listes de repas{% endblock %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('meal_list_card') }}
+{% endblock %}
+
+{% block javascript %}
+    {{ encore_entry_script_tags('meal_list_card') }}
+{% endblock %}
+
 {% block breadcrumb %}
     <li class="breadcrumb-item">
         <a href="/">Accueil</a>
@@ -43,11 +51,17 @@
         </div>
     </div>
     <div class="row mb-5">
-        {% for mealList in current_meal_lists %}
-            <div class="col-12 col-md-6">
-                {{ include('meal_list/_meal_list_card.html.twig', {'meal_list': mealList}) }}
+        {% if current_meal_lists | length > 0 %}
+            {% for mealList in current_meal_lists %}
+                <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+                    {{ include('meal_list/_meal_list_card.html.twig', {'meal_list': mealList}) }}
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col text-center">
+                <i class="text-muted">Aucun repas n'est prévu (pour le moment)</i>
             </div>
-        {% endfor %}
+        {% endif %}
     </div>
     <div class="row mt-4">
         <div class="col">
@@ -57,9 +71,17 @@
         </div>
     </div>
     <div class="row mb-5">
-        <div class="col table-responsive">
-            {{ include('meal_list/_table.html.twig', {'meal_lists': future_meal_lists, 'form': grocery_list_form, 'show_action_buttons': true}) }}
-        </div>
+        {% if future_meal_lists | length > 0 %}
+            {% for mealList in future_meal_lists %}
+                <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+                    {{ include('meal_list/_meal_list_card.html.twig', {'meal_list': mealList}) }}
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col text-center">
+                <i class="text-muted">Aucun repas n'est prévu (pour le moment)</i>
+            </div>
+        {% endif %}
     </div>
     <div class="row mt-4">
         <div class="col">
