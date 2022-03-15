@@ -38,10 +38,10 @@
             {% endif %}
             <td class="text-center align-middle">{{ meal_list.personName }}</td>
             <td class="text-center align-middle">
-                {{ meal_list.startDate | format_date('full', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
+                {{ meal_list.startDate | format_date('full', locale='fr') | capitalize }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
             </td>
             <td class="text-center align-middle">
-                {{ meal_list.endDate | format_date('full', locale='fr') }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
+                {{ meal_list.endDate | format_date('full', locale='fr') | capitalize }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
             </td>
             <td class="text-center align-middle">
                 {% if meal_list.meals|length > 0 %}
