@@ -1,5 +1,5 @@
-<div class="card w-100 h-100">
-    <div class="card-body bg-light">
+<div class="meal-list card w-100 h-100">
+    <div class="card-body bg-white">
         <h5 class="card-title">{{ meal_list.personName }}</h5>
         <h6 class="card-subtitle mb-3 text-muted">
             Du
@@ -11,22 +11,28 @@
             <ul>
                 {% for mealQuantityForList in meal_list.meals %}
                     <li class="mb-2">
-                        {% if mealQuantityForList.meal.mainPictureFilename is empty %}
-                            <img class="img-thumbnail img-thumbnail-small" src="{{ asset('build/image/default-recipe-main-picture.jpg') }}">
-                        {% else %}
-                            <img class="img-thumbnail img-thumbnail-small" src="{{ asset('uploads/pictures/' ~ mealQuantityForList.meal.mainPictureFilename) }}">
-                        {% endif %}
-                        {{ mealQuantityForList.meal.name }}&nbsp;x{{ mealQuantityForList.quantity }}
+                        <a
+                            href="{{ path('recipe_show', { 'id': mealQuantityForList.meal.id }) }}"
+                            class="d-flex align-items-center"
+                        >
+                            {% if mealQuantityForList.meal.mainPictureFilename is empty %}
+                                <img class="img-thumbnail img-thumbnail-small" src="{{ asset('build/image/default-recipe-main-picture.jpg') }}">
+                            {% else %}
+                                <img class="img-thumbnail img-thumbnail-small" src="{{ asset('uploads/pictures/' ~ mealQuantityForList.meal.mainPictureFilename) }}">
+                            {% endif %}
+                            <div class="ms-2">{{ mealQuantityForList.meal.name }}</div>
+                            <div class="ms-2">x{{ mealQuantityForList.quantity }}</div>
+                        </a>
                     </li>
                 {% endfor %}
             </ul>
         </p>
     </div>
-    <div class="card-footer bg-light border-top-0 text-center">
-        <a class="btn btn-primary btn-sm" href="{{ path('meal_list_show', {'id': meal_list.id}) }}">
+    <div class="card-footer bg-white border-top-0 text-center pt-0 pb-3">
+        <a class="btn btn-outline-primary btn-sm w-100" href="{{ path('meal_list_show', {'id': meal_list.id}) }}">
             Voir
         </a>
-        <a class="btn btn-secondary btn-sm mt-5 mt-md-0" href="{{ path('meal_list_edit', {'id': meal_list.id}) }}">
+        <a class="btn btn-outline-secondary btn-sm mt-5 mt-md-2 w-100" href="{{ path('meal_list_edit', {'id': meal_list.id}) }}">
             Éditer
         </a>
     </div>
