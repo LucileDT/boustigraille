@@ -36,7 +36,7 @@
         <div class="row">
             <div class="col-12">
                 <button
-                    class="meal-list-selector btn btn-outline-primary btn-sm w-100"
+                    class="meal-list-selector btn btn-outline-primary w-100"
                 >
                     <span class="d-none">
                         <i class="ri-checkbox-multiple-fill"></i>
@@ -51,13 +51,24 @@
         </div>
         <div class="row gx-2">
             <div class="col-12 col-md-6">
-                <a class="btn btn-outline-secondary btn-sm mt-5 mt-md-2 w-100" href="{{ path('meal_list_show', {'id': meal_list.id}) }}">
+                <a class="btn btn-outline-secondary mt-5 mt-md-2 w-100" href="{{ path('meal_list_show', {'id': meal_list.id}) }}">
                     Voir
                 </a>
             </div>
             <div class="col-12 col-md-6">
-                <a class="btn btn-outline-secondary btn-sm mt-5 mt-md-2 w-100" href="{{ path('meal_list_edit', {'id': meal_list.id}) }}">
+                <a class="btn btn-outline-secondary mt-5 mt-md-2 w-100" href="{{ path('meal_list_edit', {'id': meal_list.id}) }}">
                     Éditer
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <a
+                    class="btn btn-outline-secondary btn-sm mt-5 mt-md-2 w-100"
+                    href="{{ path('meal_list_new', { 'fromMealList': meal_list.id }) }}"
+                >
+                    <i class="ri-sticky-note-fill"></i>
+                    Enregistrer une liste de repas aux mêmes dates
                 </a>
             </div>
         </div>

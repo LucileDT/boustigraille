@@ -33,11 +33,19 @@ class MealListController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'meal_list_new', methods: ['GET', 'POST'])]
+    #[Route('/new/{fromMealList}', name: 'meal_list_new', methods: ['GET', 'POST'])]
     #[Security('not is_anonymous()')]
-    public function new(Request $request, MealListRepository $mealListRepository): Response
+    public function new(
+        Request $request,
+        MealListRepository $mealListRepository,
+        MealList $fromMealList = null
+    ): Response
     {
         $mealList = new MealList();
+        if (!empty($fromMealList)) {
+            $mealList->setStartDate($fromMealList->getStartDate());
+            $mealList->setEndDate($fromMealList->getEndDate());
+        }
         $form = $this->createForm(MealListType::class, $mealList);
         $form->handleRequest($request);
 
