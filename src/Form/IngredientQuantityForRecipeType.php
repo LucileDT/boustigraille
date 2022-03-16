@@ -26,23 +26,23 @@ class IngredientQuantityForRecipeType extends AbstractType
                 'class' => Ingredient::class,
                 'choice_label' => function($ingredient, $key, $index) {
                     $message = $ingredient->getLabel();
-                    if (!empty($ingredient->getPortionSize()) || !empty($ingredient->getUnitySize()))
+                    if (!empty($ingredient->getPortionSize()) || !empty($ingredient->getUnitSize()))
                     {
                         $message .= ' (';
                     }
 
-                    if (!empty($ingredient->getUnitySize()))
+                    if (!empty($ingredient->getUnitSize()))
                     {
                         $message .= sprintf(
                                 'une unité = %s %s',
-                                $ingredient->getUnitySize(),
+                                $ingredient->getUnitSize(),
                                 $ingredient->getMeasureType()
                         );
                     }
 
                     if (!empty($ingredient->getPortionSize()))
                     {
-                        if (!empty($ingredient->getUnitySize()))
+                        if (!empty($ingredient->getUnitSize()))
                         {
                             $message .= ' & ';
                         }
@@ -54,7 +54,7 @@ class IngredientQuantityForRecipeType extends AbstractType
                         );
                     }
 
-                    if (!empty($ingredient->getPortionSize()) || !empty($ingredient->getUnitySize()))
+                    if (!empty($ingredient->getPortionSize()) || !empty($ingredient->getUnitSize()))
                     {
                         $message .= ')';
                     }
@@ -73,8 +73,8 @@ class IngredientQuantityForRecipeType extends AbstractType
                         'data-carbohydrates' => $ingredient->getCarbohydrates(),
                         'data-energy' => $ingredient->getEnergy(),
                         'data-measure-type' => $ingredient->getMeasureType(),
-                        'data-has-unit-measure-saved' => $ingredient->getUnitySize() > 0,
-                        'data-unit-measure-conversion-rate' => $ingredient->getUnitySize() / 100,
+                        'data-has-unit-measure-saved' => $ingredient->getUnitSize() > 0,
+                        'data-unit-measure-conversion-rate' => $ingredient->getUnitSize() / 100,
                     ] : [];
                 }),
                 'attr' => [

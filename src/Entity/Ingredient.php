@@ -80,7 +80,7 @@ class Ingredient
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $unitySize;
+    private $unitSize;
 
     public function getId(): ?int
     {
@@ -231,14 +231,14 @@ class Ingredient
         return $this;
     }
 
-    public function getUnitySize(): ?float
+    public function getUnitSize(): ?float
     {
-        return $this->unitySize;
+        return $this->unitSize;
     }
 
-    public function setUnitySize(?float $unitySize): self
+    public function setUnitSize(?float $unitSize): self
     {
-        $this->unitySize = $unitySize;
+        $this->unitSize = $unitSize;
 
         return $this;
     }
