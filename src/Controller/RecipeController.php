@@ -10,6 +10,7 @@ use App\Repository\RecipeRepository;
 use App\Service\RecipeService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,12 +56,19 @@ class RecipeController extends AbstractController
             $mainPicture = $form->get('main_picture')->getData();
             if ($mainPicture)
             {
-                $filename = RecipeService::saveMainPicture(
+                try
+                {
+                    $filename = RecipeService::saveMainPicture(
                         $mainPicture,
                         $recipe->getName(),
                         $this->getParameter('pictures_directory')
-                );
-                $recipe->setMainPictureFilename($filename);
+                    );
+                    $recipe->setMainPictureFilename($filename);
+                }
+                catch (FileException $e)
+                {
+                    $this->addFlash('danger', $e->getMessage());
+                }
             }
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -100,12 +108,19 @@ class RecipeController extends AbstractController
             $mainPicture = $form->get('main_picture')->getData();
             if ($mainPicture)
             {
-                $filename = RecipeService::saveMainPicture(
+                try
+                {
+                    $filename = RecipeService::saveMainPicture(
                         $mainPicture,
                         $recipe->getName(),
                         $this->getParameter('pictures_directory')
-                );
-                $recipe->setMainPictureFilename($filename);
+                    );
+                    $recipe->setMainPictureFilename($filename);
+                }
+                catch (FileException $e)
+                {
+                    $this->addFlash('danger', $e->getMessage());
+                }
             }
 
             $this->getDoctrine()->getManager()->flush();

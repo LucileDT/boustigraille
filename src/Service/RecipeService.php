@@ -22,6 +22,8 @@ class RecipeService
      * @param string $fileName
      * @param string $filepath
      *
+     * @throws FileException
+     *
      * @return string Newly saved file name
      */
     public static function saveMainPicture(UploadedFile $mainPicture, string $fileName, string $filepath)
@@ -30,14 +32,7 @@ class RecipeService
         $slugRecipeName = strtolower($slugger->slug($fileName));
         $newFilename = $slugRecipeName . '-' . uniqid() . '.' . $mainPicture->guessExtension();
 
-        try
-        {
-            $mainPicture->move($filepath, $newFilename);
-        }
-        catch (FileException $e)
-        {
-            $this->addFlash('danger', $ex->getMessage());
-        }
+        $mainPicture->move($filepath, $newFilename);
 
         self::_resizeImage($filepath . '/' . $newFilename);
 
@@ -51,8 +46,8 @@ class RecipeService
      */
     private static function _resizeImage(string $filepath)
     {
-        $finalHeight = 230;
-        $finalWidth = 300;
+        $finalHeight = 400;
+        $finalWidth = 400;
 
         list($imageWidth, $imageHeight) = getimagesize($filepath);
         $imageRatio = $imageWidth / $imageHeight;
@@ -76,7 +71,7 @@ class RecipeService
             $cropStartY = ($newHeight - $finalHeight) / 2;
             $photo->crop(new Point(0, $cropStartY), new Box($finalWidth, $finalHeight));
         }
-        else
+        else if ($newHeight < $newWidth)
         {
             $cropStartX = ($newWidth - $finalWidth) / 2;
             $photo->crop(new Point($cropStartX, 0), new Box($finalWidth, $finalHeight));
