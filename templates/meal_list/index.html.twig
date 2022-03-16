@@ -32,10 +32,33 @@
                 </div>
             </div>
             {% if app.user is not null %}
-                <div class="col-12 col-lg-4 text-end">
-                    <a class="btn btn-primary btn-large" href="{{ path('meal_list_new') }}">
-                        Enregistrer une nouvelle liste de repas
-                    </a>
+                <div class="col-12 col-lg-5 text-end">
+                    <div class="d-flex justify-content-end">
+                        {{ form_start(grocery_list_form, {'attr': {'id': 'grocery-list-form'}}) }}
+                            {{ form_row(grocery_list_form._token) }}
+                            <div class="row text-right">
+                                <div class="col">
+                                    <div
+                                        data-bs-toggle="tooltip"
+                                        title="Sélectionnez au moins une liste de repas pour générer la liste de courses"
+                                    >
+                                        <button class="btn btn-primary text-right" disabled>
+                                            <i class="ri-file-list-3-fill"></i>
+                                            Générer la liste des courses correspondante
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {{ form_end(grocery_list_form, {'render_rest': false}) }}
+
+                        <a class="btn btn-primary btn-large ms-2" href="{{ path('meal_list_new') }}">
+                            <i class="ri-sticky-note-fill"></i>
+                            Enregistrer une nouvelle liste de repas
+                        </a>
+                    </div>
+
+
+
                 </div>
             {% endif %}
         </div>

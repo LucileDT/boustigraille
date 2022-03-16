@@ -1,12 +1,6 @@
-{% if form is defined and app.user is not null %}
-    {{ form_start(form, {'attr': {'id': 'grocery-list-form'}}) }}
-{% endif %}
 <table class="table table-stripped table-sm table-hover">
     <thead class="thead-light">
         <tr>
-            {% if form is defined and app.user is not null %}
-                <th class="text-center align-middle"></th>
-            {% endif %}
             {% if app.user is not null %}
                 <th class="text-center align-middle">Id</th>
             {% endif %}
@@ -24,15 +18,6 @@
     <tbody>
     {% for meal_list in meal_lists %}
         <tr>
-            {% if form is defined and app.user is not null %}
-                <td class="text-center align-middle">
-                    {% for child in form.mealLists %}
-                        {% if child.vars.value == meal_list.id %}
-                            {{ form_widget(child) }}
-                        {% endif %}
-                    {% endfor %}
-                </td>
-            {% endif %}
             {% if app.user is not null %}
                 <td class="text-center align-middle">{{ meal_list.id }}</td>
             {% endif %}
@@ -79,14 +64,3 @@
     {% endfor %}
     </tbody>
 </table>
-{% if form is defined and app.user is not null %}
-    {{ form_row(form._token) }}
-    <div class="row text-right">
-        <div class="col">
-            <button class="btn btn-primary text-right">
-                Générer la liste des courses correspondante
-            </button>
-        </div>
-    </div>
-    {{ form_end(form, {'render_rest': false}) }}
-{% endif %}

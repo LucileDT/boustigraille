@@ -1,4 +1,8 @@
-<div class="meal-list card w-100 h-100">
+<div
+    id="meal-list-{{ meal_list.id }}"
+    class="meal-list card w-100 h-100"
+    data-meal-list-id="{{ meal_list.id }}"
+>
     <div class="card-body bg-white">
         <h5 class="card-title">{{ meal_list.personName }}</h5>
         <h6 class="card-subtitle mb-3 text-muted">
@@ -29,11 +33,33 @@
         </p>
     </div>
     <div class="card-footer bg-white border-top-0 text-center pt-0 pb-3">
-        <a class="btn btn-outline-primary btn-sm w-100" href="{{ path('meal_list_show', {'id': meal_list.id}) }}">
-            Voir
-        </a>
-        <a class="btn btn-outline-secondary btn-sm mt-5 mt-md-2 w-100" href="{{ path('meal_list_edit', {'id': meal_list.id}) }}">
-            Éditer
-        </a>
+        <div class="row">
+            <div class="col-12">
+                <button
+                    class="meal-list-selector btn btn-outline-primary btn-sm w-100"
+                >
+                    <span class="d-none">
+                        <i class="ri-checkbox-multiple-fill"></i>
+                        Déselectionner
+                    </span>
+                    <span>
+                        <i class="ri-checkbox-multiple-blank-line"></i>
+                        Sélectionner
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="row gx-2">
+            <div class="col-12 col-md-6">
+                <a class="btn btn-outline-secondary btn-sm mt-5 mt-md-2 w-100" href="{{ path('meal_list_show', {'id': meal_list.id}) }}">
+                    Voir
+                </a>
+            </div>
+            <div class="col-12 col-md-6">
+                <a class="btn btn-outline-secondary btn-sm mt-5 mt-md-2 w-100" href="{{ path('meal_list_edit', {'id': meal_list.id}) }}">
+                    Éditer
+                </a>
+            </div>
+        </div>
     </div>
 </div>
