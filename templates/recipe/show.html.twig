@@ -108,8 +108,8 @@
                                     {% endif %}
                                     <span class="text-lowercase">{{ ingredient.label }}</span>
                                     {% if ingredientQuantity.isMeasuredByUnit %}
-                                        (<span class="quantity-for-unity" data-unity-size="{{ ingredient.unitySize }}">
-                                            {{ ingredientQuantity.quantity * ingredient.unitySize }}
+                                        (<span class="quantity-for-unit" data-unit-size="{{ ingredient.unitSize }}">
+                                            {{ ingredientQuantity.quantity * ingredient.unitSize }}
                                         </span> {{ ingredient.measureType }})
                                     {% endif %}
                                     <a href="{{ path('ingredient_show', {'id': ingredient.id}) }}"

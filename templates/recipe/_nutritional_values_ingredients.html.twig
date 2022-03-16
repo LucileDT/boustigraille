@@ -30,7 +30,7 @@
                     </td>
                     <td>
                         {% if ingredientQuantity.isMeasuredByUnit %}
-                            {{ (ingredient.proteins / 100 * (ingredientQuantity.quantity * ingredient.unitySize)) | round }}&nbsp;g
+                            {{ (ingredient.proteins / 100 * (ingredientQuantity.quantity * ingredient.unitSize)) | round }}&nbsp;g
                         {% else %}
                             {{ (ingredient.proteins / 100 * ingredientQuantity.quantity) | round }}&nbsp;g
                         {% endif %}
@@ -43,7 +43,7 @@
                     </td>
                     <td>
                         {% if ingredientQuantity.isMeasuredByUnit %}
-                            {{ (ingredient.carbohydrates / 100 * (ingredientQuantity.quantity * ingredient.unitySize)) | round }}&nbsp;g
+                            {{ (ingredient.carbohydrates / 100 * (ingredientQuantity.quantity * ingredient.unitSize)) | round }}&nbsp;g
                         {% else %}
                             {{ (ingredient.carbohydrates / 100 * ingredientQuantity.quantity) | round }}&nbsp;g
                         {% endif %}
@@ -56,7 +56,7 @@
                     </td>
                     <td>
                         {% if ingredientQuantity.isMeasuredByUnit %}
-                            {{ (ingredient.fat / 100 * (ingredientQuantity.quantity * ingredient.unitySize)) | round }}&nbsp;g
+                            {{ (ingredient.fat / 100 * (ingredientQuantity.quantity * ingredient.unitSize)) | round }}&nbsp;g
                         {% else %}
                             {{ (ingredient.fat / 100 * ingredientQuantity.quantity) | round }}&nbsp;g
                         {% endif %}
@@ -69,7 +69,7 @@
                     </td>
                     <td>
                         {% if ingredientQuantity.isMeasuredByUnit %}
-                            {{ (ingredient.energy / 100 * (ingredientQuantity.quantity * ingredient.unitySize)) | round }}&nbsp;g
+                            {{ (ingredient.energy / 100 * (ingredientQuantity.quantity * ingredient.unitSize)) | round }}&nbsp;g
                         {% else %}
                             {{ (ingredient.energy / 100 * ingredientQuantity.quantity) | round }}&nbsp;g
                         {% endif %}
