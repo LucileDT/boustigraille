@@ -1,0 +1,76 @@
+<div
+    id="meal-list-{{ meal_list.id }}"
+    class="meal-list card w-100 h-100"
+    data-meal-list-id="{{ meal_list.id }}"
+>
+    <div class="card-body bg-white">
+        <h5 class="card-title">{{ meal_list.personName }}</h5>
+        <h6 class="card-subtitle mb-3 text-muted">
+            Du
+            {{ meal_list.startDate | format_date('full', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
+            au
+            {{ meal_list.endDate | format_date('full', locale='fr') }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
+        </h6>
+        <p class="card-text">
+            <ul>
+                {% for mealQuantityForList in meal_list.meals %}
+                    <li class="mb-2">
+                        <a
+                            href="{{ path('recipe_show', { 'id': mealQuantityForList.meal.id }) }}"
+                            class="d-flex align-items-center"
+                        >
+                            {% if mealQuantityForList.meal.mainPictureFilename is empty %}
+                                <img class="img-thumbnail img-thumbnail-small" src="{{ asset('build/image/default-recipe-main-picture.jpg') }}">
+                            {% else %}
+                                <img class="img-thumbnail img-thumbnail-small" src="{{ asset('uploads/pictures/' ~ mealQuantityForList.meal.mainPictureFilename) }}">
+                            {% endif %}
+                            <div class="ms-2">{{ mealQuantityForList.meal.name }}</div>
+                            <div class="ms-2">x{{ mealQuantityForList.quantity }}</div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </p>
+    </div>
+    <div class="card-footer bg-white border-top-0 text-center pt-0 pb-3">
+        <div class="row">
+            <div class="col-12">
+                <button
+                    class="meal-list-selector btn btn-outline-primary w-100"
+                >
+                    <span class="d-none">
+                        <i class="ri-checkbox-multiple-fill"></i>
+                        Déselectionner
+                    </span>
+                    <span>
+                        <i class="ri-checkbox-multiple-blank-line"></i>
+                        Sélectionner
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="row gx-2">
+            <div class="col-12 col-md-6">
+                <a class="btn btn-outline-secondary mt-5 mt-md-2 w-100" href="{{ path('meal_list_show', {'id': meal_list.id}) }}">
+                    Voir
+                </a>
+            </div>
+            <div class="col-12 col-md-6">
+                <a class="btn btn-outline-secondary mt-5 mt-md-2 w-100" href="{{ path('meal_list_edit', {'id': meal_list.id}) }}">
+                    Éditer
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <a
+                    class="btn btn-outline-secondary btn-sm mt-5 mt-md-2 w-100"
+                    href="{{ path('meal_list_new', { 'fromMealList': meal_list.id }) }}"
+                >
+                    <i class="ri-sticky-note-fill"></i>
+                    Enregistrer une liste de repas aux mêmes dates
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

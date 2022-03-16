@@ -27,16 +27,25 @@ class MealListController extends AbstractController
 
         return $this->render('meal_list/index.html.twig', [
             'past_meal_lists' => $mealListRepository->findPastOnes(),
-            'meal_lists' => $mealListRepository->findCurrentAndFutureOnes(),
+            'current_meal_lists' => $mealListRepository->findCurrentOnes(),
+            'future_meal_lists' => $mealListRepository->findFutureOnes(),
             'grocery_list_form' => $groceryListForm->createView(),
         ]);
     }
 
-    #[Route('/new', name: 'meal_list_new', methods: ['GET', 'POST'])]
+    #[Route('/new/{fromMealList}', name: 'meal_list_new', methods: ['GET', 'POST'])]
     #[Security('not is_anonymous()')]
-    public function new(Request $request, MealListRepository $mealListRepository): Response
+    public function new(
+        Request $request,
+        MealListRepository $mealListRepository,
+        MealList $fromMealList = null
+    ): Response
     {
         $mealList = new MealList();
+        if (!empty($fromMealList)) {
+            $mealList->setStartDate($fromMealList->getStartDate());
+            $mealList->setEndDate($fromMealList->getEndDate());
+        }
         $form = $this->createForm(MealListType::class, $mealList);
         $form->handleRequest($request);
 

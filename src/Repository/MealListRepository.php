@@ -55,24 +55,40 @@ class MealListRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('m')
             ->where('m.endDate < :now')
-            ->setParameter('now', $now->format('Y-m-d'))
+            ->setParameter('now', $now)
             ->orderBy('m.startDate', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
 
-   /**
+    /**
      * @return MealList[] Returns an array of currents and future MealList
      */
-    public function findCurrentAndFutureOnes()
+    public function findCurrentOnes()
     {
         $now = new DateTime();
 
         return $this->createQueryBuilder('m')
-            ->where('m.startDate >= :now')
-            ->orWhere('m.endDate >= :now')
-            ->setParameter('now', $now->format('Y-m-d'))
+            ->where(':now >= m.startDate')
+            ->andWhere(':now <= m.endDate')
+            ->setParameter('now', $now)
+            ->orderBy('m.startDate', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return MealList[] Returns an array of currents and future MealList
+     */
+    public function findFutureOnes()
+    {
+        $now = new DateTime();
+
+        return $this->createQueryBuilder('m')
+            ->where('m.startDate > :now')
+            ->setParameter('now', $now)
             ->orderBy('m.startDate', 'ASC')
             ->getQuery()
             ->getResult()

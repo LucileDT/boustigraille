@@ -2,6 +2,14 @@
 
 {% block title %}Listes de repas{% endblock %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('meal_list_card') }}
+{% endblock %}
+
+{% block javascript %}
+    {{ encore_entry_script_tags('meal_list_card') }}
+{% endblock %}
+
 {% block breadcrumb %}
     <li class="breadcrumb-item">
         <a href="/">Accueil</a>
@@ -24,10 +32,33 @@
                 </div>
             </div>
             {% if app.user is not null %}
-                <div class="col-12 col-lg-4 text-end">
-                    <a class="btn btn-primary btn-large" href="{{ path('meal_list_new') }}">
-                        Enregistrer une nouvelle liste de repas
-                    </a>
+                <div class="col-12 col-lg-5 text-end">
+                    <div class="d-flex justify-content-end">
+                        {{ form_start(grocery_list_form, {'attr': {'id': 'grocery-list-form'}}) }}
+                            {{ form_row(grocery_list_form._token) }}
+                            <div class="row text-right">
+                                <div class="col">
+                                    <div
+                                        data-bs-toggle="tooltip"
+                                        title="Sélectionnez au moins une liste de repas pour générer la liste de courses"
+                                    >
+                                        <button class="btn btn-secondary text-right" disabled>
+                                            <i class="ri-file-list-3-fill"></i>
+                                            Générer la liste des courses correspondante
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {{ form_end(grocery_list_form, {'render_rest': false}) }}
+
+                        <a class="btn btn-primary btn-large ms-2" href="{{ path('meal_list_new') }}">
+                            <i class="ri-sticky-note-fill"></i>
+                            Enregistrer une nouvelle liste de repas
+                        </a>
+                    </div>
+
+
+
                 </div>
             {% endif %}
         </div>
@@ -35,20 +66,51 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row mt-5">
+    <div class="row mt-4">
         <div class="col">
-            <h3>En cours</h3>
+            <div class="page-heading">
+                <h2>En cours</h2>
+            </div>
         </div>
     </div>
     <div class="row mb-5">
-        <div class="col table-responsive">
-            {{ include('meal_list/_table.html.twig', {'meal_lists': meal_lists, 'form': grocery_list_form, 'show_action_buttons': true}) }}
+        {% if current_meal_lists | length > 0 %}
+            {% for mealList in current_meal_lists %}
+                <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+                    {{ include('meal_list/_meal_list_card.html.twig', {'meal_list': mealList}) }}
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col text-center">
+                <i class="text-muted">Aucun repas n'est prévu (pour le moment)</i>
+            </div>
+        {% endif %}
+    </div>
+    <div class="row mt-4">
+        <div class="col">
+            <div class="page-heading">
+                <h2>À venir</h2>
+            </div>
         </div>
     </div>
-    <hr />
-    <div class="row mt-5">
+    <div class="row mb-5">
+        {% if future_meal_lists | length > 0 %}
+            {% for mealList in future_meal_lists %}
+                <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+                    {{ include('meal_list/_meal_list_card.html.twig', {'meal_list': mealList}) }}
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col text-center">
+                <i class="text-muted">Aucun repas n'est prévu (pour le moment)</i>
+            </div>
+        {% endif %}
+    </div>
+    <div class="row mt-4">
         <div class="col">
-            <h3>Passés</h3>
+            <div class="page-heading">
+                <h2>Archives</h2>
+            </div>
         </div>
     </div>
     <div class="row">
