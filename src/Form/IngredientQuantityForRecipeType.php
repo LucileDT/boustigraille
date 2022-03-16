@@ -62,10 +62,10 @@ class IngredientQuantityForRecipeType extends AbstractType
                     return $message;
                 },
                 'query_builder' => function (EntityRepository $entityRepository) {
-                        return $entityRepository
-                                ->createQueryBuilder('i')
-                                ->orderBy('i.label', 'ASC');
-                    },
+                    return $entityRepository
+                        ->createQueryBuilder('i')
+                        ->orderBy('i.label', 'ASC');
+                },
                 'choice_attr' => ChoiceList::attr($this, function (?Ingredient $ingredient) {
                     return $ingredient ? [
                         'data-proteins' => $ingredient->getProteins(),
@@ -80,7 +80,7 @@ class IngredientQuantityForRecipeType extends AbstractType
                 'attr' => [
                     'class' => 'ingredient-select',
                 ],
-                ])
+            ])
             ->add('isMeasuredByUnit', ChoiceType::class, [
                 'choices'  => [
                     'g' => false,
