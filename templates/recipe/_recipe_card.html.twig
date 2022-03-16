@@ -42,10 +42,17 @@
             {% if app.user is not null %}
                 <br>
                 <a
-                    class="btn"
+                    class="btn mb-2"
                     href="{{ path('recipe_edit', {'id': recipe.id}) }}"
                     >
                     Éditer la recette
+                </a>
+                <br>
+                <a
+                    class="btn"
+                    href="{{ path('recipe_new', {'fromRecipe': recipe.id}) }}"
+                    >
+                    Copier la recette
                 </a>
             {% endif %}
         </div>

@@ -30,12 +30,23 @@ class RecipeController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="recipe_new", methods={"GET","POST"})
+     * @Route("/new/{fromRecipe}", name="recipe_new", methods={"GET","POST"})
      * @Security("not is_anonymous()")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, Recipe $fromRecipe = null): Response
     {
         $recipe = new Recipe();
+        if (!empty($fromRecipe)) {
+            $recipe
+                ->setName($fromRecipe->getName())
+                ->setMainPictureFilename($fromRecipe->getMainPictureFilename())
+                ->setProcess($fromRecipe->getProcess())
+                ->setComment($fromRecipe->getComment())
+            ;
+            foreach ($fromRecipe->getIngredients() as $ingredient) {
+                $recipe->addIngredient($ingredient);
+            }
+        }
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
 
