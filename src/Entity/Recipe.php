@@ -44,6 +44,12 @@ class Recipe
      */
     private $mainPictureFilename;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
@@ -204,6 +210,18 @@ class Recipe
     public function setMainPictureFilename(?string $mainPictureFilename): self
     {
         $this->mainPictureFilename = $mainPictureFilename;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

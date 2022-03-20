@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\IngredientQuantityForRecipe;
 use App\Entity\Recipe;
+use App\Entity\User;
 use App\Form\RecipeType;
 use App\FormDataObject\RecipeFDO;
 use App\Repository\RecipeRepository;
+use App\Service\Migrations\ContentAuthorService;
 use App\Service\RecipeService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -70,6 +72,7 @@ class RecipeController extends AbstractController
                     $this->addFlash('danger', $e->getMessage());
                 }
             }
+            $recipe->setAuthor($this->getUser());
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($recipe);
@@ -87,8 +90,9 @@ class RecipeController extends AbstractController
     /**
      * @Route("/{id}", name="recipe_show", methods={"GET"})
      */
-    public function show(Request $request, Recipe $recipe): Response
+    public function show(Request $request, Recipe $recipe, ContentAuthorService $authorService): Response
     {
+        $authorService->updateRecipesAuthor();
         return $this->render('recipe/show.html.twig', [
             'recipe' => $recipe,
         ]);
