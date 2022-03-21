@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\NewPasswordType;
+use App\Form\PrivacySettingsType;
 use App\Form\UserNutritionalDataType;
 use App\Form\UserType;
 use App\FormDataObject\UserNutritionalDataFDO;
 use App\Repository\UserRepository;
+use Psr\Container\ContainerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,7 +69,7 @@ class MyAccountController extends AbstractController
 
     /**
      * @Route("/edit-password", name="my_account_edit_password", methods={"GET","POST"})
-     * @Security("is_authenticated()")
+     * @Security("not is_anonymous()")
      */
     public function editPassword(UserPasswordHasherInterface $passwordHasher, Request $request): Response
     {
@@ -83,10 +85,31 @@ class MyAccountController extends AbstractController
             }
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
+            return $this->redirectToRoute('my_account_index');
         }
 
         return $this->render('my_account/edit-password.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/edit-privacy-settings", name="my_account_edit_privacy_settings", methods={"GET","POST"})
+     * @Security("not is_anonymous()")
+     */
+    public function editPrivacySettings(Request $request): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(PrivacySettingsType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('my_account_index');
+        }
+
+        return $this->render('my_account/privacy.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);

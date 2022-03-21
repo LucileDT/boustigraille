@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Éditer réglages de confidentialité{% endblock %}
+
+{% block page_title %}
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="page-heading">
+                    <h6>
+                        <a href="{{ path('home') }}">Accueil</a>
+                        /
+                        <a href="{{ path('my_account_index') }}">Mon compte</a>
+                        / Éditer mes  réglages de confidentialité
+                    </h6>
+                    <h2>
+                        Éditer mes réglages de confidentialité
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            {{ form_start(form) }}
+                {{ form_widget(form.do_show_username_on_recipe, {'attr': {'class': 'form-control'}}) }}
+                {{ form_help(form.do_show_username_on_recipe) }}
+                {{ form_errors(form.do_show_username_on_recipe) }}
+
+                <button class="btn btn-primary mt-4">{{ button_label | default('Mettre à jour') }}</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

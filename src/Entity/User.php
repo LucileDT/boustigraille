@@ -86,6 +86,11 @@ class User implements UserInterface
      */
     private $favoriteRecipes;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default" : false})
+     */
+    private $doShowUsernameOnRecipe;
+
     function __construct($id = -1, $username = NULL, $plainPassword = NULL, $responsibilities = [])
     {
         $this->id = $id;
@@ -357,5 +362,17 @@ class User implements UserInterface
     public function hasFaved(Recipe $recipe): bool
     {
         return $this->favoriteRecipes->contains($recipe);
+    }
+
+    public function doShowUsernameOnRecipe(): ?bool
+    {
+        return $this->doShowUsernameOnRecipe;
+    }
+
+    public function setDoShowUsernameOnRecipe(bool $doShowUsernameOnRecipe): self
+    {
+        $this->doShowUsernameOnRecipe = $doShowUsernameOnRecipe;
+
+        return $this;
     }
 }

@@ -31,9 +31,11 @@
         <h1 class="title">
             {{ recipe.name }}
         </h1>
-        <p class="description">
-            Par {{ recipe.author.username }}
-        </p>
+        {% if recipe.author.doShowUsernameOnRecipe %}
+            <p class="description">
+                Par {{ recipe.author.username }}
+            </p>
+        {% endif %}
         <div class="main-text-button">
             <div class="row g-2">
                 <div class="col">

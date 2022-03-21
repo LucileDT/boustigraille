@@ -79,4 +79,33 @@
             <td>{{ user.energy }} kcal</td>
         </tr>
     </table>
+    <div class="row mt-4">
+        <div class="col">
+            <div class="page-heading">
+                <h2 class="my-4">
+                    Mes réglages de confidentialité
+                </h2>
+            </div>
+        </div>
+        <div class="col-12 col-lg-4 d-flex align-items-center justify-content-end">
+            <a class="btn btn-primary btn-large" href="{{ path('my_account_edit_privacy_settings') }}">
+                Éditer mes réglages de confidentialité
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <ul>
+                <li>
+                    {% if user.doShowUsernameOnRecipe %}
+                        <i class="ri-eye-fill bg-dark text-white p-2 rounded"></i>
+                        Mon username est affiché sur les recettes que j'ai rédigées
+                    {% else %}
+                        <i class="ri-eye-close-line bg-dark text-white p-2 rounded"></i>
+                        Mon username n'est pas affiché sur les recettes que j'ai rédigées
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}
