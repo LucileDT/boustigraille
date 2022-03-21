@@ -91,6 +91,11 @@ class User implements UserInterface
      */
     private $doShowUsernameOnRecipe;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default" : false})
+     */
+    private $doShowUsernameOnMealList;
+
     function __construct($id = -1, $username = NULL, $plainPassword = NULL, $responsibilities = [])
     {
         $this->id = $id;
@@ -364,7 +369,7 @@ class User implements UserInterface
         return $this->favoriteRecipes->contains($recipe);
     }
 
-    public function doShowUsernameOnRecipe(): ?bool
+    public function doShowUsernameOnRecipe(): bool
     {
         return $this->doShowUsernameOnRecipe;
     }
@@ -372,6 +377,18 @@ class User implements UserInterface
     public function setDoShowUsernameOnRecipe(bool $doShowUsernameOnRecipe): self
     {
         $this->doShowUsernameOnRecipe = $doShowUsernameOnRecipe;
+
+        return $this;
+    }
+
+    public function doShowUsernameOnMealList(): bool
+    {
+        return $this->doShowUsernameOnMealList;
+    }
+
+    public function setDoShowUsernameOnMealList(bool $doShowUsernameOnMealList): self
+    {
+        $this->doShowUsernameOnMealList = $doShowUsernameOnMealList;
 
         return $this;
     }

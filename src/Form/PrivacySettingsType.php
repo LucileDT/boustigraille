@@ -24,6 +24,13 @@ class PrivacySettingsType extends AbstractType
                     'class' => 'checkbox-switch',
                 ],
             ])
+            ->add('do_show_username_on_meal_list', CheckboxType::class, [
+                'label' => 'Afficher mon username sur les listes de repas que j\'ai rédigées',
+                'required' => false,
+                'label_attr' => [
+                    'class' => 'checkbox-switch',
+                ],
+            ])
         ;
     }
 

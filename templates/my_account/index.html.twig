@@ -96,13 +96,22 @@
     <div class="row">
         <div class="col">
             <ul>
-                <li>
+                <li class="mb-3">
                     {% if user.doShowUsernameOnRecipe %}
                         <i class="ri-eye-fill bg-dark text-white p-2 rounded"></i>
                         Mon username est affiché sur les recettes que j'ai rédigées
                     {% else %}
                         <i class="ri-eye-close-line bg-dark text-white p-2 rounded"></i>
                         Mon username n'est pas affiché sur les recettes que j'ai rédigées
+                    {% endif %}
+                </li>
+                <li class="mb-3">
+                    {% if user.doShowUsernameOnMealList %}
+                        <i class="ri-eye-fill bg-dark text-white p-2 rounded"></i>
+                        Mon username est affiché sur les listes de repas que j'ai rédigées
+                    {% else %}
+                        <i class="ri-eye-close-line bg-dark text-white p-2 rounded"></i>
+                        Mon username n'est pas affiché sur les listes de repas que j'ai rédigées
                     {% endif %}
                 </li>
             </ul>
