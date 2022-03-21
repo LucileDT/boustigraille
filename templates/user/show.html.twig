@@ -2,21 +2,6 @@
 
 {% block title %}User{% endblock %}
 
-{% block breadcrumb %}
-    <li class="breadcrumb-item">
-        <a href="/">Accueil</a>
-    </li>
-    <li class="breadcrumb-item">
-        <a href="#">Administration</a>
-    </li>
-    <li class="breadcrumb-item" aria-current="page">
-        <a href="{{ path('user_index') }}">Liste des comptes</a>
-    </li>
-    <li class="breadcrumb-item active" aria-current="page">
-        Compte de {{ user.username }}
-    </li>
-{% endblock %}
-
 {% block page_title %}
     <div class="container-fluid mt-3">
         <div class="row">
