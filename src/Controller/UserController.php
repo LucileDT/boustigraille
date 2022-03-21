@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UserType;
+use App\Form\NewPasswordType;
 use App\Form\UserNutritionalDataType;
+use App\Form\UserType;
 use App\FormDataObject\UserNutritionalDataFDO;
 use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -54,40 +55,6 @@ class UserController extends AbstractController
 
         return $this->render('user/new.html.twig', [
             'user' => $user,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/edit-nutritional-data", name="user_edit_nutritional_data", methods={"GET","POST"})
-     * @Security("not is_anonymous()")
-     */
-    public function editNutritionalData(Request $request, UserNutritionalDataFDO $userNutritionalDataFDO): Response
-    {
-        $currentUser = $this->getUser();
-        $userNutritionalDataFDO->setProteins($currentUser->getProteins());
-        $userNutritionalDataFDO->setCarbohydrates($currentUser->getCarbohydrates());
-        $userNutritionalDataFDO->setFat($currentUser->getFat());
-        $userNutritionalDataFDO->setEnergy($currentUser->getEnergy());
-
-        $form = $this->createForm(UserNutritionalDataType::class, $userNutritionalDataFDO);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $currentUser->setProteins($userNutritionalDataFDO->getProteins());
-            $currentUser->setCarbohydrates($userNutritionalDataFDO->getCarbohydrates());
-            $currentUser->setFat($userNutritionalDataFDO->getFat());
-            $currentUser->setEnergy($userNutritionalDataFDO->getEnergy());
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($currentUser);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('user_show', ['id' => $currentUser->getId()]);
-        }
-
-        return $this->render('user/edit-nutritional-data.html.twig', [
-            'user' => $currentUser,
             'form' => $form->createView(),
         ]);
     }

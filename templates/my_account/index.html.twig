@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block page_title %}
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="page-heading">
+                    <h6>
+                        <a href="{{ path('home') }}">Accueil</a>
+                        / Mon compte
+                    </h6>
+                    <h2>
+                        Mon compte
+                    </h2>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 text-end">
+                <a class="btn btn-primary btn-large" href="{{ path('my_account_edit_password') }}">
+                    Modifier mon mot de passe
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ user.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Username</th>
+                        <td>{{ user.username }}</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <th>Responsabilités</th>
+                        <td>
+                            {%  for responsibility in user.responsibilities %}
+                                <span>{{ responsibility.label }}</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="page-heading">
+                <h2 class="my-4">
+                    Mes valeurs nutritionnelles
+                </h2>
+            </div>
+        </div>
+        <div class="col-12 col-lg-4 d-flex align-items-center justify-content-end">
+            <a class="btn btn-primary btn-large" href="{{ path('my_account_edit_nutritional_data') }}">
+                Éditer mes valeurs nutritionnelles
+            </a>
+        </div>
+    </div>
+    <table class="w-100 bg-white text-center table-bordered table mb-0">
+        <tr class="border-bottom">
+            <td>Protéines</td>
+            <td>Lipides</td>
+            <td>Glucides</td>
+            <td>Énergie</td>
+        </tr>
+        <tr class="border-bottom">
+            <td>{{ user.proteins }} g</td>
+            <td>{{ user.fat }} g</td>
+            <td>{{ user.carbohydrates }} g</td>
+            <td>{{ user.energy }} kcal</td>
+        </tr>
+    </table>
+{% endblock %}
