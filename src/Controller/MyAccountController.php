@@ -24,7 +24,7 @@ class MyAccountController extends AbstractController
 {
     /**
      * @Route("/", name="my_account_index", methods={"GET"})
-     * @Security("is_granted('ROLE_ADMIN')")
+     * @Security("not is_anonymous()")
      */
     public function index(UserRepository $userRepository): Response
     {
