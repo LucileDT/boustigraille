@@ -94,7 +94,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="boolean", options={"default" : false})
      */
-    private $doShowUsernameOnMealList;
+    private $doShowWrittenMealListToOthers;
 
     function __construct($id = -1, $username = NULL, $plainPassword = NULL, $responsibilities = [])
     {
@@ -381,14 +381,14 @@ class User implements UserInterface
         return $this;
     }
 
-    public function doShowUsernameOnMealList(): bool
+    public function doShowWrittenMealListToOthers(): bool
     {
-        return $this->doShowUsernameOnMealList;
+        return $this->doShowWrittenMealListToOthers;
     }
 
-    public function setDoShowUsernameOnMealList(bool $doShowUsernameOnMealList): self
+    public function setdoShowWrittenMealListToOthers(bool $doShowWrittenMealListToOthers): self
     {
-        $this->doShowUsernameOnMealList = $doShowUsernameOnMealList;
+        $this->doShowWrittenMealListToOthers = $doShowWrittenMealListToOthers;
 
         return $this;
     }

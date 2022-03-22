@@ -106,12 +106,12 @@
                     {% endif %}
                 </li>
                 <li class="mb-3">
-                    {% if user.doShowUsernameOnMealList %}
+                    {% if user.doShowWrittenMealListToOthers %}
                         <i class="ri-eye-fill bg-dark text-white p-2 rounded"></i>
-                        Mon username est affiché sur les listes de repas que j'ai rédigées
+                        Les listes de repas que j'ai rédigées sont visibles par toute personne connectée au site
                     {% else %}
                         <i class="ri-eye-close-line bg-dark text-white p-2 rounded"></i>
-                        Mon username n'est pas affiché sur les listes de repas que j'ai rédigées
+                        Les listes de repas que j'ai rédigées ne sont visibles que par moi-même
                     {% endif %}
                 </li>
             </ul>

@@ -31,9 +31,9 @@
                 {{ form_help(form.do_show_username_on_recipe) }}
                 {{ form_errors(form.do_show_username_on_recipe) }}
 
-                {{ form_widget(form.do_show_username_on_meal_list, {'attr': {'class': 'form-control'}}) }}
-                {{ form_help(form.do_show_username_on_meal_list) }}
-                {{ form_errors(form.do_show_username_on_meal_list) }}
+                {{ form_widget(form.do_show_written_meal_list_to_others, {'attr': {'class': 'form-control'}}) }}
+                {{ form_help(form.do_show_written_meal_list_to_others) }}
+                {{ form_errors(form.do_show_written_meal_list_to_others) }}
 
                 <button class="btn btn-primary mt-4">{{ button_label | default('Mettre à jour') }}</button>
             {{ form_end(form) }}

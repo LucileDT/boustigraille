@@ -11,11 +11,11 @@
             au
             {{ meal_list.endDate | format_date('full', locale='fr') }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
         </h6>
-        {% if meal_list.author.doShowUsernameOnMealList %}
+{#        {% if meal_list.author.doShowUsernameOnMealList %}#}
             <div class="text-muted fst-italic mb-2">
                 <small>Par {{ meal_list.author.username }}</small>
             </div>
-        {% endif %}
+{#        {% endif %}#}
         <p class="card-text">
             <ul>
                 {% for mealQuantityForList in meal_list.meals %}

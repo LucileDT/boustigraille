@@ -20,15 +20,16 @@ class MealListController extends AbstractController
     #[Security('not is_anonymous()')]
     public function index(MealListRepository $mealListRepository): Response
     {
+        $user = $this->getUser();
         $groceryListFDO = new GroceryListFDO();
         $groceryListForm = $this->createForm(GroceryListType::class, $groceryListFDO, [
             'action' => $this->generateUrl('grocery_list_index'),
         ]);
 
         return $this->render('meal_list/index.html.twig', [
-            'past_meal_lists' => $mealListRepository->findPastOnes(),
-            'current_meal_lists' => $mealListRepository->findCurrentOnes(),
-            'future_meal_lists' => $mealListRepository->findFutureOnes(),
+            'past_meal_lists' => $mealListRepository->findPastOnes($user),
+            'current_meal_lists' => $mealListRepository->findCurrentOnes($user),
+            'future_meal_lists' => $mealListRepository->findFutureOnes($user),
             'grocery_list_form' => $groceryListForm->createView(),
         ]);
     }
@@ -50,6 +51,7 @@ class MealListController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $mealList->setAuthor($this->getUser());
             $mealListRepository->add($mealList);
 
             return $this->redirectToRoute('meal_list_index', [], Response::HTTP_SEE_OTHER);
