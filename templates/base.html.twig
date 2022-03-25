@@ -26,7 +26,13 @@
                 <div class="container-xxl">
                     <div class="row">
                         <div class="col-12">
-                            <nav id="top-navbar" class="navbar navbar-expand-md main-nav">
+                            <nav
+                                id="top-navbar"
+                                class="navbar navbar-expand-md main-nav"
+                                {% if app.user is not null %}
+                                    data-url-unread-notifications="{{ path('api_unread_notification') }}"
+                                {% endif %}
+                            >
                                 <a class="logo" href="{{ path('home') }}">
                                     <img src="{{ asset('build/image/klassy-cafe/klassy-logo.png') }}">
                                 </a>
@@ -181,8 +187,15 @@
                                                     aria-labelledby="user-dropdown"
                                                 >
                                                     <li>
-                                                        <a class="dropdown-item" href="{{ path('my_account_notifications') }}">
-                                                            Notifications
+                                                        <a
+                                                            id="user-notifications"
+                                                            class="dropdown-item"
+                                                            href="{{ path('my_account_notifications') }}"
+                                                        >
+                                                            <div class="d-flex justify-content-center align-items-center">
+                                                                <span class="badge rounded-pill bg-info me-1 d-none"></span>
+                                                                <span>Notifications</span>
+                                                            </div>
                                                         </a>
                                                     </li>
                                                     <li>

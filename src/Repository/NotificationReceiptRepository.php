@@ -45,6 +45,9 @@ class NotificationReceiptRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return NotificationReceipt[] Returns an array of NotificationReceipt objects
+     */
     public function findUnreadByUser($user)
     {
         return $this->createQueryBuilder('n')
@@ -56,6 +59,9 @@ class NotificationReceiptRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @return NotificationReceipt[] Returns an array of NotificationReceipt objects
+     */
     public function findReadByUser($user)
     {
         return $this->createQueryBuilder('n')
