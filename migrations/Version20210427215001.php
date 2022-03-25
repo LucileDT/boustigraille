@@ -22,7 +22,6 @@ final class Version20210427215001 extends AbstractMigration
 
     public function down(Schema $schema) : void
     {
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('DROP INDEX IDX_3D18E32F933FE08C');
         $this->addSql('CREATE UNIQUE INDEX uniq_3d18e32f933fe08c ON ingredient_quantity_for_recipe (ingredient_id)');
     }

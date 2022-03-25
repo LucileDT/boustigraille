@@ -23,7 +23,6 @@ final class Version20210427103352 extends AbstractMigration
 
     public function down(Schema $schema) : void
     {
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE recipe ADD recipe VARCHAR(5000) DEFAULT NULL');
         $this->addSql('ALTER TABLE recipe DROP name');
         $this->addSql('ALTER TABLE recipe DROP process');
