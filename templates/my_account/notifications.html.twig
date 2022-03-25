@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block javascript %}
+    {{ encore_entry_script_tags('my_account_notifications') }}
+{% endblock %}
+
 {% block title %}User{% endblock %}
 
 {% block page_title %}
@@ -28,7 +32,12 @@
         <div class="col">
             {% if unread_notification_receipts | length > 0 %}
                 {% for notification_receipt in unread_notification_receipts %}
-                    {{ include('my_account/_notification.html.twig', {'notification_receipt': notification_receipt}) }}
+                    {{
+                        include('my_account/_notification.html.twig', {
+                            'notification_receipt': notification_receipt,
+                            'button_label': 'Marquer comme&nbsp;lu',
+                        })
+                    }}
                 {% endfor %}
             {% else %}
                 <div class="text-center">
@@ -46,7 +55,12 @@
             </div>
             {% if read_notification_receipts | length > 0 %}
                 {% for notification_receipt in read_notification_receipts %}
-                    {{ include('my_account/_notification.html.twig', {'notification_receipt': notification_receipt}) }}
+                    {{
+                        include('my_account/_notification.html.twig', {
+                            'notification_receipt': notification_receipt,
+                            'button_label': 'Marquer comme non&nbsp;lu',
+                        })
+                    }}
                 {% endfor %}
             {% else %}
                 <div class="text-center">

@@ -2,7 +2,7 @@
 
 namespace App\Controller\API;
 
-use App\Entity\Recipe;
+use App\Entity\NotificationReceipt;
 use App\Repository\NotificationReceiptRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,5 +31,29 @@ class APINotificationController extends AbstractController
                 'notifications_count' => count($unreadNotificationReceipts),
             ]);
         }
+    }
+
+    /**
+     * @Route("/toggle-read/{id}", name="api_notification_toggle_read", methods={"POST"})
+     * @Security("not is_anonymous()")
+     */
+    public function toggleRead(Request $request, NotificationReceipt $notificationReceipt): JsonResponse
+    {
+        $connectedUser = $this->getUser();
+        if ($notificationReceipt->getRecipient() !== $connectedUser) {
+            return new JsonResponse('unauthorized');
+        }
+
+        if (empty($notificationReceipt->getDateRead())) {
+            $notificationReceipt->setDateRead(new \DateTime());
+        } else {
+            $notificationReceipt->setDateRead(null);
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($notificationReceipt);
+        $entityManager->flush();
+
+        return new JsonResponse(['toggled']);
     }
 }

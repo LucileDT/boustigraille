@@ -16,7 +16,7 @@ class APIRecipeController extends AbstractController
     /**
      * @Route("/toggle-favorite/{id}", name="api_recipe_toggle_favorite", methods={"POST"})
      */
-    public function show(Request $request, Recipe $recipe): JsonResponse
+    public function toggleFavorite(Request $request, Recipe $recipe): JsonResponse
     {
         $connectedUser = $this->getUser();
         if (empty($connectedUser))
