@@ -1,0 +1,23 @@
+{% set notification = notification_receipt.notification %}
+<div id="notification-{{ notification.id }}" class="mb-4">
+    <div class="card border-{{ notification_receipt.color }} border-top-0 border-bottom-0 border-end-0 border-5 rounded-0 bg-light">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="pe-2">
+                    <div class="mb-2">
+                        <span class="badge rounded-pill bg-{{ notification_receipt.color }}">
+                            {{ notification.category.name }}
+                        </span>
+                        <small class="text-muted">
+                            Le {{ notification.dateSent | format_date('full', locale='fr') }}
+                        </small>
+                    </div>
+                    {{ notification.message | markdown_to_html }}
+                </div>
+                <div class="">
+                    <button class="btn btn-outline-{{ notification_receipt.color }} btn-sm">Marquer comme&nbsp;lu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

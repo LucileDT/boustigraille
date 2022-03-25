@@ -8,6 +8,8 @@ use App\Form\PrivacySettingsType;
 use App\Form\UserNutritionalDataType;
 use App\Form\UserType;
 use App\FormDataObject\UserNutritionalDataFDO;
+use App\Repository\NotificationReceiptRepository;
+use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use Psr\Container\ContainerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -112,6 +114,33 @@ class MyAccountController extends AbstractController
         return $this->render('my_account/privacy.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/notifications", name="my_account_notifications", methods={"GET"})
+     * @Security("not is_anonymous()")
+     */
+    public function notifications(
+        Request $request,
+        NotificationReceiptRepository $notificationReceiptRepository
+    ): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(PrivacySettingsType::class, $user);
+        $form->handleRequest($request);
+        $unreadNotificationReceipts = $notificationReceiptRepository->findUnreadByUser($user);
+        $readNotificationReceipts = $notificationReceiptRepository->findReadByUser($user);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('my_account_index');
+        }
+
+        return $this->render('my_account/notifications.html.twig', [
+            'user' => $user,
+            'unread_notification_receipts' => $unreadNotificationReceipts,
+            'read_notification_receipts' => $readNotificationReceipts,
         ]);
     }
 }

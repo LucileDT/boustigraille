@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block page_title %}
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="page-heading">
+                    <h6>
+                        <a href="{{ path('home') }}">Accueil</a>
+                        /
+                        <a href="{{ path('my_account_index') }}">Mon compte</a>
+                        / Notifications
+                    </h6>
+                    <h2>
+                        Notifications non lues
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block body %}
+    <div class="row mb-4">
+        <div class="col">
+            {% if unread_notification_receipts | length > 0 %}
+                {% for notification_receipt in unread_notification_receipts %}
+                    {{ include('my_account/_notification.html.twig', {'notification_receipt': notification_receipt}) }}
+                {% endfor %}
+            {% else %}
+                <div class="text-center">
+                    <i class="text-muted">Vous n'avez aucune notification non lue (pour le moment)</i>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="page-heading">
+                <h2>
+                    Notifications déjà lues
+                </h2>
+            </div>
+            {% if read_notification_receipts | length > 0 %}
+                {% for notification_receipt in read_notification_receipts %}
+                    {{ include('my_account/_notification.html.twig', {'notification_receipt': notification_receipt}) }}
+                {% endfor %}
+            {% else %}
+                <div class="text-center">
+                    <i class="text-muted">Vous n'avez aucune notification déjà lue (pour le moment)</i>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
