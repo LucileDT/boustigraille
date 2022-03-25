@@ -96,6 +96,16 @@ class User implements UserInterface
      */
     private $doShowWrittenMealListToOthers;
 
+    /**
+     * @ORM\OneToMany(targetEntity=NotificationReceipt::class, mappedBy="recipient", orphanRemoval=true)
+     */
+    private $notificationReceipts;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="sender")
+     */
+    private $sentNotifications;
+
     function __construct($id = -1, $username = NULL, $plainPassword = NULL, $responsibilities = [])
     {
         $this->id = $id;
@@ -103,6 +113,8 @@ class User implements UserInterface
         $this->plainPassword = $plainPassword;
         $this->responsibilities = $responsibilities;
         $this->favoriteRecipes = new ArrayCollection();
+        $this->notificationReceipts = new ArrayCollection();
+        $this->sentNotifications = new ArrayCollection();
     }
 
     /**
@@ -389,6 +401,66 @@ class User implements UserInterface
     public function setdoShowWrittenMealListToOthers(bool $doShowWrittenMealListToOthers): self
     {
         $this->doShowWrittenMealListToOthers = $doShowWrittenMealListToOthers;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, NotificationReceipt>
+     */
+    public function getNotificationReceipts(): Collection
+    {
+        return $this->notificationReceipts;
+    }
+
+    public function addNotificationReceipt(NotificationReceipt $notificationReceipt): self
+    {
+        if (!$this->notificationReceipts->contains($notificationReceipt)) {
+            $this->notificationReceipts[] = $notificationReceipt;
+            $notificationReceipt->setRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationReceipt(NotificationReceipt $notificationReceipt): self
+    {
+        if ($this->notificationReceipts->removeElement($notificationReceipt)) {
+            // set the owning side to null (unless already changed)
+            if ($notificationReceipt->getRecipient() === $this) {
+                $notificationReceipt->setRecipient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getSentNotifications(): Collection
+    {
+        return $this->sentNotifications;
+    }
+
+    public function addSentNotification(Notification $sentNotification): self
+    {
+        if (!$this->sentNotifications->contains($sentNotification)) {
+            $this->sentNotifications[] = $sentNotification;
+            $sentNotification->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSentNotification(Notification $sentNotification): self
+    {
+        if ($this->sentNotifications->removeElement($sentNotification)) {
+            // set the owning side to null (unless already changed)
+            if ($sentNotification->getSender() === $this) {
+                $sentNotification->setSender(null);
+            }
+        }
 
         return $this;
     }
