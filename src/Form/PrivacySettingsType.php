@@ -21,7 +21,7 @@ class PrivacySettingsType extends AbstractType
                 ],
             ])
             ->add('do_show_written_meal_list_to_others', CheckboxType::class, [
-                'label' => 'Afficher mes listes de repas à toutes les personnes connectées',
+                'label' => 'Montrer mes listes de repas à toutes les personnes connectées',
                 'required' => false,
                 'label_attr' => [
                     'class' => 'checkbox-switch',

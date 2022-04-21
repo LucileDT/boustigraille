@@ -34,6 +34,11 @@ class NotificationReceipt
      */
     private $notification;
 
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $processedAt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -82,5 +87,17 @@ class NotificationReceipt
         } else {
             return 'dark';
         }
+    }
+
+    public function getProcessedAt(): ?\DateTimeImmutable
+    {
+        return $this->processedAt;
+    }
+
+    public function setProcessedAt(?\DateTimeImmutable $processedAt): self
+    {
+        $this->processedAt = $processedAt;
+
+        return $this;
     }
 }

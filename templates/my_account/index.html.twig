@@ -96,22 +96,39 @@
     <div class="row">
         <div class="col">
             <ul>
+                <li>
+                    <h6 class="klassy-cafe">Recettes</h6>
+                </li>
                 <li class="mb-3">
                     {% if user.doShowUsernameOnRecipe %}
                         <i class="ri-eye-fill bg-dark text-white p-2 rounded"></i>
-                        Mon username est affiché sur les recettes que j'ai rédigées
+                        Mon username est affiché sur les <strong>recettes</strong> que j'ai rédigées
                     {% else %}
                         <i class="ri-eye-close-line bg-dark text-white p-2 rounded"></i>
-                        Mon username n'est pas affiché sur les recettes que j'ai rédigées
+                        Mon username n'est pas affiché sur les <strong>recettes</strong> que j'ai rédigées
                     {% endif %}
+                </li>
+                <li>
+                    <h6 class="klassy-cafe mt-4">Listes de repas</h6>
                 </li>
                 <li class="mb-3">
                     {% if user.doShowWrittenMealListToOthers %}
                         <i class="ri-eye-fill bg-dark text-white p-2 rounded"></i>
-                        Les listes de repas que j'ai rédigées sont visibles par toute personne connectée au site
+                        Les <strong>listes de repas</strong> que j'ai rédigées sont visibles par toute personne connectée au site
                     {% else %}
                         <i class="ri-eye-close-line bg-dark text-white p-2 rounded"></i>
-                        Les listes de repas que j'ai rédigées ne sont visibles que par moi-même
+                        Les <strong>listes de repas</strong> que j'ai rédigées ne sont visibles que par moi-même
+                    {% endif %}
+                    {% if acceptedMealListFollows | length > 0 %}
+                        <strong>et</strong> par les personnes suivantes&nbsp;:
+                        {% for acceptedMealListFollow in acceptedMealListFollows %}
+                            <ul class="ms-4 ps-2 mt-3">
+                                <li>
+                                    <i class="ri-eye-fill bg-dark text-white p-2 rounded"></i>
+                                    {{ acceptedMealListFollow.follower.username }}
+                                </li>
+                            </ul>
+                        {% endfor %}
                     {% endif %}
                 </li>
             </ul>

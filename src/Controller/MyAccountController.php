@@ -2,16 +2,18 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+use App\Entity\FollowMealList;
+use App\Entity\Notification;
+use App\Entity\NotificationReceipt;
 use App\Form\NewPasswordType;
 use App\Form\PrivacySettingsType;
+use App\Form\ProposeMealListFollowType;
 use App\Form\UserNutritionalDataType;
-use App\Form\UserType;
 use App\FormDataObject\UserNutritionalDataFDO;
+use App\Repository\FollowMealListRepository;
+use App\Repository\NotificationCategoryRepository;
 use App\Repository\NotificationReceiptRepository;
-use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
-use Psr\Container\ContainerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,10 +30,13 @@ class MyAccountController extends AbstractController
      * @Route("/", name="my_account_index", methods={"GET"})
      * @Security("not is_anonymous()")
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository, FollowMealListRepository $followMealListRepository): Response
     {
+        $user = $this->getUser();
+        $acceptedMealListFollow = $followMealListRepository->findUserOnesAccepted($user);
         return $this->render('my_account/index.html.twig', [
-            'user' => $this->getUser(),
+            'user' => $user,
+            'acceptedMealListFollows' => $acceptedMealListFollow,
         ]);
     }
 
@@ -100,20 +105,74 @@ class MyAccountController extends AbstractController
      * @Route("/edit-privacy-settings", name="my_account_edit_privacy_settings", methods={"GET","POST"})
      * @Security("not is_anonymous()")
      */
-    public function editPrivacySettings(Request $request): Response
+    public function editPrivacySettings(
+        UserRepository $userRepository,
+        NotificationCategoryRepository $notificationCategoryRepository,
+        FollowMealListRepository $followMealListRepository,
+        Request $request
+    ): Response
     {
         $user = $this->getUser();
-        $form = $this->createForm(PrivacySettingsType::class, $user);
-        $form->handleRequest($request);
+        $privacyForm = $this->createForm(PrivacySettingsType::class, $user);
+        $privacyForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $propositionsSent = $followMealListRepository->findBy(['followed' => $user]);
+
+        if ($privacyForm->isSubmitted() && $privacyForm->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('my_account_index');
+        }
+
+        $usernameForm = $this->createForm(ProposeMealListFollowType::class);
+        $usernameForm->handleRequest($request);
+        if ($usernameForm->isSubmitted() && $usernameForm->isValid()) {
+            $formData = $usernameForm->getData();
+            $username = $formData['username'];
+
+            $askedUser = $userRepository->findOneBy(['username' => $username]);
+
+            // if the user exists, create a follow proposition and send them a notification
+            if (!empty($askedUser)) {
+                $followProposition = $followMealListRepository->findOneBy(['followed' => $user, 'follower' => $askedUser]);
+                if (empty($followProposition)) {
+                    $followProposition = new FollowMealList();
+                    $followProposition->setFollowed($user);
+                    $followProposition->setFollower($askedUser);
+                    $followProposition->setProposedAt(new \DateTimeImmutable());
+
+                    $notification = new Notification();
+                    $notificationCategory = $notificationCategoryRepository->findOneBy(['code' => 2]);
+                    $notification->setCategory($notificationCategory);
+                    $notification->setMessage(
+                        '**' . $user->getUsername() . '**' .
+                        ' vous propose l\'accès à ses **listes de repas**, souhaitez-vous accepter ? ' .
+                        'Si vous acceptez, vous pourrez voir ses listes de repas dans la page idoine.'
+                    );
+                    $notification->setDateSent(new \DateTimeImmutable());
+                    $notification->setFollowMealList($followProposition);
+                    $notification->setSender($user);
+
+                    $notificationReceipt = new NotificationReceipt();
+                    $notificationReceipt->setNotification($notification);
+                    $notificationReceipt->setRecipient($askedUser);
+
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->persist($notification);
+                    $entityManager->persist($followProposition);
+                    $entityManager->persist($notificationReceipt);
+                    $entityManager->flush();
+                }
+            }
+
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('my_account_index');
         }
 
         return $this->render('my_account/privacy.html.twig', [
             'user' => $user,
-            'form' => $form->createView(),
+            'global_settings_form' => $privacyForm->createView(),
+            'ask_meal_list_follow_form' => $usernameForm->createView(),
+            'propositionsSent' => $propositionsSent,
         ]);
     }
 

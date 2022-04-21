@@ -49,16 +49,17 @@ class MealListRepository extends ServiceEntityRepository
     /**
      * @return MealList[] Returns an array of past MealList
      */
-    public function findPastOnes($user)
+    public function findPastOnes($connectedUser)
     {
         $now = new DateTime();
 
         return $this->createQueryBuilder('m')
             ->leftJoin('m.author', 'a')
+            ->leftJoin('a.followerMealLists', 'fml')
             ->andWhere('m.endDate < :now')
-            ->andWhere('m.author = :author OR a.doShowWrittenMealListToOthers = :true')
+            ->andWhere('m.author = :connectedUser OR a.doShowWrittenMealListToOthers = :true OR (fml.follower = :connectedUser AND fml.acceptedAt IS NOT NULL)')
             ->setParameter('now', $now)
-            ->setParameter('author', $user)
+            ->setParameter('connectedUser', $connectedUser)
             ->setParameter('true', true)
             ->orderBy('m.startDate', 'DESC')
             ->getQuery()
@@ -69,16 +70,17 @@ class MealListRepository extends ServiceEntityRepository
     /**
      * @return MealList[] Returns an array of currents and future MealList
      */
-    public function findCurrentOnes($user)
+    public function findCurrentOnes($connectedUser)
     {
         $now = new DateTime();
 
         return $this->createQueryBuilder('m')
             ->leftJoin('m.author', 'a')
+            ->leftJoin('a.followerMealLists', 'fml')
             ->andWhere(':now >= m.startDate and :now <= m.endDate')
-            ->andWhere('m.author = :author OR a.doShowWrittenMealListToOthers = :true')
+            ->andWhere('m.author = :connectedUser OR a.doShowWrittenMealListToOthers = :true OR (fml.follower = :connectedUser AND fml.acceptedAt IS NOT NULL)')
             ->setParameter('now', $now)
-            ->setParameter('author', $user)
+            ->setParameter('connectedUser', $connectedUser)
             ->setParameter('true', true)
             ->orderBy('m.startDate', 'ASC')
             ->getQuery()
@@ -89,16 +91,17 @@ class MealListRepository extends ServiceEntityRepository
     /**
      * @return MealList[] Returns an array of currents and future MealList
      */
-    public function findFutureOnes($user)
+    public function findFutureOnes($connectedUser)
     {
         $now = new DateTime();
 
         return $this->createQueryBuilder('m')
             ->leftJoin('m.author', 'a')
+            ->leftJoin('a.followerMealLists', 'fml')
             ->andWhere('m.startDate > :now')
-            ->andWhere('m.author = :author OR a.doShowWrittenMealListToOthers = :true')
+            ->andWhere('m.author = :connectedUser OR a.doShowWrittenMealListToOthers = :true OR (fml.follower = :connectedUser AND fml.acceptedAt IS NOT NULL)')
             ->setParameter('now', $now)
-            ->setParameter('author', $user)
+            ->setParameter('connectedUser', $connectedUser)
             ->setParameter('true', true)
             ->orderBy('m.startDate', 'ASC')
             ->getQuery()

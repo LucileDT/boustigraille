@@ -45,6 +45,11 @@ class Notification
      */
     private $category;
 
+    /**
+     * @ORM\OneToOne(targetEntity=FollowMealList::class, cascade={"persist", "remove"})
+     */
+    private $followMealList;
+
     public function __construct()
     {
         $this->notificationReceipts = new ArrayCollection();
@@ -129,6 +134,18 @@ class Notification
     public function setCategory(?NotificationCategory $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getFollowMealList(): ?FollowMealList
+    {
+        return $this->followMealList;
+    }
+
+    public function setFollowMealList(?FollowMealList $followMealList): self
+    {
+        $this->followMealList = $followMealList;
 
         return $this;
     }

@@ -106,6 +106,16 @@ class User implements UserInterface
      */
     private $sentNotifications;
 
+    /**
+     * @ORM\OneToMany(targetEntity=FollowMealList::class, mappedBy="follower", orphanRemoval=true)
+     */
+    private $followingMealLists;
+
+    /**
+     * @ORM\OneToMany(targetEntity=FollowMealList::class, mappedBy="followed", orphanRemoval=true)
+     */
+    private $followerMealLists;
+
     function __construct($id = -1, $username = NULL, $plainPassword = NULL, $responsibilities = [])
     {
         $this->id = $id;
@@ -115,6 +125,8 @@ class User implements UserInterface
         $this->favoriteRecipes = new ArrayCollection();
         $this->notificationReceipts = new ArrayCollection();
         $this->sentNotifications = new ArrayCollection();
+        $this->followingMealLists = new ArrayCollection();
+        $this->followerMealLists = new ArrayCollection();
     }
 
     /**
@@ -459,6 +471,66 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($sentNotification->getSender() === $this) {
                 $sentNotification->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FollowMealList>
+     */
+    public function getFollowingMealLists(): Collection
+    {
+        return $this->followingMealLists;
+    }
+
+    public function addFollowingMealList(FollowMealList $followingMealList): self
+    {
+        if (!$this->followingMealLists->contains($followingMealList)) {
+            $this->followingMealLists[] = $followingMealList;
+            $followingMealList->setFollower($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFollowingMealList(FollowMealList $followingMealList): self
+    {
+        if ($this->followingMealLists->removeElement($followingMealList)) {
+            // set the owning side to null (unless already changed)
+            if ($followingMealList->getFollower() === $this) {
+                $followingMealList->setFollower(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FollowMealList>
+     */
+    public function getFollowerMealLists(): Collection
+    {
+        return $this->followerMealLists;
+    }
+
+    public function addFollowerMealList(FollowMealList $followerMealList): self
+    {
+        if (!$this->followerMealLists->contains($followerMealList)) {
+            $this->followerMealLists[] = $followerMealList;
+            $followerMealList->setFollowed($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFollowerMealList(FollowMealList $followerMealList): self
+    {
+        if ($this->followerMealLists->removeElement($followerMealList)) {
+            // set the owning side to null (unless already changed)
+            if ($followerMealList->getFollowed() === $this) {
+                $followerMealList->setFollowed(null);
             }
         }
 

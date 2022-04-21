@@ -118,8 +118,8 @@ class NotificationCategory
     public function getColor(): string
     {
         return match ($this->getCode()) {
-            1 => 'info',
-            2 => 'primary',
+            '1' => 'info',
+            '2' => 'primary',
             default => 'info',
         };
     }

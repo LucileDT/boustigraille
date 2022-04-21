@@ -50,9 +50,11 @@ class NotificationReceiptRepository extends ServiceEntityRepository
      */
     public function findUnreadByUser($user)
     {
-        return $this->createQueryBuilder('n')
-            ->andWhere('n.dateRead IS NULL')
-            ->andWhere('n.recipient = :user')
+        return $this->createQueryBuilder('nr')
+            ->andWhere('nr.dateRead IS NULL')
+            ->andWhere('nr.recipient = :user')
+            ->join('nr.notification', 'n')
+            ->orderBy('n.dateSent', 'DESC')
             ->setParameter('user', $user)
             ->getQuery()
             ->getResult()
@@ -64,9 +66,11 @@ class NotificationReceiptRepository extends ServiceEntityRepository
      */
     public function findReadByUser($user)
     {
-        return $this->createQueryBuilder('n')
-            ->andWhere('n.dateRead IS NOT NULL')
-            ->andWhere('n.recipient = :user')
+        return $this->createQueryBuilder('nr')
+            ->andWhere('nr.dateRead IS NOT NULL')
+            ->andWhere('nr.recipient = :user')
+            ->join('nr.notification', 'n')
+            ->orderBy('n.dateSent', 'DESC')
             ->setParameter('user', $user)
             ->getQuery()
             ->getResult()
