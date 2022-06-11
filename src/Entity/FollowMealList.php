@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=FollowMealListRepository::class)
  */
-class FollowMealList
+class FollowMealList extends Action
 {
     /**
      * @ORM\Id
@@ -18,71 +18,20 @@ class FollowMealList
     private $id;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
-     */
-    private $proposedAt;
-
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     */
-    private $acceptedAt;
-
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     */
-    private $refusedAt;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="followingMealLists")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $follower;
+    private User $follower;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="followerMealLists")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $followed;
+    private User $followed;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProposedAt(): ?\DateTimeImmutable
-    {
-        return $this->proposedAt;
-    }
-
-    public function setProposedAt(\DateTimeImmutable $proposedAt): self
-    {
-        $this->proposedAt = $proposedAt;
-
-        return $this;
-    }
-
-    public function getAcceptedAt(): ?\DateTimeImmutable
-    {
-        return $this->acceptedAt;
-    }
-
-    public function setAcceptedAt(?\DateTimeImmutable $acceptedAt): self
-    {
-        $this->acceptedAt = $acceptedAt;
-
-        return $this;
-    }
-    
-    public function getRefusedAt(): ?\DateTimeImmutable
-    {
-        return $this->refusedAt;
-    }
-
-    public function setRefusedAt(?\DateTimeImmutable $refusedAt): self
-    {
-        $this->refusedAt = $refusedAt;
-
-        return $this;
     }
 
     public function getFollower(): ?User

@@ -102,10 +102,10 @@
                 <li class="mb-3">
                     {% if user.doShowUsernameOnRecipe %}
                         <i class="ri-eye-fill bg-dark text-white p-2 rounded"></i>
-                        Mon username est affiché sur les <strong>recettes</strong> que j'ai rédigées
+                        Mon username <strong>est</strong> affiché sur les <strong>recettes</strong> que j'ai rédigées
                     {% else %}
                         <i class="ri-eye-close-line bg-dark text-white p-2 rounded"></i>
-                        Mon username n'est pas affiché sur les <strong>recettes</strong> que j'ai rédigées
+                        Mon username <strong>n'est pas</strong> affiché sur les <strong>recettes</strong> que j'ai rédigées
                     {% endif %}
                 </li>
                 <li>
@@ -114,10 +114,10 @@
                 <li class="mb-3">
                     {% if user.doShowWrittenMealListToOthers %}
                         <i class="ri-eye-fill bg-dark text-white p-2 rounded"></i>
-                        Les <strong>listes de repas</strong> que j'ai rédigées sont visibles par toute personne connectée au site
+                        Les <strong>listes de repas</strong> que j'ai rédigées <strong>sont visibles</strong> par toute personne connectée au site
                     {% else %}
                         <i class="ri-eye-close-line bg-dark text-white p-2 rounded"></i>
-                        Les <strong>listes de repas</strong> que j'ai rédigées ne sont visibles que par moi-même
+                        Les <strong>listes de repas</strong> que j'ai rédigées ne <strong>sont visibles que par moi-même</strong>
                     {% endif %}
                     {% if acceptedMealListFollows | length > 0 %}
                         <strong>et</strong> par les personnes suivantes&nbsp;:

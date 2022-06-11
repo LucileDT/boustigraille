@@ -22,14 +22,14 @@
                         {# display a message explaining which action has been taken #}
                         <div class="fst-italic text-muted">
                             <small>
-                                {% if notification.followMealList.acceptedAt != null %}
+                                {% if notification.action.acceptedAt != null %}
                                     <i class="ri-checkbox-circle-fill"></i>
                                     Vous avez accepté l'accès à la liste de repas le
-                                    {{ notification.followMealList.acceptedAt | format_date('full', locale='fr') }}.
-                                {% elseif notification.followMealList.refusedAt != null %}
+                                    {{ notification.action.acceptedAt | format_date('full', locale='fr') }}.
+                                {% elseif notification.action.refusedAt != null %}
                                     <i class="ri-close-circle-fill"></i>
                                     Vous avez refusé l'accès à la liste de repas le
-                                    {{ notification.followMealList.refusedAt | format_date('full', locale='fr') }}.
+                                    {{ notification.action.refusedAt | format_date('full', locale='fr') }}.
                                 {% endif %}
                             </small>
                         </div>

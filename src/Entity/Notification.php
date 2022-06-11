@@ -46,9 +46,9 @@ class Notification
     private $category;
 
     /**
-     * @ORM\OneToOne(targetEntity=FollowMealList::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Action::class, cascade={"persist", "remove"})
      */
-    private $followMealList;
+    private $action;
 
     public function __construct()
     {
@@ -138,14 +138,14 @@ class Notification
         return $this;
     }
 
-    public function getFollowMealList(): ?FollowMealList
+    public function getAction(): ?Action
     {
-        return $this->followMealList;
+        return $this->action;
     }
 
-    public function setFollowMealList(?FollowMealList $followMealList): self
+    public function setAction(?Action $action): self
     {
-        $this->followMealList = $followMealList;
+        $this->action = $action;
 
         return $this;
     }
