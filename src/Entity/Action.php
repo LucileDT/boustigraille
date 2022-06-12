@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
  *     "follow_meal_list" = "FollowMealList",
+ *     "follow_username_on_recipe" = "FollowUsernameOnRecipe",
  * })
  */
 abstract class Action
@@ -26,17 +27,17 @@ abstract class Action
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    private DateTimeImmutable $proposedAt;
+    private ?DateTimeImmutable $proposedAt;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
-    private DateTimeImmutable $acceptedAt;
+    private ?DateTimeImmutable $acceptedAt;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
-    private DateTimeImmutable $refusedAt;
+    private ?DateTimeImmutable $refusedAt;
 
     public function getId(): ?int
     {

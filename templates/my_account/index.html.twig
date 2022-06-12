@@ -106,6 +106,17 @@
                     {% else %}
                         <i class="ri-eye-close-line bg-dark text-white p-2 rounded"></i>
                         Mon username <strong>n'est pas</strong> affiché sur les <strong>recettes</strong> que j'ai rédigées
+                        {% if acceptedUsernameOnRecipeFollows | length > 0 %}
+                            <strong>sauf</strong> pour les personnes suivantes&nbsp;
+                            {% for acceptedUsernameOnRecipeFollow in acceptedUsernameOnRecipeFollows %}
+                                <ul class="ms-4 ps-2 mt-3">
+                                    <li>
+                                        <i class="ri-eye-fill bg-dark text-white p-2 rounded"></i>
+                                        {{ acceptedUsernameOnRecipeFollow.follower.username }}
+                                    </li>
+                                </ul>
+                            {% endfor %}
+                        {% endif %}
                     {% endif %}
                 </li>
                 <li>

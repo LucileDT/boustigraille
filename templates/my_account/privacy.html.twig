@@ -43,16 +43,47 @@
                 {{ form_end(global_settings_form) }}
             </div>
         </div>
-        <div class="col-12">
+        <div class="col-6">
             <div class="bg-light p-3">
-                <h4 class="mb-3">Accès personnalisé aux listes de repas</h4>
-                {% if propositionsSent | length > 0 %}
+                <h4 class="mb-3">Accès personnalisé au pseudonyme dans les recettes</h4>
+                {% if sentUsernameOnRecipeFollowPropositions | length > 0 %}
                     <div class="bg-white text-info py-2 px-3 border-info border">
                         <small>
                             <i class="ri-information-fill"></i>
                             Vous avez déjà envoyé une proposition aux personnes suivantes&nbsp;:
-                            {% for propositionSent in propositionsSent %}
-                                {% if not loop.last and propositionsSent | length > 1 %}
+                            {% for propositionSent in sentUsernameOnRecipeFollowPropositions %}
+                                {% if not loop.last and sentUsernameOnRecipeFollowPropositions | length > 1 %}
+                                    {{ propositionSent.follower.username }},
+                                {% else %}
+                                    {{ propositionSent.follower.username }}
+                                {% endif %}
+                            {% endfor %}
+                        </small>
+                    </div>
+                {% endif %}
+                <div class="mt-3">
+                    {{ form_start(propose_username_in_recipe_follow_form) }}
+                        {{ form_widget(propose_username_in_recipe_follow_form.username) }}
+                        {{ form_help(propose_username_in_recipe_follow_form.username) }}
+                        {{ form_errors(propose_username_in_recipe_follow_form.username) }}
+
+                        <div class="text-center">
+                            <button class="btn btn-primary mt-4">Envoyer la proposition</button>
+                        </div>
+                    {{ form_end(propose_username_in_recipe_follow_form) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="bg-light p-3">
+                <h4 class="mb-3">Accès personnalisé aux listes de repas</h4>
+                {% if sentMealListFollowPropositions | length > 0 %}
+                    <div class="bg-white text-info py-2 px-3 border-info border">
+                        <small>
+                            <i class="ri-information-fill"></i>
+                            Vous avez déjà envoyé une proposition aux personnes suivantes&nbsp;:
+                            {% for propositionSent in sentMealListFollowPropositions %}
+                                {% if not loop.last and sentMealListFollowPropositions | length > 1 %}
                                     {{ propositionSent.follower.username }},
                                 {% else %}
                                     {{ propositionSent.follower.username }}

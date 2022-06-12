@@ -116,6 +116,16 @@ class User implements UserInterface
      */
     private $followerMealLists;
 
+    /**
+     * @ORM\OneToMany(targetEntity=FollowUsernameOnRecipe::class, mappedBy="follower", orphanRemoval=true)
+     */
+    private $followingUsernamesOnRecipes;
+
+    /**
+     * @ORM\OneToMany(targetEntity=FollowUsernameOnRecipe::class, mappedBy="followed", orphanRemoval=true)
+     */
+    private $followerUsernamesOnRecipes;
+
     function __construct($id = -1, $username = NULL, $plainPassword = NULL, $responsibilities = [])
     {
         $this->id = $id;
@@ -127,6 +137,10 @@ class User implements UserInterface
         $this->sentNotifications = new ArrayCollection();
         $this->followingMealLists = new ArrayCollection();
         $this->followerMealLists = new ArrayCollection();
+        $this->followingUsernamesOnRecipes = new ArrayCollection();
+        $this->followerUsernamesOnRecipes = new ArrayCollection();
+        $this->doShowUsernameOnRecipe = false;
+        $this->doShowWrittenMealListToOthers = false;
     }
 
     /**
@@ -385,8 +399,6 @@ class User implements UserInterface
 
     /**
      * Check if the user has marked a specific recipe as favorite
-     * @param App/Entity/Recipe $recipe
-     * @return bool
      */
     public function hasFaved(Recipe $recipe): bool
     {
@@ -531,6 +543,66 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($followerMealList->getFollowed() === $this) {
                 $followerMealList->setFollowed(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FollowUsernameOnRecipe>
+     */
+    public function getFollowingUsernamesOnRecipes(): Collection
+    {
+        return $this->followingUsernamesOnRecipes;
+    }
+
+    public function addFollowingUsernameOnRecipe(FollowUsernameOnRecipe $followingUsernameOnRecipe): self
+    {
+        if (!$this->followingUsernamesOnRecipes->contains($followingUsernameOnRecipe)) {
+            $this->followingUsernamesOnRecipes[] = $followingUsernameOnRecipe;
+            $followingUsernameOnRecipe->setFollower($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFollowingUsernameOnRecipe(FollowUsernameOnRecipe $followingUsernameOnRecipe): self
+    {
+        if ($this->followingUsernamesOnRecipes->removeElement($followingUsernameOnRecipe)) {
+            // set the owning side to null (unless already changed)
+            if ($followingUsernameOnRecipe->getFollower() === $this) {
+                $followingUsernameOnRecipe->setFollower(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FollowUsernameOnRecipe>
+     */
+    public function getFollowerUsernamesOnRecipes(): Collection
+    {
+        return $this->followerUsernamesOnRecipes;
+    }
+
+    public function addFollowerUsernameOnRecipe(FollowUsernameOnRecipe $followerUsernameOnRecipe): self
+    {
+        if (!$this->followerUsernamesOnRecipes->contains($followerUsernameOnRecipe)) {
+            $this->followerUsernamesOnRecipes[] = $followerUsernameOnRecipe;
+            $followerUsernameOnRecipe->setFollower($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFollowerUsernameOnRecipe(FollowUsernameOnRecipe $followerUsernameOnRecipe): self
+    {
+        if ($this->followingUsernamesOnRecipes->removeElement($followerUsernameOnRecipe)) {
+            // set the owning side to null (unless already changed)
+            if ($followerUsernameOnRecipe->getFollower() === $this) {
+                $followerUsernameOnRecipe->setFollower(null);
             }
         }
 

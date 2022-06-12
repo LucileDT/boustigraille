@@ -120,6 +120,7 @@ class NotificationCategory
         return match ($this->getCode()) {
             '1' => 'info',
             '2' => 'primary',
+            '3' => 'primary',
             default => 'info',
         };
     }

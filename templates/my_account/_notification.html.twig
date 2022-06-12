@@ -18,7 +18,7 @@
                         </small>
                     </div>
                     {{ notification.message | markdown_to_html }}
-                    {% if notification.category.code == 2 %}
+                    {% if notification.category.code == 2 or notification.category.code == 3 %}
                         {# display a message explaining which action has been taken #}
                         <div class="fst-italic text-muted">
                             <small>
@@ -36,22 +36,39 @@
                     {% endif %}
                 </div>
                 <div class="d-flex flex-column">
-                    {% if notification.category.code == 2 and notification_receipt.processedAt == null %}
+                    {% if notification_receipt.processedAt == null %}
                         {# display buttons to accept/reject meal list follow proposition #}
-                        <div class="mb-1">
-                            <button
-                                class="btn btn-outline-{{ notification_receipt.color }} btn-sm accept-meal-list-access"
-                                data-url-accept-meal-list-access="{{ path('api_follow_meal_list_accept_follow', {'id': notification_receipt.id}) }}"
-                            >
-                                Accepter
-                            </button>
-                            <button
-                                class="btn btn-outline-{{ notification_receipt.color }} btn-sm refuse-meal-list-access"
-                                data-url-refuse-meal-list-access="{{ path('api_follow_meal_list_refuse_follow', {'id': notification_receipt.id}) }}"
-                            >
-                                Refuser
-                            </button>
-                        </div>
+                        {% if notification.category.code == 2 %}
+                            <div class="mb-1">
+                                <button
+                                    class="btn btn-outline-{{ notification_receipt.color }} btn-sm accept-meal-list-access"
+                                    data-url-accept-meal-list-access="{{ path('api_follow_meal_list_accept_follow', {'id': notification_receipt.id}) }}"
+                                >
+                                    Accepter
+                                </button>
+                                <button
+                                    class="btn btn-outline-{{ notification_receipt.color }} btn-sm refuse-meal-list-access"
+                                    data-url-refuse-meal-list-access="{{ path('api_follow_meal_list_refuse_follow', {'id': notification_receipt.id}) }}"
+                                >
+                                    Refuser
+                                </button>
+                            </div>
+                        {% elseif notification.category.code == 3 %}
+                            <div class="mb-1">
+                                <button
+                                    class="btn btn-outline-{{ notification_receipt.color }} btn-sm accept-meal-list-access"
+                                    data-url-accept-meal-list-access="{{ path('api_follow_username_on_recipe_accept_follow', {'id': notification_receipt.id}) }}"
+                                >
+                                    Accepter
+                                </button>
+                                <button
+                                    class="btn btn-outline-{{ notification_receipt.color }} btn-sm refuse-meal-list-access"
+                                    data-url-refuse-meal-list-access="{{ path('api_follow_username_on_recipe_refuse_follow', {'id': notification_receipt.id}) }}"
+                                >
+                                    Refuser
+                                </button>
+                            </div>
+                        {% endif %}
                     {% endif %}
                     <div>
                         <button

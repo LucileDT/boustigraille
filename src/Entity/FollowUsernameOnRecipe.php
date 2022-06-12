@@ -2,25 +2,25 @@
 
 namespace App\Entity;
 
-use App\Repository\FollowMealListRepository;
+use App\Repository\FollowUsernameOnRecipeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=FollowMealListRepository::class)
+ * @ORM\Entity(repositoryClass=FollowUsernameOnRecipeRepository::class)
  */
-class FollowMealList extends Action
+class FollowUsernameOnRecipe extends Action
 {
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="followingMealLists")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="followingUsernamesOnRecipes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private User $follower;
+    private $follower;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="followerMealLists")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="followerUsernamesOnRecipes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private User $followed;
+    private $followed;
 
     public function getFollower(): ?User
     {
