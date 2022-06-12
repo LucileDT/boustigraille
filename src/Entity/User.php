@@ -4,6 +4,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -607,5 +608,13 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    public function doFollowUsernameOnRecipe(User $user): bool
+    {
+        $followed = Criteria::create()->where(Criteria::expr()->eq('followed', $user));
+        $followAccepted = Criteria::create()->where(Criteria::expr()->neq('acceptedAt', null));
+        $proposedFollowings = $this->followingUsernamesOnRecipes->matching($followed);
+        return !$proposedFollowings->matching($followAccepted)->isEmpty();
     }
 }
