@@ -55,6 +55,7 @@ class GroceryListService
                         ];
                     } else {
                         $groceryList[$ingredientId]['quantity'] += $quantity;
+                        $groceryList[$ingredientId]['unitQuantity'] += $unitQuantity;
                     }
                 }
             }
