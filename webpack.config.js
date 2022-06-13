@@ -49,6 +49,7 @@ Encore
     .addEntry('recipe_show', './assets/javascript/recipe/show.js')
     .addEntry('meal_list_form', './assets/javascript/meal_list/_form.js')
     .addEntry('meal_list_card', './assets/javascript/meal_list/_meal_list_card.js')
+    .addEntry('my_account_notifications', './assets/javascript/my_account/notifications.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

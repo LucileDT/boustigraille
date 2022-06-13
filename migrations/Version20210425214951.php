@@ -23,7 +23,6 @@ final class Version20210425214951 extends AbstractMigration
 
     public function down(Schema $schema) : void
     {
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('DROP SEQUENCE ingredient_id_seq CASCADE');
         $this->addSql('DROP TABLE ingredient');
         $this->addSql('CREATE UNIQUE INDEX uniq_8d93d649f85e0677 ON "user" (username)');

@@ -54,6 +54,12 @@ class MealList
      */
     private $isEndingAtLunch = true;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
     public function __construct()
     {
         $this->meals = new ArrayCollection();
@@ -162,6 +168,18 @@ class MealList
     public function setIsEndingAtLunch(bool $isEndingAtLunch): self
     {
         $this->isEndingAtLunch = $isEndingAtLunch;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

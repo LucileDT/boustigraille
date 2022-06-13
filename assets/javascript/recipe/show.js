@@ -17,10 +17,10 @@ function updateIngredientsQuantity(portionsCount) {
         let quantityForOnePortion = quantityElement.data('quantity-for-one-portion');
         quantityElement.html(quantityForOnePortion * portionsCount);
 
-        let quantityForUnityElement = $(inputLabel).children('span.quantity-for-unity');
-        if (quantityForUnityElement.length > 0) {
-            let unitySize = quantityForUnityElement.data('unity-size');
-            quantityForUnityElement.html(quantityForOnePortion * portionsCount * unitySize);
+        let quantityForUnitElement = $(inputLabel).children('span.quantity-for-unit');
+        if (quantityForUnitElement.length > 0) {
+            let unitSize = quantityForUnitElement.data('unit-size');
+            quantityForUnitElement.html(quantityForOnePortion * portionsCount * unitSize);
         }
     });
 }

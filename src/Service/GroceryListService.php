@@ -33,7 +33,7 @@ class GroceryListService
                     $ingredientId = $ingredient->getId();
                     $ingredientQuantity = $ingredientQuantityForRecipe->getQuantity();
                     $isMeasuredByUnit = $ingredientQuantityForRecipe->isMeasuredByUnit();
-                    $unitSize = $ingredient->getUnitySize();
+                    $unitSize = $ingredient->getUnitSize();
 
                     if ($isMeasuredByUnit) {
                         $quantity = $mealQuantity * $ingredientQuantity * $unitSize;
@@ -55,6 +55,7 @@ class GroceryListService
                         ];
                     } else {
                         $groceryList[$ingredientId]['quantity'] += $quantity;
+                        $groceryList[$ingredientId]['unitQuantity'] += $unitQuantity;
                     }
                 }
             }

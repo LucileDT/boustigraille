@@ -5,12 +5,17 @@
 >
     <div class="card-body bg-white">
         <h5 class="card-title">{{ meal_list.personName }}</h5>
-        <h6 class="card-subtitle mb-3 text-muted">
+        <h6 class="card-subtitle text-muted mb-2">
             Du
             {{ meal_list.startDate | format_date('full', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
             au
             {{ meal_list.endDate | format_date('full', locale='fr') }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
         </h6>
+{#        {% if meal_list.author.doShowUsernameOnMealList %}#}
+            <div class="text-muted fst-italic mb-2">
+                <small>Par {{ meal_list.author.username }}</small>
+            </div>
+{#        {% endif %}#}
         <p class="card-text">
             <ul>
                 {% for mealQuantityForList in meal_list.meals %}

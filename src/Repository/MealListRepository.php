@@ -49,13 +49,18 @@ class MealListRepository extends ServiceEntityRepository
     /**
      * @return MealList[] Returns an array of past MealList
      */
-    public function findPastOnes()
+    public function findPastOnes($connectedUser)
     {
         $now = new DateTime();
 
         return $this->createQueryBuilder('m')
-            ->where('m.endDate < :now')
+            ->leftJoin('m.author', 'a')
+            ->leftJoin('a.followerMealLists', 'fml')
+            ->andWhere('m.endDate < :now')
+            ->andWhere('m.author = :connectedUser OR a.doShowWrittenMealListToOthers = :true OR (fml.follower = :connectedUser AND fml.acceptedAt IS NOT NULL)')
             ->setParameter('now', $now)
+            ->setParameter('connectedUser', $connectedUser)
+            ->setParameter('true', true)
             ->orderBy('m.startDate', 'DESC')
             ->getQuery()
             ->getResult()
@@ -65,14 +70,18 @@ class MealListRepository extends ServiceEntityRepository
     /**
      * @return MealList[] Returns an array of currents and future MealList
      */
-    public function findCurrentOnes()
+    public function findCurrentOnes($connectedUser)
     {
         $now = new DateTime();
 
         return $this->createQueryBuilder('m')
-            ->where(':now >= m.startDate')
-            ->andWhere(':now <= m.endDate')
+            ->leftJoin('m.author', 'a')
+            ->leftJoin('a.followerMealLists', 'fml')
+            ->andWhere(':now >= m.startDate and :now <= m.endDate')
+            ->andWhere('m.author = :connectedUser OR a.doShowWrittenMealListToOthers = :true OR (fml.follower = :connectedUser AND fml.acceptedAt IS NOT NULL)')
             ->setParameter('now', $now)
+            ->setParameter('connectedUser', $connectedUser)
+            ->setParameter('true', true)
             ->orderBy('m.startDate', 'ASC')
             ->getQuery()
             ->getResult()
@@ -82,13 +91,18 @@ class MealListRepository extends ServiceEntityRepository
     /**
      * @return MealList[] Returns an array of currents and future MealList
      */
-    public function findFutureOnes()
+    public function findFutureOnes($connectedUser)
     {
         $now = new DateTime();
 
         return $this->createQueryBuilder('m')
-            ->where('m.startDate > :now')
+            ->leftJoin('m.author', 'a')
+            ->leftJoin('a.followerMealLists', 'fml')
+            ->andWhere('m.startDate > :now')
+            ->andWhere('m.author = :connectedUser OR a.doShowWrittenMealListToOthers = :true OR (fml.follower = :connectedUser AND fml.acceptedAt IS NOT NULL)')
             ->setParameter('now', $now)
+            ->setParameter('connectedUser', $connectedUser)
+            ->setParameter('true', true)
             ->orderBy('m.startDate', 'ASC')
             ->getQuery()
             ->getResult()

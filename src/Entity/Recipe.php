@@ -44,6 +44,12 @@ class Recipe
      */
     private $mainPictureFilename;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
@@ -131,7 +137,7 @@ class Recipe
         foreach ($this->getIngredients() as $ingredient)
         {
             if ($ingredient->isMeasuredByUnit()) {
-                $proteinsCount += ($ingredient->getIngredient()->getProteins() * $ingredient->getIngredient()->getUnitySize() / 100) * $ingredient->getQuantity();
+                $proteinsCount += ($ingredient->getIngredient()->getProteins() * $ingredient->getIngredient()->getUnitSize() / 100) * $ingredient->getQuantity();
             } else {
                 $proteinsCount += ($ingredient->getIngredient()->getProteins() / 100) * $ingredient->getQuantity();
             }
@@ -150,7 +156,7 @@ class Recipe
         foreach ($this->getIngredients() as $ingredient)
         {
             if ($ingredient->isMeasuredByUnit()) {
-                $fatCount += ($ingredient->getIngredient()->getFat() * $ingredient->getIngredient()->getUnitySize() / 100) * $ingredient->getQuantity();
+                $fatCount += ($ingredient->getIngredient()->getFat() * $ingredient->getIngredient()->getUnitSize() / 100) * $ingredient->getQuantity();
             } else {
                 $fatCount += ($ingredient->getIngredient()->getFat() / 100) * $ingredient->getQuantity();
             }
@@ -169,7 +175,7 @@ class Recipe
         foreach ($this->getIngredients() as $ingredient)
         {
             if ($ingredient->isMeasuredByUnit()) {
-                $carbohydratesCount += ($ingredient->getIngredient()->getCarbohydrates() * $ingredient->getIngredient()->getUnitySize() / 100) * $ingredient->getQuantity();
+                $carbohydratesCount += ($ingredient->getIngredient()->getCarbohydrates() * $ingredient->getIngredient()->getUnitSize() / 100) * $ingredient->getQuantity();
             } else {
                 $carbohydratesCount += ($ingredient->getIngredient()->getCarbohydrates() / 100) * $ingredient->getQuantity();
             }
@@ -188,7 +194,7 @@ class Recipe
         foreach ($this->getIngredients() as $ingredient)
         {
             if ($ingredient->isMeasuredByUnit()) {
-                $energyCount += ($ingredient->getIngredient()->getEnergy() * $ingredient->getIngredient()->getUnitySize() / 100) * $ingredient->getQuantity();
+                $energyCount += ($ingredient->getIngredient()->getEnergy() * $ingredient->getIngredient()->getUnitSize() / 100) * $ingredient->getQuantity();
             } else {
                 $energyCount += ($ingredient->getIngredient()->getEnergy() / 100) * $ingredient->getQuantity();
             }
@@ -204,6 +210,18 @@ class Recipe
     public function setMainPictureFilename(?string $mainPictureFilename): self
     {
         $this->mainPictureFilename = $mainPictureFilename;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

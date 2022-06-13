@@ -6,7 +6,7 @@ security:
                 class: App\Entity\User
                 property: username
 
-    encoders:
+    password_hashers:
         App\Entity\User:
             algorithm: auto
 

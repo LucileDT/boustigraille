@@ -21,7 +21,6 @@ final class Version20210517210623 extends AbstractMigration
 
     public function down(Schema $schema) : void
     {
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE ingredient DROP unity_size');
     }
 }

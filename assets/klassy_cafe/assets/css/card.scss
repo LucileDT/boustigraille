@@ -78,7 +78,6 @@
             font-size: calc(variables.$card-height / 15);
             font-weight: 700;
             color: #fff;
-            margin-bottom: 20px;
         }
 
         .description {
@@ -95,6 +94,21 @@
                 font-weight: 600;
                 transition: all .3s;
                 width: 100%;
+
+                &.btn {
+                    &.btn-outline {
+                        background-color: transparent;
+                        color: #fff;
+                        border-color: #fff;
+
+                        &:hover {
+                            color: variables.$klassy-primary-color;
+                            background-color: #fff;
+                            border-color: #fff;
+                            opacity: 1;
+                        }
+                    }
+                }
 
                 &:hover {
                     opacity: 0.9;

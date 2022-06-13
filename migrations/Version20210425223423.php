@@ -28,7 +28,6 @@ final class Version20210425223423 extends AbstractMigration
 
     public function down(Schema $schema) : void
     {
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE ingredient ALTER proteins TYPE INT');
         $this->addSql('ALTER TABLE ingredient ALTER proteins DROP DEFAULT');
         $this->addSql('ALTER TABLE ingredient ALTER carbohydrates TYPE INT');

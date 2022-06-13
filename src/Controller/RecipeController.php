@@ -4,12 +4,15 @@ namespace App\Controller;
 
 use App\Entity\IngredientQuantityForRecipe;
 use App\Entity\Recipe;
+use App\Entity\User;
 use App\Form\RecipeType;
 use App\FormDataObject\RecipeFDO;
 use App\Repository\RecipeRepository;
+use App\Service\Migrations\ContentAuthorService;
 use App\Service\RecipeService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,12 +33,23 @@ class RecipeController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="recipe_new", methods={"GET","POST"})
+     * @Route("/new/{fromRecipe}", name="recipe_new", methods={"GET","POST"})
      * @Security("not is_anonymous()")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, Recipe $fromRecipe = null): Response
     {
         $recipe = new Recipe();
+        if (!empty($fromRecipe)) {
+            $recipe
+                ->setName($fromRecipe->getName())
+                ->setMainPictureFilename($fromRecipe->getMainPictureFilename())
+                ->setProcess($fromRecipe->getProcess())
+                ->setComment($fromRecipe->getComment())
+            ;
+            foreach ($fromRecipe->getIngredients() as $ingredient) {
+                $recipe->addIngredient($ingredient);
+            }
+        }
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
 
@@ -44,13 +58,21 @@ class RecipeController extends AbstractController
             $mainPicture = $form->get('main_picture')->getData();
             if ($mainPicture)
             {
-                $filename = RecipeService::saveMainPicture(
+                try
+                {
+                    $filename = RecipeService::saveMainPicture(
                         $mainPicture,
                         $recipe->getName(),
                         $this->getParameter('pictures_directory')
-                );
-                $recipe->setMainPictureFilename($filename);
+                    );
+                    $recipe->setMainPictureFilename($filename);
+                }
+                catch (FileException $e)
+                {
+                    $this->addFlash('danger', $e->getMessage());
+                }
             }
+            $recipe->setAuthor($this->getUser());
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($recipe);
@@ -68,8 +90,9 @@ class RecipeController extends AbstractController
     /**
      * @Route("/{id}", name="recipe_show", methods={"GET"})
      */
-    public function show(Request $request, Recipe $recipe): Response
+    public function show(Request $request, Recipe $recipe, ContentAuthorService $authorService): Response
     {
+        $authorService->updateRecipesAuthor();
         return $this->render('recipe/show.html.twig', [
             'recipe' => $recipe,
         ]);
@@ -89,12 +112,19 @@ class RecipeController extends AbstractController
             $mainPicture = $form->get('main_picture')->getData();
             if ($mainPicture)
             {
-                $filename = RecipeService::saveMainPicture(
+                try
+                {
+                    $filename = RecipeService::saveMainPicture(
                         $mainPicture,
                         $recipe->getName(),
                         $this->getParameter('pictures_directory')
-                );
-                $recipe->setMainPictureFilename($filename);
+                    );
+                    $recipe->setMainPictureFilename($filename);
+                }
+                catch (FileException $e)
+                {
+                    $this->addFlash('danger', $e->getMessage());
+                }
             }
 
             $this->getDoctrine()->getManager()->flush();

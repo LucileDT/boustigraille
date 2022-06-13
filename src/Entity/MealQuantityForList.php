@@ -23,7 +23,7 @@ class MealQuantityForList
     private $quantity;
 
     /**
-     * @ORM\ManyToOne(targetEntity=MealList::class, inversedBy="mealQuantityForLists")
+     * @ORM\ManyToOne(targetEntity=MealList::class, inversedBy="meals")
      * @ORM\JoinColumn(nullable=false)
      */
     private $mealList;

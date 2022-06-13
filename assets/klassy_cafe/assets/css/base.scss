@@ -52,3 +52,26 @@
         }
     }
 }
+
+h6 {
+    &.klassy-cafe {
+        position: relative;
+        font-size: 0.95rem;
+        color: variables.$klassy-secondary-color;
+        font-weight: 500;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        padding-left: 30px;
+        margin-bottom: 0.8rem;
+
+        &:before {
+            width: 20px;
+            height: 1px;
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            background-color: variables.$klassy-secondary-color;
+        }
+    }
+}

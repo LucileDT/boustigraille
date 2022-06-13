@@ -1,0 +1,85 @@
+{% set notification = notification_receipt.notification %}
+<div id="notification-{{ notification.id }}" class="mb-4">
+    <div class="card border-{{ notification_receipt.color }} border-top-0 border-bottom-0 border-end-0 border-5 rounded-0 bg-light">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="pe-2">
+                    <div class="mb-2">
+                        <span
+                            class="badge rounded-pill bg-{{ notification_receipt.color }}"
+                            data-bs-toggle="tooltip"
+                            title="{{ notification.category.description }}"
+                        >
+                            {{ notification.category.name }}
+                            <i class="ri-question-fill"></i>
+                        </span>
+                        <small class="text-muted">
+                            Le {{ notification.dateSent | format_date('full', locale='fr') }}
+                        </small>
+                    </div>
+                    {{ notification.message | markdown_to_html }}
+                    {% if notification.category.code == 2 or notification.category.code == 3 %}
+                        {# display a message explaining which action has been taken #}
+                        <div class="fst-italic text-muted">
+                            <small>
+                                {% if notification.action.acceptedAt != null %}
+                                    <i class="ri-checkbox-circle-fill"></i>
+                                    Vous avez accepté l'accès à la liste de repas le
+                                    {{ notification.action.acceptedAt | format_date('full', locale='fr') }}.
+                                {% elseif notification.action.refusedAt != null %}
+                                    <i class="ri-close-circle-fill"></i>
+                                    Vous avez refusé l'accès à la liste de repas le
+                                    {{ notification.action.refusedAt | format_date('full', locale='fr') }}.
+                                {% endif %}
+                            </small>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="d-flex flex-column">
+                    {% if notification_receipt.processedAt == null %}
+                        {# display buttons to accept/reject meal list follow proposition #}
+                        {% if notification.category.code == 2 %}
+                            <div class="mb-1">
+                                <button
+                                    class="btn btn-outline-{{ notification_receipt.color }} btn-sm accept-meal-list-access"
+                                    data-url-accept-meal-list-access="{{ path('api_follow_meal_list_accept_follow', {'id': notification_receipt.id}) }}"
+                                >
+                                    Accepter
+                                </button>
+                                <button
+                                    class="btn btn-outline-{{ notification_receipt.color }} btn-sm refuse-meal-list-access"
+                                    data-url-refuse-meal-list-access="{{ path('api_follow_meal_list_refuse_follow', {'id': notification_receipt.id}) }}"
+                                >
+                                    Refuser
+                                </button>
+                            </div>
+                        {% elseif notification.category.code == 3 %}
+                            <div class="mb-1">
+                                <button
+                                    class="btn btn-outline-{{ notification_receipt.color }} btn-sm accept-meal-list-access"
+                                    data-url-accept-meal-list-access="{{ path('api_follow_username_on_recipe_accept_follow', {'id': notification_receipt.id}) }}"
+                                >
+                                    Accepter
+                                </button>
+                                <button
+                                    class="btn btn-outline-{{ notification_receipt.color }} btn-sm refuse-meal-list-access"
+                                    data-url-refuse-meal-list-access="{{ path('api_follow_username_on_recipe_refuse_follow', {'id': notification_receipt.id}) }}"
+                                >
+                                    Refuser
+                                </button>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    <div>
+                        <button
+                            class="btn btn-outline-{{ notification_receipt.color }} btn-sm toggle-read-notification w-100"
+                            data-url-toggle-read-notification="{{ path('api_notification_toggle_read', {'id': notification_receipt.id}) }}"
+                        >
+                            {{ button_label | default('Marquer comme&nbsp;lu') | raw }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

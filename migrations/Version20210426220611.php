@@ -28,7 +28,6 @@ final class Version20210426220611 extends AbstractMigration
 
     public function down(Schema $schema) : void
     {
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE ingredient_quantity_for_recipe DROP CONSTRAINT FK_3D18E32F59D8A214');
         $this->addSql('DROP SEQUENCE ingredient_quantity_for_recipe_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE recipe_id_seq CASCADE');

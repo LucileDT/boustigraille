@@ -41,7 +41,6 @@ final class Version20210422232022 extends AbstractMigration
 
     public function down(Schema $schema) : void
     {
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE users_responsibilities DROP CONSTRAINT FK_59AC8836385A88B7');
         $this->addSql('ALTER TABLE users_responsibilities DROP CONSTRAINT FK_59AC8836A76ED395');
         $this->addSql('DROP SEQUENCE responsibility_id_seq CASCADE');

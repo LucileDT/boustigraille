@@ -21,7 +21,6 @@ final class Version20210512094324 extends AbstractMigration
 
     public function down(Schema $schema) : void
     {
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE ingredient DROP bar_code');
     }
 }

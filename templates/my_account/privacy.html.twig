@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Éditer réglages de confidentialité{% endblock %}
+
+{% block page_title %}
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="page-heading">
+                    <h6>
+                        <a href="{{ path('home') }}">Accueil</a>
+                        /
+                        <a href="{{ path('my_account_index') }}">Mon compte</a>
+                        / Éditer mes  réglages de confidentialité
+                    </h6>
+                    <h2>
+                        Éditer mes réglages de confidentialité
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <div class="bg-light p-3 mb-4">
+                <h4 class="mb-3">Réglages globaux</h4>
+                {{ form_start(global_settings_form) }}
+                    {{ form_widget(global_settings_form.do_show_username_on_recipe, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_help(global_settings_form.do_show_username_on_recipe) }}
+                    {{ form_errors(global_settings_form.do_show_username_on_recipe) }}
+
+                    {{ form_widget(global_settings_form.do_show_written_meal_list_to_others, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_help(global_settings_form.do_show_written_meal_list_to_others) }}
+                    {{ form_errors(global_settings_form.do_show_written_meal_list_to_others) }}
+
+                    <div class="text-center">
+                        <button class="btn btn-primary mt-4">{{ button_label | default('Mettre à jour') }}</button>
+                    </div>
+                {{ form_end(global_settings_form) }}
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="bg-light p-3">
+                <h4 class="mb-3">Accès personnalisé au pseudonyme dans les recettes</h4>
+                {% if sentUsernameOnRecipeFollowPropositions | length > 0 %}
+                    <div class="bg-white text-info py-2 px-3 border-info border">
+                        <small>
+                            <i class="ri-information-fill"></i>
+                            Vous avez déjà envoyé une proposition aux personnes suivantes&nbsp;:
+                            {% for propositionSent in sentUsernameOnRecipeFollowPropositions %}
+                                {% if not loop.last and sentUsernameOnRecipeFollowPropositions | length > 1 %}
+                                    {{ propositionSent.follower.username }},
+                                {% else %}
+                                    {{ propositionSent.follower.username }}
+                                {% endif %}
+                            {% endfor %}
+                        </small>
+                    </div>
+                {% endif %}
+                <div class="mt-3">
+                    {{ form_start(propose_username_in_recipe_follow_form) }}
+                        {{ form_widget(propose_username_in_recipe_follow_form.username) }}
+                        {{ form_help(propose_username_in_recipe_follow_form.username) }}
+                        {{ form_errors(propose_username_in_recipe_follow_form.username) }}
+
+                        <div class="text-center">
+                            <button class="btn btn-primary mt-4">Envoyer la proposition</button>
+                        </div>
+                    {{ form_end(propose_username_in_recipe_follow_form) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="bg-light p-3">
+                <h4 class="mb-3">Accès personnalisé aux listes de repas</h4>
+                {% if sentMealListFollowPropositions | length > 0 %}
+                    <div class="bg-white text-info py-2 px-3 border-info border">
+                        <small>
+                            <i class="ri-information-fill"></i>
+                            Vous avez déjà envoyé une proposition aux personnes suivantes&nbsp;:
+                            {% for propositionSent in sentMealListFollowPropositions %}
+                                {% if not loop.last and sentMealListFollowPropositions | length > 1 %}
+                                    {{ propositionSent.follower.username }},
+                                {% else %}
+                                    {{ propositionSent.follower.username }}
+                                {% endif %}
+                            {% endfor %}
+                        </small>
+                    </div>
+                {% endif %}
+                <div class="mt-3">
+                    {{ form_start(ask_meal_list_follow_form) }}
+                        {{ form_widget(ask_meal_list_follow_form.username) }}
+                        {{ form_help(ask_meal_list_follow_form.username) }}
+                        {{ form_errors(ask_meal_list_follow_form.username) }}
+
+                        <div class="text-center">
+                            <button class="btn btn-primary mt-4">Envoyer la proposition</button>
+                        </div>
+                    {{ form_end(ask_meal_list_follow_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
