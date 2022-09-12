@@ -42,6 +42,7 @@
 {% import _self as renderMealQuantityTypeMacro %}
 
 {% if app.user is not null %}
+    <div id="recipes-list-data" data-url="{{ path('api_recipes_by_favorite') }}"></div>
     {{ form_start(form) }}
         <div class="mb-3">
                 {{ form_label(form.personName) }}

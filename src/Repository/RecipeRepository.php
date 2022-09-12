@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Recipe;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +18,37 @@ class RecipeRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Recipe::class);
+    }
+
+    public function findByFavedByAndName(User $user, string $name = null) {
+        $query = $this->createQueryBuilder('r')
+            ->join('r.favedBy', 'u')
+            ->andWhere('u = :user')
+            ->setParameter('user', $user)
+            ;
+        if (!empty($name)) {
+            $query->andWhere('r.name LIKE :name')
+                ->setParameter('name', '%' . $name . '%');
+        }
+        return $query->orderBy('r.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findByNotFavedByAndName(User $user, string $name = null) {
+        $query = $this->createQueryBuilder('r')
+            ->andWhere(':user NOT MEMBER OF r.favedBy')
+            ->setParameter('user', $user)
+            ;
+        if (!empty($name)) {
+            $query->andWhere('r.name LIKE :name')
+                ->setParameter('name', '%' . $name . '%');
+        }
+        return $query->orderBy('r.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
     // /**

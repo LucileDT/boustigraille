@@ -31,29 +31,67 @@ jQuery(document).ready(function () {
     }
 
     function bindBringFocusToQuantity($mealListForm) {
-        $mealListForm.find('.meal-select').on('change', function (e) {
-            // defined in global.js
-            focusNextElement();
+        $mealListForm.find('.meal-select').on("select2:close", function (e) {
+            // get quantity input and focus on it
+            $(this).parents('.meal').find('.meal-quantity').focus();
         });
     }
 
     function toggleSelect2OnIngredientSelector() {
+        let recipesUrl = $('#recipes-list-data').data('url');
         $('.meal-select').select2({
             theme: "bootstrap-5",
             width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
             placeholder: $(this).data('placeholder'),
+            ajax: {
+                url: recipesUrl,
+                dataType: 'json',
+                processResults: function (data) {
+                    let favedRecipesData = data.faved;
+                    let favedRecipes = [];
+                    $.each(favedRecipesData, function (key, recipeData) {
+                        let recipe = {
+                            'id': recipeData.id,
+                            'text': recipeData.name + ' (' + recipeData.author.username + ')',
+                        };
+                        favedRecipes.push(recipe);
+                    });
+
+                    let notFavedRecipesData = data.not_faved;
+                    let notFavedRecipes = [];
+                    $.each(notFavedRecipesData, function (key, recipeData) {
+                        let recipe = {
+                            'id': recipeData.id,
+                            'text': recipeData.name + ' (' + recipeData.author.username + ')',
+                        };
+                        notFavedRecipes.push(recipe);
+                    });
+                    return {
+                        results: [
+                            {
+                                "text": "Recettes mises en favoris",
+                                "children" : favedRecipes,
+                            },
+                            {
+                                "text": "Autres recettes",
+                                "children" : notFavedRecipes
+                            },
+                        ]
+                    };
+                }
+            },
         });
     }
 
     function addFormToCollection($collectionHolderClass) {
         // get container of all meal forms
-        var $collectionHolder = $('.' + $collectionHolderClass);
+        let $collectionHolder = $('.' + $collectionHolderClass);
         // get form data-prototype
-        var prototype = $collectionHolder.data('prototype');
+        let prototype = $collectionHolder.data('prototype');
         // get the new index
-        var index = $collectionHolder.data('index');
+        let index = $collectionHolder.data('index');
 
-        var newForm = prototype;
+        let newForm = prototype;
         // replace '__name__label__' in the prototype's HTML to
         // instead be a number based on how many items we have
         newForm = newForm.replace(/__name__label__/g, index);
@@ -66,7 +104,7 @@ jQuery(document).ready(function () {
         $collectionHolder.data('index', index + 1);
 
         // display the new form in the page
-        var $newMealListForm = $('<div class="meal"></div>').append(newForm);
+        let $newMealListForm = $('<div class="meal"></div>').append(newForm);
         $collectionHolder.append($newMealListForm)
 
         // add a delete link to the new form
@@ -83,7 +121,7 @@ jQuery(document).ready(function () {
     }
 
     // get the element that holds the collection of meals
-    var $collectionHolder = $('#meals');
+    let $collectionHolder = $('#meals');
 
     // bind actions to the different elements
     $collectionHolder.children('div').each(function () {
@@ -100,7 +138,7 @@ jQuery(document).ready(function () {
     toggleSelect2OnIngredientSelector();
 
     $('body').on('click', '.add_item_link', function (e) {
-        var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
+        let $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
 
         // add a new meal form
         addFormToCollection($collectionHolderClass);

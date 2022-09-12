@@ -3,6 +3,7 @@
 namespace App\Controller\API;
 
 use App\Entity\Recipe;
+use App\Repository\RecipeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,5 +36,28 @@ class APIRecipeController extends AbstractController
         $entityManager->flush();
 
         return new JsonResponse(['toggled']);
+    }
+
+    /**
+     * @Route("/recipe/by-favourite", name="api_recipes_by_favorite", methods={"GET"})
+     */
+    public function getRecipesGroupedByFavorite(Request $request, RecipeRepository $recipeRepository): JsonResponse
+    {
+        $connectedUser = $this->getUser();
+        if (empty($connectedUser))
+        {
+            return new JsonResponse(['not allowed']);
+        }
+
+        $name = $request->query->get('q');
+        $favedRecipes = $recipeRepository->findByFavedByAndName($connectedUser, $name);
+        $notFavedRecipes = $recipeRepository->findByNotFavedByAndName($connectedUser, $name);
+
+        $groupedData = [
+            'faved' => $favedRecipes,
+            'not_faved' => $notFavedRecipes,
+        ];
+
+        return new JsonResponse($groupedData);
     }
 }

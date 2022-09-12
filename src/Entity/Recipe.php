@@ -6,11 +6,12 @@ use App\Repository\RecipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * @ORM\Entity(repositoryClass=RecipeRepository::class)
  */
-class Recipe
+class Recipe implements JsonSerializable
 {
     /**
      * @ORM\Id
@@ -50,9 +51,16 @@ class Recipe
      */
     private $author;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="favoriteRecipes")
+     * @ORM\OrderBy({"username" = "ASC"})
+     */
+    private $favedBy;
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
+        $this->favedBy = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -124,6 +132,14 @@ class Recipe
         }
 
         return $this;
+    }
+
+    /**
+     * @return ArrayCollection|User[]
+     */
+    public function getFavedBy()
+    {
+        return $this->favedBy;
     }
 
     /**
@@ -224,5 +240,14 @@ class Recipe
         $this->author = $author;
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'author' => $this->getAuthor(),
+        ];
     }
 }
