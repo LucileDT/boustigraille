@@ -222,4 +222,8 @@ jQuery(document).ready(function () {
     $('#meals .meal-quantity').on('input', function () {
         countPlannedMeals();
     });
+
+    $('.starting-at-selector').on('change', function () {
+        countMealsNeeded();
+    })
 });
