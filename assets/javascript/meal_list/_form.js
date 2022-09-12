@@ -179,6 +179,14 @@ jQuery(document).ready(function () {
     countMealsNeeded();
     countPlannedMeals();
 
+    // setup min and max dates depending on existing ones
+    if($('#meal_list_startDate').val() !== '') {
+        $('#meal_list_endDate').attr('min', $('#meal_list_startDate').val());
+    }
+    if($('#meal_list_endDate').val() !== '') {
+        $('#meal_list_startDate').attr('max', $('#meal_list_endDate').val());
+    }
+
     $('body').on('click', '.add_item_link', function (e) {
         let $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
 
