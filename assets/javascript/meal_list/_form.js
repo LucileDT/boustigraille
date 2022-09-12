@@ -31,9 +31,15 @@ jQuery(document).ready(function () {
     }
 
     function bindBringFocusToQuantity($mealListForm) {
-        $mealListForm.find('.meal-select').on("select2:close", function (e) {
+        $mealListForm.find('.meal-select').on('select2:close', function (e) {
             // get quantity input and focus on it
             $(this).parents('.meal').find('.meal-quantity').focus();
+        });
+    }
+
+    function bindBringFocusToSelect2Input($mealListForm) {
+        $mealListForm.find('.meal-select').on('select2:open', function (e) {
+            document.querySelector(".select2-container--open .select2-search__field").focus();
         });
     }
 
@@ -116,6 +122,9 @@ jQuery(document).ready(function () {
         // bring focus to the quantity field when selection a meal
         bindBringFocusToQuantity($newMealListForm);
 
+        // bring focus to the recipe search input on Select2 opening
+        bindBringFocusToSelect2Input($newMealListForm);
+
         // activate Select2 on ingredient selectors
         toggleSelect2OnIngredientSelector();
     }
@@ -128,6 +137,7 @@ jQuery(document).ready(function () {
         bindMealDeletionToButton($(this));
         bindLinebreakToInput($(this));
         bindBringFocusToQuantity($(this));
+        bindBringFocusToSelect2Input($(this));
     });
 
     // count the current meals we have and
