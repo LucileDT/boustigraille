@@ -37,6 +37,14 @@ jQuery(document).ready(function () {
         });
     }
 
+    function toggleSelect2OnIngredientSelector() {
+        $('.meal-select').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+        });
+    }
+
     function addFormToCollection($collectionHolderClass) {
         // get container of all meal forms
         var $collectionHolder = $('.' + $collectionHolderClass);
@@ -69,6 +77,9 @@ jQuery(document).ready(function () {
 
         // bring focus to the quantity field when selection a meal
         bindBringFocusToQuantity($newMealListForm);
+
+        // activate Select2 on ingredient selectors
+        toggleSelect2OnIngredientSelector();
     }
 
     // get the element that holds the collection of meals
@@ -84,6 +95,9 @@ jQuery(document).ready(function () {
     // count the current meals we have and
     // use this as new index when inserting new items
     $collectionHolder.data('index', $collectionHolder.find('.meal').length);
+
+    // activate Select2 on ingredient selectors
+    toggleSelect2OnIngredientSelector();
 
     $('body').on('click', '.add_item_link', function (e) {
         var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
