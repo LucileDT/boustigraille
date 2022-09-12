@@ -43,6 +43,12 @@ jQuery(document).ready(function () {
         });
     }
 
+    function bindCountPlannedMealToInput($newMealListForm) {
+        $newMealListForm.find('.meal-quantity').on('input', function () {
+            countPlannedMeals();
+        });
+    }
+
     function toggleSelect2OnIngredientSelector() {
         let recipesUrl = $('#recipes-list-data').data('url');
         $('.meal-select').select2({
@@ -98,6 +104,16 @@ jQuery(document).ready(function () {
         $('#needed-meals-count').html(totalCount);
     }
 
+    function countPlannedMeals() {
+        let totalPlannedMealsCount = 0;
+        $('#meals .meal-quantity').each(function() {
+            if ($(this).val() !== null && $(this).val() !== '' && $(this).val() !== undefined) {
+                totalPlannedMealsCount = parseFloat($(this).val()) + totalPlannedMealsCount;
+            }
+        });
+        $('#current-meals-count').html(totalPlannedMealsCount);
+    }
+
     function addFormToCollection($collectionHolderClass) {
         // get container of all meal forms
         let $collectionHolder = $('.' + $collectionHolderClass);
@@ -136,6 +152,9 @@ jQuery(document).ready(function () {
 
         // activate Select2 on ingredient selectors
         toggleSelect2OnIngredientSelector();
+
+        // bind meals counting
+        bindCountPlannedMealToInput($newMealListForm);
     }
 
     // get the element that holds the collection of meals
@@ -156,8 +175,9 @@ jQuery(document).ready(function () {
     // activate Select2 on ingredient selectors
     toggleSelect2OnIngredientSelector();
 
-    // count needed meals and display it on the page
+    // count meals and display it on the page
     countMealsNeeded();
+    countPlannedMeals();
 
     $('body').on('click', '.add_item_link', function (e) {
         let $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
@@ -189,5 +209,9 @@ jQuery(document).ready(function () {
     $('#meal_list_endDate').on('change', function () {
         $('#meal_list_startDate').attr('max', $('#meal_list_endDate').val());
         countMealsNeeded();
+    });
+
+    $('#meals .meal-quantity').on('input', function () {
+        countPlannedMeals();
     });
 });
