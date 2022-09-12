@@ -45,10 +45,10 @@
     <div id="recipes-list-data" data-url="{{ path('api_recipes_by_favorite') }}"></div>
     {{ form_start(form) }}
         <div class="mb-3">
-                {{ form_label(form.personName) }}
-                {{ form_widget(form.personName, {'attr': {'class': 'form-control'}}) }}
-                {{ form_help(form.personName) }}
-                {{ form_errors(form.personName) }}
+            {{ form_label(form.personName) }}
+            {{ form_widget(form.personName, {'attr': {'class': 'form-control'}}) }}
+            {{ form_help(form.personName) }}
+            {{ form_errors(form.personName) }}
         </div>
 
         <div class="mb-3">
@@ -81,7 +81,13 @@
         </div>
 
         <div class="mb-3">
-            <div class="mb-3 mt-4 fw-bold">Repas</div>
+            <div class="row g-1 mb-3 mt-4">
+                <div class="col fw-bold">Repas</div>
+                <div class="col-3">
+                    <span id="current-meals-count"></span> / <span id="needed-meals-count"></span> repas
+                </div>
+            </div>
+
             <div
                 id="meals"
                 class="meals"

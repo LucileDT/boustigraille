@@ -89,6 +89,15 @@ jQuery(document).ready(function () {
         });
     }
 
+    function countMealsNeeded() {
+        let startDate = $('#meal_list_startDate').val();
+        let endDate = $('#meal_list_endDate').val();
+        let firstDayMealsCount = parseInt($('#meal_list_isStartingAtLunch option:selected').val()) === 1 ? 2 : 1;
+        let lastDayMealsCount = parseInt($('#meal_list_isEndingAtLunch option:selected').val()) === 0 ? 2 : 1;
+        let totalCount = (Math.floor((Date.parse(endDate) - Date.parse(startDate)) / 86400000) - 1) * 2 + firstDayMealsCount + lastDayMealsCount;
+        $('#needed-meals-count').html(totalCount);
+    }
+
     function addFormToCollection($collectionHolderClass) {
         // get container of all meal forms
         let $collectionHolder = $('.' + $collectionHolderClass);
@@ -147,6 +156,9 @@ jQuery(document).ready(function () {
     // activate Select2 on ingredient selectors
     toggleSelect2OnIngredientSelector();
 
+    // count needed meals and display it on the page
+    countMealsNeeded();
+
     $('body').on('click', '.add_item_link', function (e) {
         let $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
 
@@ -169,5 +181,12 @@ jQuery(document).ready(function () {
 
         // update the endDate value
         $('#meal_list_endDate').val(startDateMoreOneWeek.toISOString().substring(0, 10));
+    });
+
+    $('#meal_list_startDate').on('change', function () {
+        countMealsNeeded();
+    });
+    $('#meal_list_endDate').on('change', function () {
+        countMealsNeeded();
     });
 });
