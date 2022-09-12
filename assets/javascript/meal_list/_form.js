@@ -181,12 +181,13 @@ jQuery(document).ready(function () {
 
         // update the endDate value
         $('#meal_list_endDate').val(startDateMoreOneWeek.toISOString().substring(0, 10));
-    });
+        $('#meal_list_endDate').attr('min', $('#meal_list_startDate').val());
 
-    $('#meal_list_startDate').on('change', function () {
         countMealsNeeded();
     });
+
     $('#meal_list_endDate').on('change', function () {
+        $('#meal_list_startDate').attr('max', $('#meal_list_endDate').val());
         countMealsNeeded();
     });
 });
