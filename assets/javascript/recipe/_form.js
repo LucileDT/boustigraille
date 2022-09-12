@@ -100,6 +100,9 @@ $(document).ready(function () {
 
         // watch for measure type select change
         bindNutritionalUpdateToMeasureTypeSelectChange($newIngredientForm);
+
+        // activate Select2 on ingredient selectors
+        toggleSelect2OnIngredientSelector();
     }
 
     function updateRecipeNutritionalValues() {
@@ -269,12 +272,23 @@ $(document).ready(function () {
         }
     }
 
+    function toggleSelect2OnIngredientSelector() {
+        $('.ingredient-select').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+        });
+    }
+
     // Update the recipe nutritional values on page start
     updateRecipeNutritionalValues();
     $('.ingredient').each(function () {
         updateIngredientNutritionalValues($(this));
         updateIngredientMeasureType($(this));
     });
+
+    // activate Select2 on ingredient selectors
+    toggleSelect2OnIngredientSelector();
 
     // get the element that holds the collection of ingredients
     var $collectionHolder = $('#ingredients');

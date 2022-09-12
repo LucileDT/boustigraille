@@ -21,5 +21,8 @@ import 'remixicon/fonts/remixicon.css';
 // Klassy Cafe theme
 require('./klassy_cafe/assets/js/base');
 
+// Select2
+require('select2');
+
 // start the Stimulus application
 import './bootstrap';
