@@ -35,7 +35,7 @@ class MealList
     private $meals;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $startDate;
 
@@ -45,7 +45,7 @@ class MealList
     private $isStartingAtLunch = false;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $endDate;
 
@@ -148,7 +148,7 @@ class MealList
         return $this;
     }
 
-    public function getIsStartingAtLunch(): ?bool
+    public function isStartingAtLunch(): ?bool
     {
         return $this->isStartingAtLunch;
     }
@@ -160,7 +160,7 @@ class MealList
         return $this;
     }
 
-    public function getIsEndingAtLunch(): ?bool
+    public function isEndingAtLunch(): ?bool
     {
         return $this->isEndingAtLunch;
     }

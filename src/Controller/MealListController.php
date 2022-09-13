@@ -52,6 +52,7 @@ class MealListController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $mealList->setAuthor($this->getUser());
+            $this->updatDatesAccordingToStartingAndEndingTimes($mealList);
             $mealListRepository->add($mealList);
 
             return $this->redirectToRoute('meal_list_index', [], Response::HTTP_SEE_OTHER);
@@ -79,6 +80,7 @@ class MealListController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->updatDatesAccordingToStartingAndEndingTimes($mealList);
             $mealListRepository->add($mealList);
             return $this->redirectToRoute('meal_list_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -98,5 +100,19 @@ class MealListController extends AbstractController
         }
 
         return $this->redirectToRoute('meal_list_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    private function updatDatesAccordingToStartingAndEndingTimes(&$mealList) {
+        if (!$mealList->isStartingAtLunch()) {
+            $afternoonInterval = new \DateInterval("PT16H");
+            $mealList->setStartDate(date_add($mealList->getStartDate(), $afternoonInterval));
+        }
+        if ($mealList->isEndingAtLunch()) {
+            $afternoonInterval = new \DateInterval("PT16H");
+            $mealList->setEndDate(date_add($mealList->getEndDate(), $afternoonInterval));
+        } else {
+            $eveningInterval = new \DateInterval("PT23H");
+            $mealList->setEndDate(date_add($mealList->getEndDate(), $eveningInterval));
+        }
     }
 }
