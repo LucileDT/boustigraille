@@ -46,6 +46,8 @@ class MealListController extends AbstractController
         if (!empty($fromMealList)) {
             $mealList->setStartDate($fromMealList->getStartDate());
             $mealList->setEndDate($fromMealList->getEndDate());
+            $mealList->setIsStartingAtLunch($fromMealList->isStartingAtLunch());
+            $mealList->setIsEndingAtLunch($fromMealList->isEndingAtLunch());
         }
         $form = $this->createForm(MealListType::class, $mealList);
         $form->handleRequest($request);
