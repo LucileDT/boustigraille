@@ -82,6 +82,10 @@ $(document).ready(function () {
         var $newIngredientForm = $('<div class="ingredient"></div>').append(newForm);
         $collectionHolder.append($newIngredientForm)
 
+        // deselect default option on ingredient selector
+        $newIngredientForm.find('select').val([]);
+        $newIngredientForm.find('select option').prop('selected', false);
+
         // add a delete link to the new form
         bindIngredientDeletionToButton($newIngredientForm);
 

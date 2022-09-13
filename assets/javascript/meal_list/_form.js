@@ -138,6 +138,10 @@ jQuery(document).ready(function () {
         let $newMealListForm = $('<div class="meal"></div>').append(newForm);
         $collectionHolder.append($newMealListForm)
 
+        // deselect default option on recipe selector
+        $newMealListForm.find('select').val([]);
+        $newMealListForm.find('select option').prop('selected', false);
+
         // add a delete link to the new form
         bindMealDeletionToButton($newMealListForm);
 
