@@ -19,7 +19,9 @@ class MealQuantityForListType extends AbstractType
             ->add('meal', EntityType::class, [
                 'label' => 'Repas',
                 'class' => Recipe::class,
-                'choice_label' => 'name',
+                'choice_label' => function (Recipe $recipe, $key, $value) {
+                    return $recipe->getName() . ' (' . $recipe->getAuthor()->getUsername() . ')';
+                },
                 'query_builder' => function (EntityRepository $entityRepository) {
                     return $entityRepository
                             ->createQueryBuilder('r')
