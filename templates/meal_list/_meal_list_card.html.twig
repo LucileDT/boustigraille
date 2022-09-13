@@ -7,9 +7,11 @@
         <h5 class="card-title">{{ meal_list.personName }}</h5>
         <h6 class="card-subtitle text-muted mb-2">
             Du
-            {{ meal_list.startDate | format_date('full', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
+            {{ meal_list.startDate | format_date(pattern="EEEE dd MMMM", locale='fr') }}
+            ({{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }})<br>
             au
-            {{ meal_list.endDate | format_date('full', locale='fr') }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
+            {{ meal_list.endDate | format_date(pattern="EEEE dd MMMM", locale='fr') }}
+            ({{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }})
         </h6>
 {#        {% if meal_list.author.doShowUsernameOnMealList %}#}
             <div class="text-muted fst-italic mb-2">
