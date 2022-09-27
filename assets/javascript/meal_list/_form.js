@@ -1,4 +1,5 @@
 const $ = require("jquery");
+import '../../styles/meal_list/_form.scss';
 import { toggleButtonTooltip, toggleFavorite } from '../recipe/_toggle_favorite';
 
 $(document).ready(function () {
@@ -172,10 +173,19 @@ $(document).ready(function () {
             method: 'GET',
             dataType: 'json',
         }).done(function (data) {
-            let dummyRecipe = recipesContainer.find('.card.klassy-cafe-card');
+            // if no suggested recipes, display information message
+            if (data.length === 0) {
+                $('#suggested-recipes-loader').addClass('d-none');
+                $('#suggested-recipes-empty').removeClass('d-none');
+                return;
+            }
 
+            let dummyRecipe = recipesContainer.find('.card.klassy-cafe-card');
             $(data).each(function () {
+                $('#suggested-recipes-loader').addClass('d-none');
+
                 let newRecipe = dummyRecipe.clone();
+                newRecipe.removeClass('mb-4');
                 // change recipe card content accordingly
                 newRecipe.find('.energy-count').html(Math.round(this.energy));
                 newRecipe.find('.title').html(this.name);

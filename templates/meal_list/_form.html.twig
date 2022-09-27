@@ -2,6 +2,10 @@
     {{ encore_entry_script_tags('meal_list_form') }}
 {% endblock %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('meal_list_form') }}
+{% endblock %}
+
 {% macro renderMealQuantityType(mealQuantityForMealListForm) %}
     <div class="mb-3">
         <div class="row g-1">
@@ -87,11 +91,26 @@
 
         <div
             id="suggested-recipes"
-            class="d-flex justify-content-between flex-wrap"
+            class="mb-4 d-flex justify-content-between flex-wrap"
             data-url="{{ path('api_suggested_recipes') }}"
         >
             <div id="dummy-recipe" class="d-none">
                 {{ include('recipe/_recipe_card.html.twig', {'recipe': dummy_recipe}) }}
+            </div>
+            <div id="suggested-recipes-loader" class="w-100 d-flex align-items-center justify-content-center bg-light">
+                <div class="spinner-border text-info" role="status" style="width: 6rem; height: 6rem;">
+                    <span class="visually-hidden">Chargement en cours...</span>
+                </div>
+            </div>
+            <div id="suggested-recipes-empty" class="w-100 d-flex flex-column align-items-center justify-content-center bg-light d-none">
+                <i class="text-muted">
+                    Oups... il semblerait que vous n'ayez aucune recette dans vos favoris.
+                </i>
+                <hr>
+                <i class="text-muted">
+                    Rajoutez-en en cliquant sur l'icône <i class="ri-heart-add-line"></i>
+                    <a href="{{ path('recipe_index') }}">d'une recette</a>.
+                </i>
             </div>
         </div>
 
