@@ -1,3 +1,4 @@
+const $ = require("jquery");
 $(document).ready(function () {
     function bindIngredientDeletionToButton($ingredientForm) {
         $ingredientForm.find('.ingredient-deletion-button').on('click', function (e) {
