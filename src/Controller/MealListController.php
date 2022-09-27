@@ -7,6 +7,7 @@ use App\Form\GroceryListType;
 use App\Form\MealListType;
 use App\FormDataObject\GroceryListFDO;
 use App\Repository\MealListRepository;
+use App\Repository\RecipeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,6 +40,7 @@ class MealListController extends AbstractController
     public function new(
         Request $request,
         MealListRepository $mealListRepository,
+        RecipeRepository $recipeRepository,
         MealList $fromMealList = null
     ): Response
     {
@@ -63,6 +65,7 @@ class MealListController extends AbstractController
         return $this->render('meal_list/new.html.twig', [
             'meal_list' => $mealList,
             'form' => $form->createView(),
+            'dummy_recipe' => $recipeRepository->findOneBy([]),
         ]);
     }
 

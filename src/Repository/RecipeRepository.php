@@ -51,6 +51,41 @@ class RecipeRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findFavoritedRecipesNeverMade(User $user, int $limit = 6)
+    {
+        return $this->createQueryBuilder('r')
+            ->leftJoin('r.mealQuantityForLists', 'mqfl')
+            ->join('r.favedBy', 'u')
+            ->andWhere('u = :user')
+            ->andWhere('mqfl.id IS NULL')
+            ->setParameter('user', $user)
+            ->orderBy('r.id', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findFavoritedRecipesOldestMade(User $user, int $limit = 6)
+    {
+        return $this->createQueryBuilder('recipe')
+            ->select('recipe')
+            ->addSelect('max(meal_list.endDate) AS HIDDEN maxdate')
+            ->from('App:MealQuantityForList', 'meal_quantity_for_list')
+            ->from('App:MealList', 'meal_list')
+            ->andWhere('meal_list.id = meal_quantity_for_list.mealList')
+            ->andWhere('recipe.id = meal_quantity_for_list.meal')
+            ->join('recipe.favedBy', 'u')
+            ->andWhere('u = :user')
+            ->setParameter('user', $user)
+            ->groupBy('recipe.id')
+            ->orderBy('maxdate', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return Recipe[] Returns an array of Recipe objects
     //  */

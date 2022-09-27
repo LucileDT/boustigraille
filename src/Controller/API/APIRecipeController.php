@@ -60,4 +60,24 @@ class APIRecipeController extends AbstractController
 
         return new JsonResponse($groupedData);
     }
+
+    /**
+     * @Route("/suggested", name="api_suggested_recipes", methods={"GET"})
+     */
+    public function getSuggestedRecipes(Request $request, RecipeRepository $recipeRepository): JsonResponse
+    {
+        $connectedUser = $this->getUser();
+        if (empty($connectedUser))
+        {
+            return new JsonResponse(['not allowed']);
+        }
+
+        $suggestedRecipes = [];
+        $firstSuggestedRecipes = $recipeRepository->findFavoritedRecipesNeverMade($this->getUser());
+        if (count($firstSuggestedRecipes) !== 6) {
+            $otherSuggestedRecipes = $recipeRepository->findFavoritedRecipesOldestMade($this->getUser(), 6 - count($firstSuggestedRecipes));
+            $suggestedRecipes = array_merge($firstSuggestedRecipes, $otherSuggestedRecipes);
+        }
+        return new JsonResponse($suggestedRecipes);
+    }
 }

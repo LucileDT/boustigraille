@@ -57,6 +57,16 @@ class Recipe implements JsonSerializable
      */
     private $favedBy;
 
+    /**
+     * @ORM\OneToMany(targetEntity=MealQuantityForList::class, mappedBy="meal", cascade={"persist"})
+     */
+    private $mealQuantityForLists;
+
+    public function getMealQuantityForLists()
+    {
+        return $this->mealQuantityForLists;
+    }
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
@@ -140,6 +150,11 @@ class Recipe implements JsonSerializable
     public function getFavedBy()
     {
         return $this->favedBy;
+    }
+
+    public function isFavedBy(User $user): bool
+    {
+        return $this->favedBy->contains($user);
     }
 
     /**
@@ -247,6 +262,8 @@ class Recipe implements JsonSerializable
         return [
             'id' => $this->getId(),
             'name' => $this->getName(),
+            'main_picture_filename' => $this->getMainPictureFilename(),
+            'energy' => $this->getEnergy(),
             'author' => $this->getAuthor(),
         ];
     }

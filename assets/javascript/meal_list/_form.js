@@ -1,4 +1,7 @@
-jQuery(document).ready(function () {
+const $ = require("jquery");
+import { toggleButtonTooltip, toggleFavorite } from '../recipe/_toggle_favorite';
+
+$(document).ready(function () {
     function bindMealDeletionToButton($mealListForm) {
         $mealListForm.find('.meal-deletion-button').on('click', function (e) {
             // remove the meal from the form
@@ -161,6 +164,57 @@ jQuery(document).ready(function () {
         bindCountPlannedMealToInput($newMealListForm);
     }
 
+    function showSuggestedRecipes() {
+        let recipesContainer = $('#suggested-recipes');
+        let urlSuggestedRecipes = recipesContainer.data('url');
+        $.ajax({
+            url: urlSuggestedRecipes,
+            method: 'GET',
+            dataType: 'json',
+        }).done(function (data) {
+            let dummyRecipe = recipesContainer.find('.card.klassy-cafe-card');
+
+            $(data).each(function () {
+                let newRecipe = dummyRecipe.clone();
+                // change recipe card content accordingly
+                newRecipe.find('.energy-count').html(Math.round(this.energy));
+                newRecipe.find('.title').html(this.name);
+                newRecipe.find('.title').html(this.name);
+                if (this.main_picture_filename) {
+                    newRecipe.css('background-image', 'url("/uploads/pictures/' + this.main_picture_filename + '")');
+                } else {
+                    newRecipe.css('background-image', 'url("/build/image/default-recipe-main-picture.jpg")');
+                }
+
+                if (this.author) {
+                    newRecipe.find('.description').html('Par ' + this.author.username);
+                } else {
+                    newRecipe.find('.description').html('');
+                }
+                newRecipe.find('.main-text-button').remove();
+
+                // update toggling fav url
+                let url = newRecipe.find('.toggle-favorite-button').data('url');
+                let updatedUrl = url.replace(/\/([0-9])+$/, '/' + this.id);
+                newRecipe.find('.toggle-favorite-button').data('url', updatedUrl);
+                newRecipe.find('.toggle-favorite-button').attr('data-url', updatedUrl);
+
+                // recipes here are always marked as favorites
+                newRecipe.find('.toggle-favorite-button').attr('data-marked-as-favorite', 1);
+
+                // make fav button working
+                toggleButtonTooltip(newRecipe.find('.toggle-favorite-button'), newRecipe.find('.action-icon'));
+                newRecipe.find('.toggle-favorite-button').on('click', function () {
+                    toggleFavorite(this);
+                });
+                recipesContainer.append(newRecipe);
+            });
+        });
+    }
+
+    // load suggested recipes
+    showSuggestedRecipes();
+
     // get the element that holds the collection of meals
     let $collectionHolder = $('#meals');
 
@@ -229,5 +283,5 @@ jQuery(document).ready(function () {
 
     $('.starting-at-selector').on('change', function () {
         countMealsNeeded();
-    })
+    });
 });

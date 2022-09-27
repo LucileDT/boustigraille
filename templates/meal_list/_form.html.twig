@@ -81,7 +81,22 @@
         </div>
 
         <div class="mb-3">
-            <div class="row g-1 mb-3 mt-4">
+            <span class="fw-bold">Suggestions du jour</span>&nbsp;
+            <small class="text-muted">issues de vos favoris</small>
+        </div>
+
+        <div
+            id="suggested-recipes"
+            class="d-flex justify-content-between flex-wrap"
+            data-url="{{ path('api_suggested_recipes') }}"
+        >
+            <div id="dummy-recipe" class="d-none">
+                {{ include('recipe/_recipe_card.html.twig', {'recipe': dummy_recipe}) }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <div class="row g-1 mb-3">
                 <div class="col fw-bold">Repas</div>
                 <div class="col-3">
                     <span id="current-meals-count"></span> / <span id="needed-meals-count"></span> repas
