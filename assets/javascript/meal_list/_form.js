@@ -172,6 +172,11 @@ $(document).ready(function () {
             url: urlSuggestedRecipes,
             method: 'GET',
             dataType: 'json',
+            beforeSend: function (jqXHR, settings) {
+                $('#suggested-recipes-loader').removeClass('d-none');
+                $('#suggested-recipes-empty').addClass('d-none');
+                $('.suggested-recipe').remove();
+            },
         }).done(function (data) {
             // if no suggested recipes, display information message
             if (data.length === 0) {
@@ -180,12 +185,14 @@ $(document).ready(function () {
                 return;
             }
 
-            let dummyRecipe = recipesContainer.find('.card.klassy-cafe-card');
-            $(data).each(function () {
-                $('#suggested-recipes-loader').addClass('d-none');
+            $('#suggested-recipes-loader').addClass('d-none');
 
+            let dummyRecipe = recipesContainer.find('#dummy-recipe > .klassy-cafe-card');
+            $(data).each(function () {
                 let newRecipe = dummyRecipe.clone();
                 newRecipe.removeClass('mb-4');
+                newRecipe.addClass('suggested-recipe');
+
                 // change recipe card content accordingly
                 newRecipe.find('.energy-count').html(Math.round(this.energy));
                 newRecipe.find('.title').html(this.name);
@@ -216,9 +223,34 @@ $(document).ready(function () {
                 toggleButtonTooltip(newRecipe.find('.toggle-favorite-button'), newRecipe.find('.action-icon'));
                 newRecipe.find('.toggle-favorite-button').on('click', function () {
                     toggleFavorite(this);
+                    showSuggestedRecipes();
                 });
                 recipesContainer.append(newRecipe);
             });
+
+            // add placeholder if there is less than 6 suggested recipes
+            if (data.length < 6) {
+                for (let i = 0; i < 6 - data.length; i++) {
+                    let emptyRecipe = $('<div>')
+                        .addClass('card')
+                        .addClass('klassy-cafe-card')
+                        .addClass('mx-0')
+                        .addClass('suggested-recipe')
+                        .addClass('bg-light')
+                        .addClass('d-flex')
+                        .addClass('align-items-center')
+                        .addClass('justify-content-center')
+                        .addClass('text-center')
+                    ;
+                    let infoText = $('<small>')
+                        .addClass('text-muted')
+                        .addClass('fst-italic')
+                        .html('Ajoutez d\'autres recettes à vos favoris pour avoir plus de suggestions')
+                    ;
+                    emptyRecipe.append(infoText);
+                    recipesContainer.append(emptyRecipe);
+                }
+            }
         });
     }
 
