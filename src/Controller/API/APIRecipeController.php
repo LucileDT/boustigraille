@@ -72,12 +72,11 @@ class APIRecipeController extends AbstractController
             return new JsonResponse(['not allowed']);
         }
 
-        $suggestedRecipes = [];
-        $firstSuggestedRecipes = $recipeRepository->findFavoritedRecipesNeverMade($this->getUser());
+        $otherSuggestedRecipes = [];
+        $firstSuggestedRecipes = $recipeRepository->findFavoritedRecipesNeverMade($connectedUser);
         if (count($firstSuggestedRecipes) !== 6) {
-            $otherSuggestedRecipes = $recipeRepository->findFavoritedRecipesOldestMade($this->getUser(), 6 - count($firstSuggestedRecipes));
-            $suggestedRecipes = array_merge($firstSuggestedRecipes, $otherSuggestedRecipes);
+            $otherSuggestedRecipes = $recipeRepository->findFavoritedRecipesOldestMade($connectedUser, 6 - count($firstSuggestedRecipes));
         }
-        return new JsonResponse($suggestedRecipes);
+        return new JsonResponse(array_merge($firstSuggestedRecipes, $otherSuggestedRecipes));
     }
 }
