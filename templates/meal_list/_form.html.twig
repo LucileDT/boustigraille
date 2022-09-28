@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% macro renderMealQuantityType(mealQuantityForMealListForm) %}
-    <div class="mb-3">
+    <div class="mb-5 mb-md-3">
         <div class="row g-1">
             <div class="col">
                 <div class="row g-1">
-                    <div class="col-1">
+                    <div class="col col-md-1">
                         <button
                             class="btn btn-secondary meal-deletion-button w-100"
                             type="button"
@@ -19,7 +19,7 @@
                             x
                         </button>
                     </div>
-                    <div class="col">
+                    <div class="col-12 col-md">
                         {{
                             form_widget(mealQuantityForMealListForm.meal,
                             {'attr': { 'class': 'meal-select'}})
@@ -29,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-12 col-md-3">
                 {{
                     form_widget(
                         mealQuantityForMealListForm.quantity,
@@ -57,25 +57,25 @@
 
         <div class="mb-3">
             <div class="row g-1">
-                <div class="col-3">
+                <div class="col col-md-3">
                     {{ form_label(form.startDate) }}
                     {{ form_widget(form.startDate) }}
                     {{ form_help(form.startDate) }}
                     {{ form_errors(form.startDate) }}
                 </div>
-                <div class="col">
+                <div class="col-4 col-md">
                     {{ form_label(form.isStartingAtLunch) }}
                     {{ form_widget(form.isStartingAtLunch, {'attr': {'class': 'form-control starting-at-selector'}}) }}
                     {{ form_help(form.isStartingAtLunch) }}
                     {{ form_errors(form.isStartingAtLunch) }}
                 </div>
-                <div class="col-3">
+                <div class="col col-md-3 mt-3 mt-md-0">
                     {{ form_label(form.endDate) }}
                     {{ form_widget(form.endDate) }}
                     {{ form_help(form.endDate) }}
                     {{ form_errors(form.endDate) }}
                 </div>
-                <div class="col">
+                <div class="col-4 col-md mt-3 mt-md-0">
                     {{ form_label(form.isEndingAtLunch) }}
                     {{ form_widget(form.isEndingAtLunch, {'attr': {'class': 'form-control starting-at-selector'}}) }}
                     {{ form_help(form.isEndingAtLunch) }}
