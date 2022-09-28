@@ -22,7 +22,7 @@
                 <span
                     class="toggle-favorite-button"
                     data-url="{{ path('api_recipe_toggle_favorite', {'id': recipe.id}) }}"
-                    data-marked-as-favorite="{{ app.user.hasFaved(recipe) }}"
+                    data-marked-as-favorite="{{ recipe.isFavedBy(app.user) }}"
                 ></span>
             </h6>
         {% endif %}

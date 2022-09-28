@@ -22,7 +22,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *      message="Ce nom d'utilisateurice n'est pas disponible."
  * )
  */
-class User implements UserInterface
+class User implements UserInterface, \JsonSerializable
 {
     /**
      * @var int
@@ -82,7 +82,7 @@ class User implements UserInterface
     private $energy;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Recipe::class)
+     * @ORM\ManyToMany(targetEntity=Recipe::class, inversedBy="favedBy")
      * @ORM\OrderBy({"name" = "ASC"})
      */
     private $favoriteRecipes;
@@ -616,5 +616,13 @@ class User implements UserInterface
         $followAccepted = Criteria::create()->where(Criteria::expr()->neq('acceptedAt', null));
         $proposedFollowings = $this->followingUsernamesOnRecipes->matching($followed);
         return !$proposedFollowings->matching($followAccepted)->isEmpty();
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'username' => $this->getUsername(),
+        ];
     }
 }

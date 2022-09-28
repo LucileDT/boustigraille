@@ -7,6 +7,7 @@ use App\Form\GroceryListType;
 use App\Form\MealListType;
 use App\FormDataObject\GroceryListFDO;
 use App\Repository\MealListRepository;
+use App\Repository\RecipeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,6 +40,7 @@ class MealListController extends AbstractController
     public function new(
         Request $request,
         MealListRepository $mealListRepository,
+        RecipeRepository $recipeRepository,
         MealList $fromMealList = null
     ): Response
     {
@@ -46,12 +48,15 @@ class MealListController extends AbstractController
         if (!empty($fromMealList)) {
             $mealList->setStartDate($fromMealList->getStartDate());
             $mealList->setEndDate($fromMealList->getEndDate());
+            $mealList->setIsStartingAtLunch($fromMealList->isStartingAtLunch());
+            $mealList->setIsEndingAtLunch($fromMealList->isEndingAtLunch());
         }
         $form = $this->createForm(MealListType::class, $mealList);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $mealList->setAuthor($this->getUser());
+            $this->updatDatesAccordingToStartingAndEndingTimes($mealList);
             $mealListRepository->add($mealList);
 
             return $this->redirectToRoute('meal_list_index', [], Response::HTTP_SEE_OTHER);
@@ -60,6 +65,7 @@ class MealListController extends AbstractController
         return $this->render('meal_list/new.html.twig', [
             'meal_list' => $mealList,
             'form' => $form->createView(),
+            'dummy_recipe' => $recipeRepository->findOneBy([]),
         ]);
     }
 
@@ -73,12 +79,18 @@ class MealListController extends AbstractController
 
     #[Route('/{id}/edit', name: 'meal_list_edit', methods: ['GET', 'POST'])]
     #[Security('not is_anonymous()')]
-    public function edit(Request $request, MealList $mealList, MealListRepository $mealListRepository): Response
+    public function edit(
+        Request $request,
+        MealList $mealList,
+        RecipeRepository $recipeRepository,
+        MealListRepository $mealListRepository
+    ): Response
     {
         $form = $this->createForm(MealListType::class, $mealList);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->updatDatesAccordingToStartingAndEndingTimes($mealList);
             $mealListRepository->add($mealList);
             return $this->redirectToRoute('meal_list_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -86,6 +98,7 @@ class MealListController extends AbstractController
         return $this->render('meal_list/edit.html.twig', [
             'meal_list' => $mealList,
             'form' => $form->createView(),
+            'dummy_recipe' => $recipeRepository->findOneBy([]),
         ]);
     }
 
@@ -98,5 +111,19 @@ class MealListController extends AbstractController
         }
 
         return $this->redirectToRoute('meal_list_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    private function updatDatesAccordingToStartingAndEndingTimes(&$mealList) {
+        if (!$mealList->isStartingAtLunch()) {
+            $afternoonInterval = new \DateInterval("PT16H");
+            $mealList->setStartDate(date_add($mealList->getStartDate(), $afternoonInterval));
+        }
+        if ($mealList->isEndingAtLunch()) {
+            $afternoonInterval = new \DateInterval("PT16H");
+            $mealList->setEndDate(date_add($mealList->getEndDate(), $afternoonInterval));
+        } else {
+            $eveningInterval = new \DateInterval("PT23H");
+            $mealList->setEndDate(date_add($mealList->getEndDate(), $eveningInterval));
+        }
     }
 }

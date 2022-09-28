@@ -7,20 +7,72 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col">
-            {% if app.user is not null %}
-                {{
-                    include('ingredient/_create_from_openfoodfacts_form.html.twig', {
-                        'button_label': 'Créer un ingrédient depuis Open Food Facts',
-                        'form': formFromOpenFoodFacts
-                    })
-                }}
-            {% endif %}
-        </div>
-    </div>
     {% if app.user is not null %}
-        <div id="klassy-cards-container" class="d-flex justify-content-between flex-wrap mt-5">
+        <h4 class="mt-4 mb-2">
+            Accès rapide
+        </h4>
+        <div class="row gx-2 gx-md-4 gy-2 gy-md-0">
+            <div class="col-6 col-md-2">
+                <div class="card border-0 h-100">
+                    <a
+                        class="btn btn-danger w-100 h-100 d-flex align-items-center justify-content-center"
+                        href="{{ path('recipe_new') }}"
+                    >
+                        <i class="ri-cake-3-fill lead me-1 me-md-4"></i>
+                        Enregistrer<br>une recette
+                    </a>
+                </div>
+            </div>
+            <div class="col-6 col-md-2">
+                <div class="card border-0 h-100">
+                    <a
+                        class="btn btn-warning w-100 h-100 d-flex align-items-center justify-content-center"
+                        href="{{ path('meal_list_new') }}"
+                    >
+                        <i class="ri-sticky-note-fill lead me-1 me-md-4"></i>
+                        Enregistrer<br> une liste de repas
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 col-md-2">
+                <div class="card border-0 h-100">
+                    <a
+                        href="{{ path('my_account_notifications') }}"
+                        class="btn btn-success w-100 h-100 d-flex align-items-center justify-content-center"
+                    >
+                        <i class="ri-notification-3-fill lead me-1 me-md-4"></i>
+                        Mes notifications
+                    </a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-0">
+                    <div class="card-body bg-light">
+                        <h5 class="card-title lh-1 mt-2">
+                            Importer un ingrédient depuis
+                            <a href="https://fr.openfoodfacts.org" target="_blank">
+                                <i class="ri-external-link-fill"></i>
+                                Open Food Facts
+                            </a>
+                        </h5>
+                        <div class="mt-3 mb-3">
+                            {{
+                                include('ingredient/_create_from_openfoodfacts_form.html.twig', {
+                                    'button_label': 'Importer',
+                                    'form': formFromOpenFoodFacts
+                                })
+                            }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if app.user is not null %}
+        <h4 class="mt-4 mb-2">
+            Mes recettes favorites
+        </h4>
+        <div id="klassy-cards-container" class="d-flex justify-content-between flex-wrap">
             {% for recipe in app.user.favoriteRecipes %}
                 {{ include('recipe/_recipe_card.html.twig') }}
             {% endfor %}

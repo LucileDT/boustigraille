@@ -2,12 +2,16 @@
     {{ encore_entry_script_tags('meal_list_form') }}
 {% endblock %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('meal_list_form') }}
+{% endblock %}
+
 {% macro renderMealQuantityType(mealQuantityForMealListForm) %}
-    <div class="mb-3">
+    <div class="mb-5 mb-md-3">
         <div class="row g-1">
             <div class="col">
                 <div class="row g-1">
-                    <div class="col-1">
+                    <div class="col col-md-1">
                         <button
                             class="btn btn-secondary meal-deletion-button w-100"
                             type="button"
@@ -15,7 +19,7 @@
                             x
                         </button>
                     </div>
-                    <div class="col">
+                    <div class="col-12 col-md">
                         {{
                             form_widget(mealQuantityForMealListForm.meal,
                             {'attr': { 'class': 'meal-select'}})
@@ -25,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-12 col-md-3">
                 {{
                     form_widget(
                         mealQuantityForMealListForm.quantity,
@@ -42,37 +46,38 @@
 {% import _self as renderMealQuantityTypeMacro %}
 
 {% if app.user is not null %}
+    <div id="recipes-list-data" data-url="{{ path('api_recipes_by_favorite') }}"></div>
     {{ form_start(form) }}
         <div class="mb-3">
-                {{ form_label(form.personName) }}
-                {{ form_widget(form.personName, {'attr': {'class': 'form-control'}}) }}
-                {{ form_help(form.personName) }}
-                {{ form_errors(form.personName) }}
+            {{ form_label(form.personName) }}
+            {{ form_widget(form.personName, {'attr': {'class': 'form-control'}}) }}
+            {{ form_help(form.personName) }}
+            {{ form_errors(form.personName) }}
         </div>
 
         <div class="mb-3">
             <div class="row g-1">
-                <div class="col-3">
+                <div class="col col-md-3">
                     {{ form_label(form.startDate) }}
                     {{ form_widget(form.startDate) }}
                     {{ form_help(form.startDate) }}
                     {{ form_errors(form.startDate) }}
                 </div>
-                <div class="col">
+                <div class="col-4 col-md">
                     {{ form_label(form.isStartingAtLunch) }}
-                    {{ form_widget(form.isStartingAtLunch, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_widget(form.isStartingAtLunch, {'attr': {'class': 'form-control starting-at-selector'}}) }}
                     {{ form_help(form.isStartingAtLunch) }}
                     {{ form_errors(form.isStartingAtLunch) }}
                 </div>
-                <div class="col-3">
+                <div class="col col-md-3 mt-3 mt-md-0">
                     {{ form_label(form.endDate) }}
                     {{ form_widget(form.endDate) }}
                     {{ form_help(form.endDate) }}
                     {{ form_errors(form.endDate) }}
                 </div>
-                <div class="col">
+                <div class="col-4 col-md mt-3 mt-md-0">
                     {{ form_label(form.isEndingAtLunch) }}
-                    {{ form_widget(form.isEndingAtLunch, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_widget(form.isEndingAtLunch, {'attr': {'class': 'form-control starting-at-selector'}}) }}
                     {{ form_help(form.isEndingAtLunch) }}
                     {{ form_errors(form.isEndingAtLunch) }}
                 </div>
@@ -80,7 +85,43 @@
         </div>
 
         <div class="mb-3">
-            <div class="mb-3 mt-4 fw-bold">Repas</div>
+            <span class="fw-bold">Suggestions du jour</span>&nbsp;
+            <small class="text-muted">issues de vos favoris</small>
+        </div>
+
+        <div
+            id="suggested-recipes"
+            class="mb-4 d-flex justify-content-between flex-wrap"
+            data-url="{{ path('api_suggested_recipes') }}"
+        >
+            <div id="dummy-recipe" class="d-none">
+                {{ include('recipe/_recipe_card.html.twig', {'recipe': dummy_recipe}) }}
+            </div>
+            <div id="suggested-recipes-loader" class="w-100 d-flex align-items-center justify-content-center bg-light">
+                <div class="spinner-border text-info" role="status" style="width: 6rem; height: 6rem;">
+                    <span class="visually-hidden">Chargement en cours...</span>
+                </div>
+            </div>
+            <div id="suggested-recipes-empty" class="w-100 d-flex flex-column align-items-center justify-content-center bg-light d-none">
+                <i class="text-muted">
+                    Oups... il semblerait que vous n'ayez aucune recette dans vos favoris.
+                </i>
+                <hr>
+                <i class="text-muted">
+                    Rajoutez-en en cliquant sur l'icône <i class="ri-heart-add-line"></i>
+                    <a href="{{ path('recipe_index') }}">d'une recette</a>.
+                </i>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <div class="row g-1 mb-3">
+                <div class="col fw-bold">Repas</div>
+                <div class="col-3">
+                    <span id="current-meals-count"></span> / <span id="needed-meals-count"></span> repas
+                </div>
+            </div>
+
             <div
                 id="meals"
                 class="meals"
@@ -99,7 +140,8 @@
             {% endif %}
             <button
                 type="button"
-                class="add_item_link btn btn-outline-secondary w-100"
+                id="add-recipe-button"
+                class="btn btn-outline-secondary w-100"
                 data-collection-holder-class="meals">
                 Ajouter un repas
             </button>

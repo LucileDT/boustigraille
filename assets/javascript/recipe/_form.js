@@ -1,3 +1,4 @@
+const $ = require("jquery");
 $(document).ready(function () {
     function bindIngredientDeletionToButton($ingredientForm) {
         $ingredientForm.find('.ingredient-deletion-button').on('click', function (e) {
@@ -82,6 +83,10 @@ $(document).ready(function () {
         var $newIngredientForm = $('<div class="ingredient"></div>').append(newForm);
         $collectionHolder.append($newIngredientForm)
 
+        // deselect default option on ingredient selector
+        $newIngredientForm.find('select').val([]);
+        $newIngredientForm.find('select option').prop('selected', false);
+
         // add a delete link to the new form
         bindIngredientDeletionToButton($newIngredientForm);
 
@@ -100,6 +105,9 @@ $(document).ready(function () {
 
         // watch for measure type select change
         bindNutritionalUpdateToMeasureTypeSelectChange($newIngredientForm);
+
+        // activate Select2 on ingredient selectors
+        toggleSelect2OnIngredientSelector();
     }
 
     function updateRecipeNutritionalValues() {
@@ -269,12 +277,23 @@ $(document).ready(function () {
         }
     }
 
+    function toggleSelect2OnIngredientSelector() {
+        $('.ingredient-select').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+        });
+    }
+
     // Update the recipe nutritional values on page start
     updateRecipeNutritionalValues();
     $('.ingredient').each(function () {
         updateIngredientNutritionalValues($(this));
         updateIngredientMeasureType($(this));
     });
+
+    // activate Select2 on ingredient selectors
+    toggleSelect2OnIngredientSelector();
 
     // get the element that holds the collection of ingredients
     var $collectionHolder = $('#ingredients');

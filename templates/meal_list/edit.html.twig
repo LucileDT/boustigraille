@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-Édition de la liste de repas du
-    {{ meal_list.startDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
-au
-    {{ meal_list.endDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
-pour
-    {{ meal_list.personName }}
+    Édition de la liste de repas du
+        {{ meal_list.startDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
+    au
+        {{ meal_list.endDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
+    pour
+        {{ meal_list.personName }}
 {% endblock %}
 
 {% block page_title %}

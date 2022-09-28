@@ -6,11 +6,12 @@ use App\Repository\RecipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * @ORM\Entity(repositoryClass=RecipeRepository::class)
  */
-class Recipe
+class Recipe implements JsonSerializable
 {
     /**
      * @ORM\Id
@@ -50,9 +51,26 @@ class Recipe
      */
     private $author;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="favoriteRecipes")
+     * @ORM\OrderBy({"username" = "ASC"})
+     */
+    private $favedBy;
+
+    /**
+     * @ORM\OneToMany(targetEntity=MealQuantityForList::class, mappedBy="meal", cascade={"persist"})
+     */
+    private $mealQuantityForLists;
+
+    public function getMealQuantityForLists()
+    {
+        return $this->mealQuantityForLists;
+    }
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
+        $this->favedBy = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -124,6 +142,19 @@ class Recipe
         }
 
         return $this;
+    }
+
+    /**
+     * @return ArrayCollection|User[]
+     */
+    public function getFavedBy()
+    {
+        return $this->favedBy;
+    }
+
+    public function isFavedBy(User $user): bool
+    {
+        return $this->favedBy->contains($user);
     }
 
     /**
@@ -224,5 +255,16 @@ class Recipe
         $this->author = $author;
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'main_picture_filename' => $this->getMainPictureFilename(),
+            'energy' => $this->getEnergy(),
+            'author' => $this->getAuthor(),
+        ];
     }
 }

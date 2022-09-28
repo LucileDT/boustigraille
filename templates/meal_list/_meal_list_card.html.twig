@@ -7,16 +7,18 @@
         <h5 class="card-title">{{ meal_list.personName }}</h5>
         <h6 class="card-subtitle text-muted mb-2">
             Du
-            {{ meal_list.startDate | format_date('full', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
+            {{ meal_list.startDate | format_date(pattern="EEEE dd MMMM", locale='fr') }}
+            ({{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }})<br>
             au
-            {{ meal_list.endDate | format_date('full', locale='fr') }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
+            {{ meal_list.endDate | format_date(pattern="EEEE dd MMMM", locale='fr') }}
+            ({{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }})
         </h6>
 {#        {% if meal_list.author.doShowUsernameOnMealList %}#}
             <div class="text-muted fst-italic mb-2">
                 <small>Par {{ meal_list.author.username }}</small>
             </div>
 {#        {% endif %}#}
-        <p class="card-text">
+        <div class="card-text">
             <ul>
                 {% for mealQuantityForList in meal_list.meals %}
                     <li class="mb-2">
@@ -35,7 +37,12 @@
                     </li>
                 {% endfor %}
             </ul>
-        </p>
+        </div>
+        {% if meal_list.comment %}
+            <div class="card-text text-muted small">
+                {{ meal_list.comment | markdown_to_html }}
+            </div>
+        {% endif %}
     </div>
     <div class="card-footer bg-white border-top-0 text-center pt-0 pb-3">
         <div class="row">
@@ -55,13 +62,13 @@
             </div>
         </div>
         <div class="row gx-2">
-            <div class="col-12 col-md-6">
-                <a class="btn btn-outline-secondary mt-5 mt-md-2 w-100" href="{{ path('meal_list_show', {'id': meal_list.id}) }}">
+            <div class="col-6 col-md-6">
+                <a class="btn btn-outline-secondary mt-1 mt-md-2 w-100" href="{{ path('meal_list_show', {'id': meal_list.id}) }}">
                     Voir
                 </a>
             </div>
-            <div class="col-12 col-md-6">
-                <a class="btn btn-outline-secondary mt-5 mt-md-2 w-100" href="{{ path('meal_list_edit', {'id': meal_list.id}) }}">
+            <div class="col-6 col-md-6">
+                <a class="btn btn-outline-secondary mt-1 mt-md-2 w-100" href="{{ path('meal_list_edit', {'id': meal_list.id}) }}">
                     Éditer
                 </a>
             </div>
@@ -69,7 +76,7 @@
         <div class="row">
             <div class="col-12">
                 <a
-                    class="btn btn-outline-secondary btn-sm mt-5 mt-md-2 w-100"
+                    class="btn btn-outline-secondary btn-sm mt-1 mt-md-2 w-100"
                     href="{{ path('meal_list_new', { 'fromMealList': meal_list.id }) }}"
                 >
                     <i class="ri-sticky-note-fill"></i>

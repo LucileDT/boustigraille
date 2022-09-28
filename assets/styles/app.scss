@@ -17,6 +17,10 @@ $alert-color-scale:     0;
 // import Klassy Cafe
 @import '../klassy_cafe/assets/css/base';
 
+// import Select2
+@import '~select2';
+@import '~select2-bootstrap-5-theme';
+
 $header-height: 100px;
 $footer-height-padding: calc(3rem + 3rem + 55px);
 $footer-height-margin: 1.5rem;
