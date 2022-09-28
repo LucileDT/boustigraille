@@ -15,7 +15,7 @@ $(document).ready(function () {
             if (e.keyCode === 13) {
                 e.preventDefault();
 
-                let $collectionHolderClass = $('.add_item_link').data('collectionHolderClass');
+                let $collectionHolderClass = $('#add-recipe-button').data('collectionHolderClass');
                 let mealsList = $('.' + $collectionHolderClass);
                 let currentMeal = $(this).parents('.meal');
                 if (currentMeal.is(':last-child')) {
@@ -165,6 +165,21 @@ $(document).ready(function () {
         bindCountPlannedMealToInput($newMealListForm);
     }
 
+    function addSuggestedRecipeToMealList(button) {
+        // add a new meal form
+        let $collectionHolderClass = $('#add-recipe-button').data('collectionHolderClass');
+        addFormToCollection($collectionHolderClass);
+
+        // make selector have the good recipe selected
+        let recipeId = button.data('recipe-id');
+        let recipeSelect = $('#meals .meal-select:last');
+        recipeSelect.val(recipeId);
+        recipeSelect.trigger('change');
+
+        // focus on its input
+        recipeSelect.parents('.meal').find('.meal-quantity').focus();
+    }
+
     function showSuggestedRecipes() {
         let recipesContainer = $('#suggested-recipes');
         let urlSuggestedRecipes = recipesContainer.data('url');
@@ -208,7 +223,24 @@ $(document).ready(function () {
                 } else {
                     newRecipe.find('.description').html('');
                 }
-                newRecipe.find('.main-text-button').remove();
+                newRecipe.find('.main-text-button > .row').remove();
+                let button = $('<button>')
+                    .addClass('btn')
+                    .addClass('btn-sm')
+                    .addClass('btn-outline')
+                    .addClass('add-to-meal-list')
+                    .attr('type', 'button')
+                    .data('recipe-id', this.id)
+                    .html('Ajouter à la liste de repas')
+                ;
+                button.on('click', function () {
+                    addSuggestedRecipeToMealList($(this));
+                });
+                let row = $('<div>').addClass('row');
+                let col = $('<div>').addClass('col');
+                col.append(button);
+                row.append(col);
+                newRecipe.find('.main-text-button').append(row);
 
                 // update toggling fav url
                 let url = newRecipe.find('.toggle-favorite-button').data('url');
@@ -287,7 +319,7 @@ $(document).ready(function () {
         $('#meal_list_startDate').attr('max', $('#meal_list_endDate').val());
     }
 
-    $('body').on('click', '.add_item_link', function (e) {
+    $('body').on('click', '#add-recipe-button', function (e) {
         let $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
 
         // add a new meal form

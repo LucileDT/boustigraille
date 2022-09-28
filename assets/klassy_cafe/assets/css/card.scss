@@ -87,7 +87,8 @@
         .main-text-button {
             text-align: center;
 
-            a {
+            a,
+            button {
                 font-size: 13px;
                 color: variables.$klassy-primary-color;
                 background-color: #fff;
