@@ -79,7 +79,12 @@ class MealListController extends AbstractController
 
     #[Route('/{id}/edit', name: 'meal_list_edit', methods: ['GET', 'POST'])]
     #[Security('not is_anonymous()')]
-    public function edit(Request $request, MealList $mealList, MealListRepository $mealListRepository): Response
+    public function edit(
+        Request $request,
+        MealList $mealList,
+        RecipeRepository $recipeRepository,
+        MealListRepository $mealListRepository
+    ): Response
     {
         $form = $this->createForm(MealListType::class, $mealList);
         $form->handleRequest($request);
@@ -93,6 +98,7 @@ class MealListController extends AbstractController
         return $this->render('meal_list/edit.html.twig', [
             'meal_list' => $mealList,
             'form' => $form->createView(),
+            'dummy_recipe' => $recipeRepository->findOneBy([]),
         ]);
     }
 
