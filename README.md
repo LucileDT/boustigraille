@@ -20,13 +20,10 @@ La base de données est disponible sous licence [ODbL v1.0](https://opendatacomm
 - import des valeurs nutritionnelles pour un ingrédient depuis l'URL du produit sur Open Food Facts
 - enregistrement de recettes (ingrédients, valeurs nutritionnelles, procédure de préparation)
 - enregistrement des valeurs nutritionnelles de référence pour un compte utilisateur
+- enregistrement de liste de repas (liste de recettes (suggestion de recettes), nombre de parts par recette)
+- génération de liste de courses (ingrédients et quantités, triés dans un ordre pertinent)
 
 ## Prévues
 - recherche de recettes via leur titre
 - recherche de recettes via leurs valeurs nutritionnelles (en fonction des valeurs nutritionnelles de références du compte utilisateur connecté)
-- enregistrement de liste de repas (liste de recettes (suggestion de recettes), nombre de parts par recette)
-- génération de liste de courses (ingrédients et quantités, triés dans un ordre pertinent)
 - suivi du poids pour un compte utilisateur
-- suivi de la masse musculaire pour un compte utilisateur
-- suivi de la masse hydrique pour un compte utilisateur
-- suivi de la masse graisseuse pour un compte utilisateur
