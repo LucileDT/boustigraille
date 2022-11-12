@@ -2,6 +2,10 @@
     {{ encore_entry_script_tags('recipe_form') }}
 {% endblock %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('recipe_form') }}
+{% endblock %}
+
 {% macro renderIngredientQuantityType(ingredientQuantityForRecipeForm) %}
     <div class="mb-3 mb-2">
         <div class="row g-1">

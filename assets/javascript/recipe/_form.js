@@ -1,4 +1,6 @@
 const $ = require("jquery");
+import '../../styles/recipe/_form.scss';
+
 $(document).ready(function () {
     function bindIngredientDeletionToButton($ingredientForm) {
         $ingredientForm.find('.ingredient-deletion-button').on('click', function (e) {
@@ -61,13 +63,13 @@ $(document).ready(function () {
 
     function addFormToCollection($collectionHolderClass) {
         // get container of all ingredient forms
-        var $collectionHolder = $('.' + $collectionHolderClass);
+        let $collectionHolder = $('.' + $collectionHolderClass);
         // get form data-prototype
-        var prototype = $collectionHolder.data('prototype');
+        let prototype = $collectionHolder.data('prototype');
         // get the new index
-        var index = $collectionHolder.data('index');
+        let index = $collectionHolder.data('index');
 
-        var newForm = prototype;
+        let newForm = prototype;
         // replace '__name__label__' in the prototype's HTML to
         // instead be a number based on how many items we have
         newForm = newForm.replace(/__name__label__/g, index);
@@ -80,7 +82,7 @@ $(document).ready(function () {
         $collectionHolder.data('index', index + 1);
 
         // display the new form in the page
-        var $newIngredientForm = $('<div class="ingredient"></div>').append(newForm);
+        let $newIngredientForm = $('<div class="ingredient"></div>').append(newForm);
         $collectionHolder.append($newIngredientForm)
 
         // deselect default option on ingredient selector
@@ -121,16 +123,16 @@ $(document).ready(function () {
 
     function updateRecipeNutritionalValue(nutritionalValueName, recipeNutritionalValue) {
         // Find the recipe nutritional value span
-        let recipeDataSpan = $('#recipe-' + nutritionalValueName);
+        let recipeDataSpan = $('.recipe-' + nutritionalValueName);
 
         // Update the recipe nutritional value on screen
         recipeDataSpan.text(recipeNutritionalValue);
 
         // If the user is connected, update user nutritional data comparison
-        let percentageDataSpan = $('#percentage-' + nutritionalValueName);
-        if (percentageDataSpan != undefined) {
+        let percentageDataSpan = $('.percentage-' + nutritionalValueName);
+        if (percentageDataSpan !== undefined) {
             // Get user nutritional value
-            let userNutritionalValue = $('#user-' + nutritionalValueName).text();
+            let userNutritionalValue = $('.user-' + nutritionalValueName).first().text();
 
             // Calculate new percentage difference
             let newPercentageDifference = calculatePercentageDifference(recipeNutritionalValue, userNutritionalValue);
@@ -296,7 +298,7 @@ $(document).ready(function () {
     toggleSelect2OnIngredientSelector();
 
     // get the element that holds the collection of ingredients
-    var $collectionHolder = $('#ingredients');
+    let $collectionHolder = $('#ingredients');
 
     // bind actions to the different elements
     $collectionHolder.children('div').each(function () {
@@ -313,7 +315,7 @@ $(document).ready(function () {
     $collectionHolder.data('index', $collectionHolder.find('.ingredient').length);
 
     $('body').on('click', '.add_item_link', function (e) {
-        var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
+        let $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
 
         // add a new ingredient form
         addFormToCollection($collectionHolderClass);

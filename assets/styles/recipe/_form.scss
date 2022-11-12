@@ -1,0 +1,29 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins/breakpoints";
+
+#nutritional-values {
+    th {
+        font-size: 0.8rem;
+    }
+
+    td {
+        .nutritional-percentage {
+            font-size: 0.7rem;
+        }
+    }
+}
+
+@include media-breakpoint-up(sm) {
+    #nutritional-values {
+        th {
+            font-size: 16px;
+        }
+
+        td {
+            .nutritional-percentage {
+                font-size: 0.875em;
+            }
+        }
+    }
+}
