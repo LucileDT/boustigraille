@@ -14,6 +14,12 @@
     }
 }
 
+.ingredient {
+    .ingredient-nutritional-value {
+        min-height: 2.5rem;
+    }
+}
+
 @include media-breakpoint-up(sm) {
     #nutritional-values {
         th {
@@ -23,6 +29,16 @@
         td {
             .nutritional-percentage {
                 font-size: 0.875em;
+            }
+        }
+    }
+}
+
+@include media-breakpoint-up(md) {
+    #nutritional-values {
+        .ingredient {
+            .ingredient-nutritional-value {
+                min-height: initial;
             }
         }
     }

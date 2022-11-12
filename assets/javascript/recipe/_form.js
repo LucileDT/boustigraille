@@ -82,7 +82,7 @@ $(document).ready(function () {
         $collectionHolder.data('index', index + 1);
 
         // display the new form in the page
-        let $newIngredientForm = $('<div class="ingredient"></div>').append(newForm);
+        let $newIngredientForm = $('<div class="ingredient mt-4 mt-md-0"></div>').append(newForm);
         $collectionHolder.append($newIngredientForm)
 
         // deselect default option on ingredient selector
