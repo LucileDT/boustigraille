@@ -27,7 +27,7 @@ class RecipeRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
             ;
         if (!empty($name)) {
-            $query->andWhere('r.name LIKE :name')
+            $query->andWhere('UPPER(r.name) LIKE UPPER(:name)')
                 ->setParameter('name', '%' . $name . '%');
         }
         return $query->orderBy('r.name', 'ASC')
@@ -42,7 +42,7 @@ class RecipeRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
             ;
         if (!empty($name)) {
-            $query->andWhere('r.name LIKE :name')
+            $query->andWhere('UPPER(r.name) LIKE UPPER(:name)')
                 ->setParameter('name', '%' . $name . '%');
         }
         return $query->orderBy('r.name', 'ASC')
