@@ -173,7 +173,7 @@ $(document).ready(function () {
 
     function updateIngredientNutritionalValues(ingredient) {
         let selectedIngredient = $(ingredient).find('option:selected');
-        let ingredientQuantity = $(ingredient).find('.ingredient-quantity').val();
+        let ingredientQuantity = parseFloat($(ingredient).find('.ingredient-quantity').val().replace(',', '.'));
         let measureType = $(ingredient).find('.ingredient-quantity-type option:selected');
 
         let proteins = parseFloat(selectedIngredient.data('proteins')),
@@ -225,7 +225,7 @@ $(document).ready(function () {
 
         $('.ingredient').each(function () {
             let selectedIngredient = $(this).find('.ingredient-select option:selected');
-            let ingredientQuantity = $(this).find('.ingredient-quantity').val();
+            let ingredientQuantity = $(this).find('.ingredient-quantity').val().replace(',', '.');
             let measureType = $(this).find('.ingredient-quantity-type option:selected');
 
             let proteins = parseFloat(selectedIngredient.data('proteins')),
