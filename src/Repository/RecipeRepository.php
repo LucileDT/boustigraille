@@ -20,14 +20,14 @@ class RecipeRepository extends ServiceEntityRepository
         parent::__construct($registry, Recipe::class);
     }
 
-    public function findByFavedByAndName(User $user, string $name = null) {
+    public function findByFavedByAndTransliteratedName(User $user, string $name = null) {
         $query = $this->createQueryBuilder('r')
             ->join('r.favedBy', 'u')
             ->andWhere('u = :user')
             ->setParameter('user', $user)
             ;
         if (!empty($name)) {
-            $query->andWhere('UPPER(r.name) LIKE UPPER(:name)')
+            $query->andWhere('UPPER(unaccent(r.name)) LIKE UPPER(:name)')
                 ->setParameter('name', '%' . $name . '%');
         }
         return $query->orderBy('r.name', 'ASC')
@@ -36,13 +36,13 @@ class RecipeRepository extends ServiceEntityRepository
             ;
     }
 
-    public function findByNotFavedByAndName(User $user, string $name = null) {
+    public function findByNotFavedByAndTransliteratedName(User $user, string $name = null) {
         $query = $this->createQueryBuilder('r')
             ->andWhere(':user NOT MEMBER OF r.favedBy')
             ->setParameter('user', $user)
             ;
         if (!empty($name)) {
-            $query->andWhere('UPPER(r.name) LIKE UPPER(:name)')
+            $query->andWhere('UPPER(unaccent(r.name)) LIKE UPPER(:name)')
                 ->setParameter('name', '%' . $name . '%');
         }
         return $query->orderBy('r.name', 'ASC')
