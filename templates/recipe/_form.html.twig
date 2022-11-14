@@ -2,12 +2,16 @@
     {{ encore_entry_script_tags('recipe_form') }}
 {% endblock %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('recipe_form') }}
+{% endblock %}
+
 {% macro renderIngredientQuantityType(ingredientQuantityForRecipeForm) %}
     <div class="mb-3 mb-2">
         <div class="row g-1">
-            <div class="col">
+            <div class="col-12 col-md">
                 <div class="row g-1">
-                    <div class="col-1">
+                    <div class="col-12 col-md-1">
                         <button
                             class="btn btn-secondary ingredient-deletion-button w-100"
                             type="button"
@@ -15,25 +19,16 @@
                             x
                         </button>
                     </div>
-                    <div class="col">
+                    <div class="col-12 col-md">
                         {{ form_widget(ingredientQuantityForRecipeForm.ingredient) }}
                         {{ form_help(ingredientQuantityForRecipeForm.ingredient) }}
                         {{ form_errors(ingredientQuantityForRecipeForm.ingredient) }}
                     </div>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-12 col-md">
                 <div class="row g-1 text-center">
-                    <div class="col-1 me-4 visually-hidden">
-                        {{
-                            form_label(
-                                ingredientQuantityForRecipeForm.quantity,
-                                null,
-                                {'label_attr': {'class': 'w-100 pt-3 text-left'}}
-                            )
-                        }}
-                    </div>
-                    <div class="col-3">
+                    <div class="col-8 col-md-3">
                         {{
                             form_widget(
                                 ingredientQuantityForRecipeForm.quantity,
@@ -43,27 +38,27 @@
                         {{ form_help(ingredientQuantityForRecipeForm.quantity) }}
                         {{ form_errors(ingredientQuantityForRecipeForm.quantity) }}
                     </div>
-                    <div class="col">
+                    <div class="col-4 col-md">
                         {{ form_widget(ingredientQuantityForRecipeForm.isMeasuredByUnit) }}
                         {{ form_help(ingredientQuantityForRecipeForm.isMeasuredByUnit) }}
                         {{ form_errors(ingredientQuantityForRecipeForm.isMeasuredByUnit) }}
                     </div>
-                    <div class="col">
+                    <div class="col-3 col-md ingredient-nutritional-value">
                         <div class="bg-light h-100 d-flex flex-column justify-content-center">
                             <span id="ingredient-proteins"></span>
                         </div>
                     </div>
-                    <div class="col d-flex flex-column justify-content-center">
+                    <div class="col-3 col-md ingredient-nutritional-value">
                         <div class="bg-light h-100 d-flex flex-column justify-content-center">
                             <span id="ingredient-carbohydrates"></span>
                         </div>
                     </div>
-                    <div class="col d-flex flex-column justify-content-center">
+                    <div class="col-3 col-md ingredient-nutritional-value">
                         <div class="bg-light h-100 d-flex flex-column justify-content-center">
                             <span id="ingredient-fat"></span>
                         </div>
                     </div>
-                    <div class="col d-flex flex-column justify-content-center">
+                    <div class="col-3 col-md ingredient-nutritional-value">
                         <div class="bg-light h-100 d-flex flex-column justify-content-center">
                             <span id="ingredient-energy"></span>
                         </div>
@@ -99,7 +94,7 @@
                 data-prototype="{{ renderIngredientQuantityTypeMacro.renderIngredientQuantityType(form.ingredients.vars.prototype) | e('html_attr') }}"
                 >
                 {% for ingredientQuantity in form.ingredients %}
-                    <div class="ingredient">
+                    <div class="ingredient mt-4 mt-md-0">
                         {{ renderIngredientQuantityTypeMacro.renderIngredientQuantityType(ingredientQuantity) }}
                     </div>
                 {% endfor %}

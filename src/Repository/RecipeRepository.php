@@ -20,31 +20,45 @@ class RecipeRepository extends ServiceEntityRepository
         parent::__construct($registry, Recipe::class);
     }
 
-    public function findByFavedByAndName(User $user, string $name = null) {
+    public function findByFavedByAndTransliteratedName(User $user, string $name = null) {
         $query = $this->createQueryBuilder('r')
             ->join('r.favedBy', 'u')
             ->andWhere('u = :user')
             ->setParameter('user', $user)
             ;
+
         if (!empty($name)) {
-            $query->andWhere('r.name LIKE :name')
-                ->setParameter('name', '%' . $name . '%');
+            $words = explode(' ', $name);
+            foreach ($words as $index => $word) {
+                if (!empty($word)) {
+                    $query->andWhere('UPPER(unaccent(r.name)) LIKE UPPER(:name' . $index . ')')
+                        ->setParameter('name' . $index, '%' . $word . '%');
+                }
+            }
         }
+
         return $query->orderBy('r.name', 'ASC')
             ->getQuery()
             ->getResult()
             ;
     }
 
-    public function findByNotFavedByAndName(User $user, string $name = null) {
+    public function findByNotFavedByAndTransliteratedName(User $user, string $name = null) {
         $query = $this->createQueryBuilder('r')
             ->andWhere(':user NOT MEMBER OF r.favedBy')
             ->setParameter('user', $user)
             ;
+
         if (!empty($name)) {
-            $query->andWhere('r.name LIKE :name')
-                ->setParameter('name', '%' . $name . '%');
+            $words = explode(' ', $name);
+            foreach ($words as $index => $word) {
+                if (!empty($word)) {
+                    $query->andWhere('UPPER(unaccent(r.name)) LIKE UPPER(:name' . $index . ')')
+                        ->setParameter('name' . $index, '%' . $word . '%');
+                }
+            }
         }
+
         return $query->orderBy('r.name', 'ASC')
             ->getQuery()
             ->getResult()

@@ -50,8 +50,9 @@ class APIRecipeController extends AbstractController
         }
 
         $name = $request->query->get('q');
-        $favedRecipes = $recipeRepository->findByFavedByAndName($connectedUser, $name);
-        $notFavedRecipes = $recipeRepository->findByNotFavedByAndName($connectedUser, $name);
+        $nameWithoutSpecialCharacters = transliterator_transliterate('Any-Latin; Latin-ASCII; [\u0080-\u7fff] remove', $name);
+        $favedRecipes = $recipeRepository->findByFavedByAndTransliteratedName($connectedUser, $nameWithoutSpecialCharacters);
+        $notFavedRecipes = $recipeRepository->findByNotFavedByAndTransliteratedName($connectedUser, $nameWithoutSpecialCharacters);
 
         $groupedData = [
             'faved' => $favedRecipes,
