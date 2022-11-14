@@ -26,10 +26,17 @@ class RecipeRepository extends ServiceEntityRepository
             ->andWhere('u = :user')
             ->setParameter('user', $user)
             ;
+
         if (!empty($name)) {
-            $query->andWhere('UPPER(unaccent(r.name)) LIKE UPPER(:name)')
-                ->setParameter('name', '%' . $name . '%');
+            $words = explode(' ', $name);
+            foreach ($words as $index => $word) {
+                if (!empty($word)) {
+                    $query->andWhere('UPPER(unaccent(r.name)) LIKE UPPER(:name' . $index . ')')
+                        ->setParameter('name' . $index, '%' . $word . '%');
+                }
+            }
         }
+
         return $query->orderBy('r.name', 'ASC')
             ->getQuery()
             ->getResult()
@@ -41,10 +48,17 @@ class RecipeRepository extends ServiceEntityRepository
             ->andWhere(':user NOT MEMBER OF r.favedBy')
             ->setParameter('user', $user)
             ;
+
         if (!empty($name)) {
-            $query->andWhere('UPPER(unaccent(r.name)) LIKE UPPER(:name)')
-                ->setParameter('name', '%' . $name . '%');
+            $words = explode(' ', $name);
+            foreach ($words as $index => $word) {
+                if (!empty($word)) {
+                    $query->andWhere('UPPER(unaccent(r.name)) LIKE UPPER(:name' . $index . ')')
+                        ->setParameter('name' . $index, '%' . $word . '%');
+                }
+            }
         }
+
         return $query->orderBy('r.name', 'ASC')
             ->getQuery()
             ->getResult()
