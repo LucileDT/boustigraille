@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Édition du magasin {{ store.label }}{% endblock %}
+
+{% block page_title %}
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="page-heading">
+                    <h6>
+                        <a href="{{ path('home') }}">Accueil</a>
+                        / Administration
+                        /
+                        <a href="{{ path('store_index') }}">Liste des magasins</a>
+                        / Édition du magasin {{ store.label }}
+                    </h6>
+                    <h2>Édition du magasin {{ store.label }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            {{ include('store/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau magasin{% endblock %}
+
+{% block page_title %}
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="page-heading">
+                    <h6>
+                        <a href="{{ path('home') }}">Accueil</a>
+                        / Administration
+                        /
+                        <a href="{{ path('store_index') }}">Liste des magasins</a>
+                        / Nouveau magasin
+                    </h6>
+                    <h2>Nouveau magasin</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    {{ include('store/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+{% endblock %}
