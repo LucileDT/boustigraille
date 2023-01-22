@@ -126,7 +126,7 @@
                 {{ include('recipe/_nutritional_values_ingredients.html.twig', {'ingredientQuantities': recipe.ingredients}) }}
             </div>
         </div>
-        <div class="col">
+        <div id="recipe-text-body" class="col">
             <h2 class="">Préparation</h2>
             <div class="ms-5 my-4">
                 {% if recipe.process | length > 0 %}
