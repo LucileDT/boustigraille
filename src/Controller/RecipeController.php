@@ -47,7 +47,9 @@ class RecipeController extends AbstractController
                 ->setComment($fromRecipe->getComment())
             ;
             foreach ($fromRecipe->getIngredients() as $ingredient) {
-                $recipe->addIngredient($ingredient);
+                $newIngredient = new IngredientQuantityForRecipe($ingredient);
+                $recipe->addIngredient($newIngredient);
+                $newIngredient->setRecipe($recipe);
             }
         }
         $form = $this->createForm(RecipeType::class, $recipe);
