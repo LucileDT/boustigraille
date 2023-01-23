@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\IngredientQuantityForRecipeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,9 +39,14 @@ class IngredientQuantityForRecipe
      */
     private $isMeasuredByUnit;
 
-    public function __construct()
+    public function __construct(?IngredientQuantityForRecipe $ingredient = null)
     {
-
+        if (!empty($ingredient)) {
+            $this->setIngredient($ingredient->getIngredient());
+            $this->setQuantity($ingredient->getQuantity());
+            $this->setIsMeasuredByUnit($ingredient->isMeasuredByUnit());
+            $this->setRecipe($ingredient->getRecipe());
+        }
     }
 
     public function getId(): ?int

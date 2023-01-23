@@ -78,10 +78,24 @@
             </tr>
             <tr>
                 <th>Magasin</th>
-                <td>{{ ingredient.shop }}</td>
+                <td>
+                    {% if ingredient.store is not empty %}
+                        {{ ingredient.store.label }}
+                    {% endif %}
+                </td>
             </tr>
             <tr>
-                <th>Manière de mesurer(g, ml, l, ...)</th>
+                <th>Stock</th>
+                <td>
+                    {% if ingredient.hasStockCheckNeededBeforeBuying %}
+                        Vérifier dans les placards avant d'acheter
+                    {% else %}
+                        À acheter systématiquement
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Unité de mesure (g, ml, l, ...)</th>
                 <td>{{ ingredient.measureType }}</td>
             </tr>
             <tr>

@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Magasin {{ store.label }}{% endblock %}
+
+{% block page_title %}
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="page-heading">
+                    <h6>
+                        <a href="{{ path('home') }}">Accueil</a>
+                        / Administration
+                        /
+                        <a href="{{ path('store_index') }}">Liste des magasins</a>
+                        / {{ store.label }}
+                    </h6>
+                    <h2>
+                        {{ store.label }}
+                    </h2>
+                </div>
+            </div>
+            <div class="col-12 col-lg-3 text-end">
+                <div class="d-flex justify-content-end">
+                    <a class="btn btn-primary btn-large ms-2" href="{{ path('store_edit', {'id': store.id}) }}">
+                        Éditer
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ store.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Numéro d'ordre</th>
+                        <td>{{ store.sortNumber }}</td>
+                    </tr>
+                    <tr>
+                        <th>Label</th>
+                        <td>{{ store.label }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

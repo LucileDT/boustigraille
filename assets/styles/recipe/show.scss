@@ -45,3 +45,22 @@
 .recipe-header .recipe-controls .btn {
     min-width: 8%;
 }
+
+#recipe-text-body {
+    ul, ol {
+        padding-left: 3rem;
+        margin-bottom: 0.8rem;
+    }
+
+    ul, ol, li {
+        list-style: initial;
+    }
+
+    ol > li {
+        list-style-type: decimal;
+    }
+
+    li {
+        padding-left: 1rem;
+    }
+}

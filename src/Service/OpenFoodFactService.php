@@ -2,6 +2,7 @@
 namespace App\Service;
 
 use App\Entity\Ingredient;
+use Exception;
 
 /**
  * Class containing methods used to display user's related pages
@@ -16,6 +17,7 @@ class OpenFoodFactService
      *
      * @param string $productUrl
      * @return string Product bar code
+     * @throws Exception URL is invalid
      */
     public function getBarCodeFromProductUrl(string $productUrl): string
     {
@@ -24,7 +26,7 @@ class OpenFoodFactService
 
         if (!isset($matches[1]))
         {
-            throw new \Exception('Invalid URL.');
+            throw new Exception('Invalid URL.');
         }
         return $matches[1];
     }
@@ -34,7 +36,7 @@ class OpenFoodFactService
      *
      * @param string $barCodeProduct
      * @return object Open Food Fact product
-     * @throws \Exception Product has not been found
+     * @throws Exception Product has not been found
      */
     public function getProductFromApi(string $barCodeProduct): object
     {
@@ -71,7 +73,7 @@ class OpenFoodFactService
 
         if ($openFoodFactsProduct->status !== 1)
         {
-            throw new \Exception('Product not found');
+            throw new Exception('Product not found');
         }
 
         return $openFoodFactsProduct->product;
@@ -82,6 +84,7 @@ class OpenFoodFactService
      *
      * @param Ingredient $ingredient
      * @param object $product Open Food Fact product
+     * @throws Exception Missing data
      */
     public function fillIngredientNutritionalDataWithProductOnes(Ingredient &$ingredient, $product)
     {
@@ -95,6 +98,7 @@ class OpenFoodFactService
         {
             $ingredient->setLabel('Not found');
         }
+
         if (isset($product->brands))
         {
             $ingredient->setBrand($product->brands);
@@ -103,11 +107,12 @@ class OpenFoodFactService
         {
             $ingredient->setBrand('Not found');
         }
-        $ingredient->setMeasureType('Please edit me!');
+
         if (isset($product->serving_quantity))
         {
             $ingredient->setPortionSize($product->serving_quantity);
         }
+
         if (isset($product->product_quantity))
         {
             $ingredient->setShopBatchSize($product->product_quantity);
@@ -124,35 +129,43 @@ class OpenFoodFactService
             {
                 $missingData[] = 'proteins';
             }
+
             if (!isset($product->nutriments->carbohydrates_value))
             {
                 $missingData[] = 'carbohydrates';
             }
+
             if (!isset($product->nutriments->fat_value))
             {
                 $missingData[] = 'fat';
             }
+
             if (!isset(get_object_vars($product->nutriments)['energy-kcal_value']))
             {
                 $missingData[] = 'energy';
             }
-            throw new \Exception(sprintf(
-                            'This product is missing nutritional data and can\'t be imported. Missing data: [%s]',
-                            implode(', ', $missingData)
-                        ));
+
+            throw new Exception(sprintf(
+                'This product is missing nutritional data and can\'t be imported. Missing data: [%s]',
+                implode(', ', $missingData)
+            ));
         }
+
         if (isset($product->nutriments->proteins_value))
         {
             $ingredient->setProteins((float) $product->nutriments->proteins_value);
         }
+
         if (isset($product->nutriments->carbohydrates_value))
         {
             $ingredient->setCarbohydrates((float) $product->nutriments->carbohydrates_value);
         }
+
         if (isset($product->nutriments->fat_value))
         {
             $ingredient->setFat((float) $product->nutriments->fat_value);
         }
+
         if (isset(get_object_vars($product->nutriments)['energy-kcal_value']))
         {
             $ingredient->setEnergy((float) get_object_vars($product->nutriments)['energy-kcal_value']);

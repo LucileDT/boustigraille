@@ -8,6 +8,8 @@ use App\Form\IngredientType;
 use App\FormDataObject\IngredientFromOpenFoodFactsFDO;
 use App\Repository\IngredientRepository;
 use App\Service\OpenFoodFactService;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,7 +72,11 @@ class IngredientController extends AbstractController
      * @Route("/new-from-openfoodfacts", name="ingredient_new_from_openfoodfacts", methods={"POST"})
      * @Security("not is_anonymous()")
      */
-    public function newFromOpenFoodFacts(OpenFoodFactService $offService, Request $request, IngredientFromOpenFoodFactsFDO $ingredientIdentifier): Response
+    public function newFromOpenFoodFacts(
+        EntityManagerInterface $entityManager,
+        OpenFoodFactService $offService,
+        Request $request,
+        IngredientFromOpenFoodFactsFDO $ingredientIdentifier): Response
     {
         $form = $this->createForm(IngredientFromOpenFoodFactsType::class, $ingredientIdentifier);
         $form->handleRequest($request);
@@ -80,39 +86,51 @@ class IngredientController extends AbstractController
             if (filter_var($ingredientIdentifier->getIdentifier(), FILTER_VALIDATE_URL) !== false)
             {
                 $productUrl = $ingredientIdentifier->getIdentifier();
-                $productBarCode = $offService->getBarCodeFromProductUrl($productUrl);
+
+                try
+                {
+                    $productBarCode = $offService->getBarCodeFromProductUrl($productUrl);
+                }
+                catch (Exception $ex)
+                {
+                    $this->addFlash('danger', $ex->getMessage());
+
+                    // try to get the previous page or fallback on home page
+                    $this->tryToRedirectToLastUrl($request);
+                }
             }
             else
             {
                 $productBarCode = $ingredientIdentifier->getIdentifier();
             }
 
-            $product = $offService->getProductFromApi($productBarCode);
-            $ingredient = new Ingredient();
-
             try
             {
+                $ingredient = new Ingredient();
+                $product = $offService->getProductFromApi($productBarCode);
+
                 $offService->fillIngredientNutritionalDataWithProductOnes($ingredient, $product);
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($ingredient);
-                $entityManager->flush();
+                $form = $this->createForm(IngredientType::class, $ingredient, [
+                        'action' => $this->generateUrl('ingredient_new'),
+                    ]);
+
+                return $this->render('ingredient/new.html.twig', [
+                    'ingredient' => $ingredient,
+                    'form' => $form->createView(),
+                    'addOpenFoodFactsForm' => false,
+                ]);
             }
-            catch (\Exception $ex)
+            catch (Exception $ex)
             {
                 $this->addFlash('danger', $ex->getMessage());
 
                 // try to get the previous page or fallback on home page
-                $this->tryToRedirectToLastUrl($request);
+                return $this->tryToRedirectToLastUrl($request);
             }
-
-            return $this->redirectToRoute(
-                    'ingredient_edit',
-                    ['id' => $ingredient->getId()]
-            );
         }
         else
         {
-            $this->tryToRedirectToLastUrl($request);
+            return $this->tryToRedirectToLastUrl($request);
         }
     }
 
@@ -130,13 +148,13 @@ class IngredientController extends AbstractController
      * @Route("/{id}/edit", name="ingredient_edit", methods={"GET","POST"}, requirements={"id"="\d+"})
      * @Security("not is_anonymous()")
      */
-    public function edit(Request $request, Ingredient $ingredient): Response
+    public function edit(EntityManagerInterface $entityManager, Request $request, Ingredient $ingredient): Response
     {
         $form = $this->createForm(IngredientType::class, $ingredient);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
 
             return $this->redirectToRoute('ingredient_index');
         }

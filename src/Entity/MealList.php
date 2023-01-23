@@ -95,9 +95,9 @@ class MealList
     }
 
     /**
-     * @return Collection<int, Meal>
+     * @return Collection|MealQuantityForList[]
      */
-    public function getMeals(): Collection
+    public function getMeals(): ?Collection
     {
         return $this->meals;
     }

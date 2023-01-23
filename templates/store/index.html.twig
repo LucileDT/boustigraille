@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des magasins{% endblock %}
+
+{% block page_title %}
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="page-heading">
+                    <h6>
+                        <a href="{{ path('home') }}">Accueil</a>
+                        / Administration
+                        / Liste des magasins
+                    </h6>
+                    <h2>Liste des magasins</h2>
+                </div>
+            </div>
+            {% if app.user is not null %}
+                <div class="col-12 col-lg-4 text-end">
+                    <a class="btn btn-primary btn-large" href="{{ path('store_new') }}">Créer un nouveau magasin</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <table class="table table-stripped table-sm table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>id</th>
+                        <th>Numéro d'ordre</th>
+                        <th>Label</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for store in stores %}
+                    <tr>
+                        <td>{{ store.id }}</td>
+                        <td>{{ store.sortNumber }}</td>
+                        <td>{{ store.label }}</td>
+                        <td class="text-end align-middle">
+                            <a
+                                    class="btn-primary btn me-2"
+                                    href="{{ path('store_show', {'id': store.id}) }}"
+                            >
+                                Voir
+                            </a>
+                            <a
+                                    class="btn-secondary btn"
+                                    href="{{ path('store_edit', {'id': store.id}) }}"
+                            >
+                                Éditer
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">Pas de données en base</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

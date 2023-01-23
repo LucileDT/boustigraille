@@ -30,29 +30,140 @@
     </div>
     <div class="row">
         <div class="col">
-            <form id="groceries">
-                {% for grocery in grocery_list %}
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="grocery-check-{{ grocery.id }}">
-                        <label class="custom-control-label" for="grocery-check-{{ grocery.id }}">
-                            {% if grocery.isMeasuredByUnit %}
-                                {{ grocery.unitQuantity }}
-                            {% else %}
-                                {{ grocery.quantity }} {{ grocery.measureType }} de
+            {% for store in grocery_list %}
+                <form>
+                    <div class="card border-0 mb-4">
+                        <div class="card-body bg-light">
+                            {% if store.store.label is not empty %}
+                                <h5 class="card-title mb-2">
+                                    {{ store.store.label }}
+                                </h5>
                             {% endif %}
-                            {{ grocery.label }}
-                            {% if grocery.isMeasuredByUnit %}
-                                ({{ grocery.quantity }} {{ grocery.measureType }})
+                            {% for grocery in store.checkNotNeeded %}
+                                <div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="grocery-check-{{ grocery.id }}">
+                                        <label class="custom-control-label" for="grocery-check-{{ grocery.id }}">
+                                            {% if grocery.isMeasuredByUnit %}
+                                                {{ grocery.unitQuantity }}
+                                            {% else %}
+                                                {{ grocery.quantity }} {{ grocery.measureType }} de
+                                            {% endif %}
+                                            {{ grocery.label }}
+                                            {% if grocery.isMeasuredByUnit %}
+                                                ({{ grocery.quantity }} {{ grocery.measureType }})
+                                            {% endif %}
+                                            <a
+                                                    class="btn btn-sm btn-info"
+                                                    href="{{ path('ingredient_show', {'id': grocery.id}) }}"
+                                                    target="_blank"
+                                                    data-bs-toggle="tooltip"
+                                                    title="Voir la fiche ingrédient"
+                                            >
+                                                <i class="ri-eye-fill"></i>
+                                            </a>
+                                            <button
+                                                    type="button"
+                                                    class="btn btn-sm btn-secondary"
+                                                    title="Voir les détails"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#details-{{ grocery.id }}"
+                                            >
+                                                <i class="ri-question-fill"></i>
+                                            </button>
+                                        </label>
+                                        <div class="collapse" id="details-{{ grocery.id }}">
+                                            <div class="card card-body border-0 mt-2">
+                                                <span><b>Marque :</b> {{ grocery.brand ?: 'générique' }}</span>
+                                                <b>Quantités :</b>
+                                                <ul>
+                                                    {% for recipe in grocery.recipes %}
+                                                        <li>
+                                                            <a href="{{ path('recipe_show', { 'id': recipe.id }) }}">
+                                                                {{ recipe.mealCount }} * {{ recipe.label }} :
+                                                            </a>
+                                                            {% if recipe.isMeasuredByUnit %}
+                                                                {{ recipe.unitQuantity }}
+                                                            {% else %}
+                                                                {{ recipe.quantity }} {{ recipe.measureType }}
+                                                            {% endif %}
+                                                            {% if recipe.isMeasuredByUnit %}
+                                                                ({{ recipe.quantity }} {{ recipe.measureType }})
+                                                            {% endif %}
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% if store.checkNeeded | length > 0 %}
+                                <h6 class="mt-3 mb-1 fst-italic">Il faut vérifier s'il reste :</h6>
+                                {% for grocery in store.checkNeeded %}
+                                    <div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="grocery-check-{{ grocery.id }}">
+                                            <label class="custom-control-label" for="grocery-check-{{ grocery.id }}">
+                                                {% if grocery.isMeasuredByUnit %}
+                                                    {{ grocery.unitQuantity }}
+                                                {% else %}
+                                                    {{ grocery.quantity }} {{ grocery.measureType }} de
+                                                {% endif %}
+                                                {{ grocery.label }}
+                                                {% if grocery.isMeasuredByUnit %}
+                                                    ({{ grocery.quantity }} {{ grocery.measureType }})
+                                                {% endif %}
+                                                <a
+                                                        class="btn btn-sm btn-info"
+                                                        href="{{ path('ingredient_show', {'id': grocery.id}) }}"
+                                                        target="_blank"
+                                                        data-bs-toggle="tooltip"
+                                                        title="Voir la fiche ingrédient"
+                                                >
+                                                    <i class="ri-eye-fill"></i>
+                                                </a>
+                                                <button
+                                                        type="button"
+                                                        class="btn btn-sm btn-secondary"
+                                                        title="Voir les détails"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#details-{{ grocery.id }}"
+                                                >
+                                                    <i class="ri-question-fill"></i>
+                                                </button>
+                                            </label>
+                                            <div class="collapse" id="details-{{ grocery.id }}">
+                                                <div class="card card-body border-0 mt-2">
+                                                    <span><b>Marque :</b> {{ grocery.brand ?: 'générique' }}</span>
+                                                    <b>Quantités :</b>
+                                                    <ul>
+                                                        {% for recipe in grocery.recipes %}
+                                                            <li>
+                                                                <a href="{{ path('recipe_show', { 'id': recipe.id }) }}">
+                                                                    {{ recipe.mealCount }} * {{ recipe.label }} :
+                                                                </a>
+                                                                {% if recipe.isMeasuredByUnit %}
+                                                                    {{ recipe.unitQuantity }}
+                                                                {% else %}
+                                                                    {{ recipe.quantity }} {{ recipe.measureType }}
+                                                                {% endif %}
+                                                                {% if recipe.isMeasuredByUnit %}
+                                                                    ({{ recipe.quantity }} {{ recipe.measureType }})
+                                                                {% endif %}
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             {% endif %}
-                            <a href="{{ path('ingredient_show', {'id': grocery.id}) }}"
-                                target="_blank"
-                                class="text-muted">
-                                <small>Voir la fiche ingrédient</small>
-                            </a>
-                        </label>
+                        </div>
                     </div>
-                {% endfor %}
-            </form>
+                </form>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

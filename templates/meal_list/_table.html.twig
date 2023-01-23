@@ -34,7 +34,9 @@
                         <ul class="pl-4">
                             {% for mealQuantityForList in meal_list.meals %}
                                 <li>
-                                    {{ mealQuantityForList.meal.name }}&nbsp;x{{ mealQuantityForList.quantity}}
+                                    <a href="{{ path('recipe_show', {'id': mealQuantityForList.meal.id}) }}">
+                                        {{ mealQuantityForList.meal.name }}&nbsp;x{{ mealQuantityForList.quantity}}
+                                    </a>
                                 </li>
                             {% endfor %}
                         </ul>
