@@ -7,6 +7,7 @@ use App\Entity\Store;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -44,24 +45,27 @@ class IngredientType extends AbstractType
                 },
                 'multiple' => false,
                 'expanded' => false,
+                'label_attr' => [
+                    'class' => 'mb-0 me-2',
+                ],
             ])
             ->add('measureType', TextType::class, [
-                'label' => 'Manière de mesurer (g, ml, l, ...) *',
+                'label' => 'Unité de mesure (g, ml, l, ...) *',
             ])
             ->add('unitSize', IntegerType::class, [
                 'label' => 'Taille d\'une unité',
                 'required' => false,
-                'help' => 'Par exemple pour des barres de céréales, le poids d\'une barre.',
+                'help' => 'Pour des barres de céréales, le poids d\'une barre.',
             ])
             ->add('portionSize', IntegerType::class, [
                 'label' => 'Taille d\'une part moyenne',
                 'required' => false,
-                'help' => 'Par exemple pour du riz cru, le poids de ce que je mangerais en un repas.',
+                'help' => 'Pour du riz cru, le poids de ce que je mangerais en un repas.',
             ])
             ->add('shopBatchSize', NumberType::class, [
                 'label' => 'Vendus par paquets de',
                 'required' => false,
-                'help' => 'Par exemple pour des pâtes, le poids d\'un paquet tel que vendu.',
+                'help' => 'Pour des pâtes, le poids d\'un paquet tel que vendu.',
             ])
             ->add('proteins', NumberType::class, [
                 'label' => 'Protéines (g) *',
@@ -74,6 +78,13 @@ class IngredientType extends AbstractType
             ])
             ->add('energy', NumberType::class, [
                 'label' => 'Énergie (kcal) *',
+            ])
+            ->add('hasStockCheckNeededBeforeBuying', CheckboxType::class, [
+                'label' => 'Vérifier dans les placards avant d\'acheter',
+                'label_attr' => [
+                    'class' => 'checkbox-switch',
+                ],
+                'required' => false,
             ])
             ->add('comment', TextareaType::class, [
                 'label' => 'Commentaire',

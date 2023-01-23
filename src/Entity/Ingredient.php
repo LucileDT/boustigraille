@@ -83,6 +83,11 @@ class Ingredient
      */
     private $store;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $hasStockCheckNeededBeforeBuying;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -240,6 +245,18 @@ class Ingredient
     public function setStore(?Store $store = null): self
     {
         $this->store = $store;
+
+        return $this;
+    }
+
+    public function isHasStockCheckNeededBeforeBuying(): ?bool
+    {
+        return $this->hasStockCheckNeededBeforeBuying;
+    }
+
+    public function setHasStockCheckNeededBeforeBuying(bool $hasStockCheckNeededBeforeBuying): self
+    {
+        $this->hasStockCheckNeededBeforeBuying = $hasStockCheckNeededBeforeBuying;
 
         return $this;
     }

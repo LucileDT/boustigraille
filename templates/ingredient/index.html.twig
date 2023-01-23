@@ -28,7 +28,20 @@
     {% if app.user is not null %}
         <div class="row mb-4">
             <div class="col">
-                {{ include('ingredient/_create_from_openfoodfacts_form.html.twig', {'button_label': 'Créer depuis Open Food Facts'}) }}
+                <div class="card-body bg-light">
+                    <h5 class="card-title lh-1 mt-2">
+                        Importer un ingrédient depuis
+                        <a href="https://fr.openfoodfacts.org" target="_blank">
+                            <i class="ri-external-link-fill"></i>
+                            Open Food Facts
+                        </a>
+                    </h5>
+                    <div class="pt-3 mb-0">
+                        {{ include('ingredient/_create_from_openfoodfacts_form.html.twig', {
+                            'button_label': 'Créer depuis Open Food Facts',
+                        }) }}
+                    </div>
+                </div>
             </div>
         </div>
     {% endif %}

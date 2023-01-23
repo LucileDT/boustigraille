@@ -2,10 +2,10 @@
     {{ form_start(form) }}
     <div class="card border-0 mb-5">
         <div class="card-body bg-light">
-            <h5 class="card-title">Information d'identification de l'ingrédient</h5>
+            <h5 class="card-title"><i class="ri-profile-fill me-2"></i>Identification de l'ingrédient</h5>
             <div class="row">
                 <div class="col-6">
-                    <div class="mb-3 mb-0">
+                    <div class="mt-3 mb-0">
                         <label>
                             {{ form_label(form.label) }}
                         </label>
@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="mb-3 mb-0">
+                    <div class="mt-3 mb-0">
                         <label>
                             {{ form_label(form.barcode) }}
                         </label>
@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="mb-3 mb-0">
+                    <div class="mt-3 mb-0">
                         <label>
                             {{ form_label(form.brand) }}
                         </label>
@@ -34,26 +34,16 @@
                         {{ form_errors(form.brand) }}
                     </div>
                 </div>
-                <div class="col">
-                    <div class="mb-3 mb-0">
-                        <label>
-                            {{ form_label(form.store) }}
-                        </label>
-                        {{ form_widget(form.store, {'attr': {'class': 'form-control'}}) }}
-                        {{ form_help(form.store) }}
-                        {{ form_errors(form.store) }}
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 
     <div class="card border-0 mb-5">
         <div class="card-body bg-light">
-            <h5 class="card-title">Information de mesure de l'ingrédient</h5>
+            <h5 class="card-title"><i class="ri-scales-2-fill me-2"></i>Mesure de l'ingrédient</h5>
             <div class="row">
                 <div class="col">
-                    <div class="mb-3 mb-0">
+                    <div class="mt-3 mb-0">
                         <label>
                             {{ form_label(form.measureType) }}
                         </label>
@@ -63,7 +53,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="mb-3 mb-0">
+                    <div class="mt-3 mb-0">
                         <label>
                             {{ form_label(form.unitSize) }}
                         </label>
@@ -73,7 +63,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="mb-3 mb-0">
+                    <div class="mt-3 mb-0">
                         <label>
                             {{ form_label(form.portionSize) }}
                         </label>
@@ -83,7 +73,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="mb-3 mb-0">
+                    <div class="mt-3 mb-0">
                         <label>
                             {{ form_label(form.shopBatchSize) }}
                         </label>
@@ -98,10 +88,10 @@
 
     <div class="card border-0 mb-5">
         <div class="card-body bg-light">
-            <h5 class="card-title">Information nutritionnelles de l'ingrédient</h5>
+            <h5 class="card-title"><i class="ri-numbers-fill me-2"></i>Information nutritionnelles de l'ingrédient</h5>
             <div class="row">
                 <div class="col">
-                    <div class="mb-3 mb-0">
+                    <div class="mt-3 mb-0">
                         <label>
                             {{ form_label(form.proteins) }}
                         </label>
@@ -111,7 +101,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="mb-3 mb-0">
+                    <div class="mt-3 mb-0">
                         <label>
                             {{ form_label(form.carbohydrates) }}
                         </label>
@@ -121,7 +111,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="mb-3 mb-0">
+                    <div class="mt-3 mb-0">
                         <label>
                             {{ form_label(form.fat) }}
                         </label>
@@ -131,7 +121,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="mb-3 mb-0">
+                    <div class="mt-3 mb-0">
                         <label>
                             {{ form_label(form.energy) }}
                         </label>
@@ -146,12 +136,35 @@
 
     <div class="card border-0 mb-5">
         <div class="card-body bg-light">
+            <h5 class="card-title"><i class="ri-todo-fill me-2"></i>Liste de courses</h5>
+            <div class="row pt-3 mb-0">
+                <div class="col">
+                    <div class="d-flex align-items-center">
+                        <label>
+                            {{ form_label(form.store) }}
+                        </label>
+                        {{ form_widget(form.store, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.store) }}
+                        {{ form_errors(form.store) }}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="h-100 d-flex align-items-center">
+                        {{ form_widget(form.hasStockCheckNeededBeforeBuying, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.hasStockCheckNeededBeforeBuying) }}
+                        {{ form_errors(form.hasStockCheckNeededBeforeBuying) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 mb-5">
+        <div class="card-body bg-light">
+            <h5 class="card-title"><i class="ri-newspaper-line me-2"></i>Commentaire</h5>
             <div class="row">
                 <div class="col">
-                    <div class="mb-3 mb-0">
-                        <label>
-                            {{ form_label(form.comment) }}
-                        </label>
+                    <div class="mt-3 mb-0">
                         {{ form_widget(form.comment, {'attr': {'class': 'form-control'}}) }}
                         {{ form_help(form.comment) }}
                         {{ form_errors(form.comment) }}
