@@ -3,6 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Ingredient;
+use App\Entity\Store;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,9 +30,20 @@ class IngredientType extends AbstractType
                 'label' => 'Marque',
                 'required' => false,
             ])
-            ->add('shop', TextType::class, [
+            ->add('store', EntityType::class, [
+                'class' => Store::class,
                 'label' => 'Magasin',
                 'required' => false,
+                'choice_label' => function (Store $store) {
+                    return $store->getLabel();
+                },
+                'query_builder' => function (EntityRepository $entityRepository) {
+                    return $entityRepository
+                        ->createQueryBuilder('s')
+                        ->orderBy('s.label', 'ASC');
+                },
+                'multiple' => false,
+                'expanded' => false,
             ])
             ->add('measureType', TextType::class, [
                 'label' => 'Manière de mesurer (g, ml, l, ...) *',

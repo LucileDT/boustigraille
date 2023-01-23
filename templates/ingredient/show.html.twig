@@ -78,7 +78,11 @@
             </tr>
             <tr>
                 <th>Magasin</th>
-                <td>{{ ingredient.shop }}</td>
+                <td>
+                    {% if ingredient.store is not empty %}
+                        {{ ingredient.store.label }}
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <th>Manière de mesurer(g, ml, l, ...)</th>

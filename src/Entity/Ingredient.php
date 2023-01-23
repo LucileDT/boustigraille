@@ -33,11 +33,6 @@ class Ingredient
     private $brand;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $shop;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $portionSize;
@@ -82,6 +77,12 @@ class Ingredient
      */
     private $unitSize;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Store::class, inversedBy="ingredients")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $store;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,18 +108,6 @@ class Ingredient
     public function setBrand(?string $brand): self
     {
         $this->brand = $brand;
-
-        return $this;
-    }
-
-    public function getShop(): ?string
-    {
-        return $this->shop;
-    }
-
-    public function setShop(?string $shop): self
-    {
-        $this->shop = $shop;
 
         return $this;
     }
@@ -239,6 +228,18 @@ class Ingredient
     public function setUnitSize(?float $unitSize): self
     {
         $this->unitSize = $unitSize;
+
+        return $this;
+    }
+
+    public function getStore(): ?Store
+    {
+        return $this->store;
+    }
+
+    public function setStore(?Store $store = null): self
+    {
+        $this->store = $store;
 
         return $this;
     }

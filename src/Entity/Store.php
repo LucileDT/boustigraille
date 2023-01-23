@@ -27,6 +27,10 @@ class Store
      */
     private $sortNumber;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Ingredient::class, mappedBy="store", cascade={"persist"})
+     */
+    private $ingredients;
 
     public function getId(): ?int
     {

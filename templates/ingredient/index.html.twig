@@ -93,7 +93,11 @@
                                     {{ ingredient.brand }}
                                 {% endif %}
                             </td>
-                            <td class="text-center align-middle">{{ ingredient.shop }}</td>
+                            <td class="text-center align-middle">
+                                {% if ingredient.store is not null %}
+                                    {{ ingredient.store.label }}
+                                {% endif %}
+                            </td>
                             <td class="text-center align-middle">{{ ingredient.measureType }}</td>
                             <td class="text-center align-middle">
                                 {% if ingredient.portionSize is not empty %}
