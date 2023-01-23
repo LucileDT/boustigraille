@@ -53,12 +53,48 @@
                                             {% if grocery.isMeasuredByUnit %}
                                                 ({{ grocery.quantity }} {{ grocery.measureType }})
                                             {% endif %}
-                                            <a href="{{ path('ingredient_show', {'id': grocery.id}) }}"
-                                                target="_blank"
-                                                class="text-muted">
-                                                <small>Voir la fiche ingrédient</small>
+                                            <a
+                                                    class="btn btn-sm btn-info"
+                                                    href="{{ path('ingredient_show', {'id': grocery.id}) }}"
+                                                    target="_blank"
+                                                    data-bs-toggle="tooltip"
+                                                    title="Voir la fiche ingrédient"
+                                            >
+                                                <i class="ri-eye-fill"></i>
                                             </a>
+                                            <button
+                                                    type="button"
+                                                    class="btn btn-sm btn-secondary"
+                                                    title="Voir les détails"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#details-{{ grocery.id }}"
+                                            >
+                                                <i class="ri-question-fill"></i>
+                                            </button>
                                         </label>
+                                        <div class="collapse" id="details-{{ grocery.id }}">
+                                            <div class="card card-body border-0 mt-2">
+                                                <span><b>Marque :</b> {{ grocery.brand ?: 'générique' }}</span>
+                                                <b>Quantités :</b>
+                                                <ul>
+                                                    {% for recipe in grocery.recipes %}
+                                                        <li>
+                                                            <a href="{{ path('recipe_show', { 'id': recipe.id }) }}">
+                                                                {{ recipe.mealCount }} * {{ recipe.label }} :
+                                                            </a>
+                                                            {% if recipe.isMeasuredByUnit %}
+                                                                {{ recipe.unitQuantity }}
+                                                            {% else %}
+                                                                {{ recipe.quantity }} {{ recipe.measureType }}
+                                                            {% endif %}
+                                                            {% if recipe.isMeasuredByUnit %}
+                                                                ({{ recipe.quantity }} {{ recipe.measureType }})
+                                                            {% endif %}
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             {% endfor %}
@@ -78,12 +114,48 @@
                                                 {% if grocery.isMeasuredByUnit %}
                                                     ({{ grocery.quantity }} {{ grocery.measureType }})
                                                 {% endif %}
-                                                <a href="{{ path('ingredient_show', {'id': grocery.id}) }}"
-                                                    target="_blank"
-                                                    class="text-muted">
-                                                    <small>Voir la fiche ingrédient</small>
+                                                <a
+                                                        class="btn btn-sm btn-info"
+                                                        href="{{ path('ingredient_show', {'id': grocery.id}) }}"
+                                                        target="_blank"
+                                                        data-bs-toggle="tooltip"
+                                                        title="Voir la fiche ingrédient"
+                                                >
+                                                    <i class="ri-eye-fill"></i>
                                                 </a>
+                                                <button
+                                                        type="button"
+                                                        class="btn btn-sm btn-secondary"
+                                                        title="Voir les détails"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#details-{{ grocery.id }}"
+                                                >
+                                                    <i class="ri-question-fill"></i>
+                                                </button>
                                             </label>
+                                            <div class="collapse" id="details-{{ grocery.id }}">
+                                                <div class="card card-body border-0 mt-2">
+                                                    <span><b>Marque :</b> {{ grocery.brand ?: 'générique' }}</span>
+                                                    <b>Quantités :</b>
+                                                    <ul>
+                                                        {% for recipe in grocery.recipes %}
+                                                            <li>
+                                                                <a href="{{ path('recipe_show', { 'id': recipe.id }) }}">
+                                                                    {{ recipe.mealCount }} * {{ recipe.label }} :
+                                                                </a>
+                                                                {% if recipe.isMeasuredByUnit %}
+                                                                    {{ recipe.unitQuantity }}
+                                                                {% else %}
+                                                                    {{ recipe.quantity }} {{ recipe.measureType }}
+                                                                {% endif %}
+                                                                {% if recipe.isMeasuredByUnit %}
+                                                                    ({{ recipe.quantity }} {{ recipe.measureType }})
+                                                                {% endif %}
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 {% endfor %}

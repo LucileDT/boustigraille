@@ -59,6 +59,7 @@ class GroceryListService
                     $item = [
                         'id' => $ingredientId,
                         'label' => $ingredient->getLabel(),
+                        'brand' => $ingredient->getBrand(),
                         'quantity' => $quantity,
                         'unitQuantity' => $unitQuantity,
                         'unitSize' => $unitSize,
@@ -88,6 +89,30 @@ class GroceryListService
                             $groceryList[$storeId]['checkNotNeeded'][$ingredientId]['quantity'] += $quantity;
                             $groceryList[$storeId]['checkNotNeeded'][$ingredientId]['unitQuantity'] += $unitQuantity;
                         }
+                    }
+
+                    if ($ingredient->hasStockCheckNeededBeforeBuying()) {
+                        $groceryList[$storeId]['checkNeeded'][$ingredientId]['recipes'][$ingredientQuantityForRecipe->getRecipe()->getId()] = [
+                            'id' => $ingredientQuantityForRecipe->getRecipe()->getId(),
+                            'label' => $ingredientQuantityForRecipe->getRecipe()->getName(),
+                            'mealCount' => $mealQuantity,
+                            'quantity' => $quantity,
+                            'unitQuantity' => $unitQuantity,
+                            'unitSize' => $unitSize,
+                            'measureType' => $ingredient->getMeasureType(),
+                            'isMeasuredByUnit' => $isMeasuredByUnit,
+                        ];
+                    } else {
+                        $groceryList[$storeId]['checkNotNeeded'][$ingredientId]['recipes'][$ingredientQuantityForRecipe->getRecipe()->getId()] = [
+                            'id' => $ingredientQuantityForRecipe->getRecipe()->getId(),
+                            'label' => $ingredientQuantityForRecipe->getRecipe()->getName(),
+                            'mealCount' => $mealQuantity,
+                            'quantity' => $quantity,
+                            'unitQuantity' => $unitQuantity,
+                            'unitSize' => $unitSize,
+                            'measureType' => $ingredient->getMeasureType(),
+                            'isMeasuredByUnit' => $isMeasuredByUnit,
+                        ];
                     }
                 }
             }
