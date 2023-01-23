@@ -23,7 +23,6 @@ class GroceryListController extends AbstractController
         $groceryListForm->handleRequest($request);
 
         if ($groceryListForm->isSubmitted() && $groceryListForm->isValid()) {
-
             $mealLists = $groceryListFDO->getMealLists();
             $groceryList = GroceryListService::generateFormattedGroceryList($mealLists);
 
