@@ -30,29 +30,42 @@
     </div>
     <div class="row">
         <div class="col">
-            <form id="groceries">
-                {% for grocery in grocery_list %}
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="grocery-check-{{ grocery.id }}">
-                        <label class="custom-control-label" for="grocery-check-{{ grocery.id }}">
-                            {% if grocery.isMeasuredByUnit %}
-                                {{ grocery.unitQuantity }}
-                            {% else %}
-                                {{ grocery.quantity }} {{ grocery.measureType }} de
-                            {% endif %}
-                            {{ grocery.label }}
-                            {% if grocery.isMeasuredByUnit %}
-                                ({{ grocery.quantity }} {{ grocery.measureType }})
-                            {% endif %}
-                            <a href="{{ path('ingredient_show', {'id': grocery.id}) }}"
-                                target="_blank"
-                                class="text-muted">
-                                <small>Voir la fiche ingrédient</small>
-                            </a>
-                        </label>
+            {% for store in grocery_list %}
+                <form>
+                    <div class="card border-0 mb-4">
+                        <div class="card-body bg-light">
+                            {% for grocery in store %}
+                                {% if loop.first and grocery.store.label is not empty %}
+                                    <h5 class="card-title mb-2">
+                                        {{ grocery.store.label }}
+                                    </h5>
+                                {% endif %}
+                                <div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="grocery-check-{{ grocery.id }}">
+                                        <label class="custom-control-label" for="grocery-check-{{ grocery.id }}">
+                                            {% if grocery.isMeasuredByUnit %}
+                                                {{ grocery.unitQuantity }}
+                                            {% else %}
+                                                {{ grocery.quantity }} {{ grocery.measureType }} de
+                                            {% endif %}
+                                            {{ grocery.label }}
+                                            {% if grocery.isMeasuredByUnit %}
+                                                ({{ grocery.quantity }} {{ grocery.measureType }})
+                                            {% endif %}
+                                            <a href="{{ path('ingredient_show', {'id': grocery.id}) }}"
+                                                target="_blank"
+                                                class="text-muted">
+                                                <small>Voir la fiche ingrédient</small>
+                                            </a>
+                                        </label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
                     </div>
-                {% endfor %}
-            </form>
+                </form>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

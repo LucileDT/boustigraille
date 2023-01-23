@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class GroceryListFDO
 {
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|MealList[]
      */
     private $mealLists;
 
@@ -20,7 +20,7 @@ class GroceryListFDO
     /**
      * Get the value of mealLists
      *
-     * @return ArrayCollection
+     * @return ArrayCollection|MealList[]
      */
     public function getMealLists()
     {

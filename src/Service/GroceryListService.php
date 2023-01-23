@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\MealList;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -12,7 +13,7 @@ class GroceryListService
     /**
      * Return a formatted grocery list generated from meal lists.
      *
-     * @param ArrayCollection $mealLists
+     * @param ArrayCollection|MealList[] $mealLists
      *
      * @return array Formatted grocery list
      */
@@ -43,8 +44,13 @@ class GroceryListService
                         $unitQuantity = null;
                     }
 
-                    if (!array_key_exists($ingredientId, $groceryList)) {
-                        $groceryList[$ingredientId] = [
+                    $storeId = empty($ingredient->getStore()) ? 0 : $ingredient->getStore()->getSortNumber();
+
+                    if (!array_key_exists($storeId, $groceryList)) {
+                        $groceryList[$storeId] = [];
+                    }
+                    if (!array_key_exists($ingredientId, $groceryList[$storeId])) {
+                        $groceryList[$storeId][$ingredientId] = [
                             'id' => $ingredientId,
                             'label' => $ingredient->getLabel(),
                             'quantity' => $quantity,
@@ -52,10 +58,14 @@ class GroceryListService
                             'unitSize' => $unitSize,
                             'measureType' => $ingredient->getMeasureType(),
                             'isMeasuredByUnit' => $isMeasuredByUnit,
+                            'store' => [
+                                'id' => empty($ingredient->getStore()) ? null : $ingredient->getStore()->getId(),
+                                'label' => empty($ingredient->getStore()) ? null : $ingredient->getStore()->getLabel(),
+                            ],
                         ];
                     } else {
-                        $groceryList[$ingredientId]['quantity'] += $quantity;
-                        $groceryList[$ingredientId]['unitQuantity'] += $unitQuantity;
+                        $groceryList[$storeId][$ingredientId]['quantity'] += $quantity;
+                        $groceryList[$storeId][$ingredientId]['unitQuantity'] += $unitQuantity;
                     }
                 }
             }
