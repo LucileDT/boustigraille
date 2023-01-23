@@ -27,10 +27,13 @@ final class Version20230122120159 extends AbstractMigration
         $this->addSql('INSERT INTO store (id, label, sort_number) VALUES (nextval(\'store_id_seq\'), \'Casino\', 3)');
         $this->addSql('INSERT INTO store (id, label, sort_number) VALUES (nextval(\'store_id_seq\'), \'Monoprix\', 4)');
         $this->addSql('INSERT INTO store (id, label, sort_number) VALUES (nextval(\'store_id_seq\'), \'Aldi\', 5)');
-        $this->addSql('INSERT INTO store (id, label, sort_number) VALUES (nextval(\'store_id_seq\'), \'Wei Son\', 7)');
+        $this->addSql('INSERT INTO store (id, label, sort_number) VALUES (nextval(\'store_id_seq\'), \'Epicerie asiatique\', 7)');
         $this->addSql('INSERT INTO store (id, label, sort_number) VALUES (nextval(\'store_id_seq\'), \'Picard\', 8)');
         $this->addSql('INSERT INTO store (id, label, sort_number) VALUES (nextval(\'store_id_seq\'), \'Thiriet\', 9)');
         $this->addSql('INSERT INTO store (id, label, sort_number) VALUES (nextval(\'store_id_seq\'), \'Auchan\', 10)');
+        $this->addSql('INSERT INTO store (id, label, sort_number) VALUES (nextval(\'store_id_seq\'), \'Leader Price\', 11)');
+        $this->addSql('INSERT INTO store (id, label, sort_number) VALUES (nextval(\'store_id_seq\'), \'Valrhona\', 12)');
+        $this->addSql('INSERT INTO store (id, label, sort_number) VALUES (nextval(\'store_id_seq\'), \'Leclerc\', 13)');
     }
 
     public function down(Schema $schema): void
