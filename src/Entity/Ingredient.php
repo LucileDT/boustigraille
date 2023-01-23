@@ -249,7 +249,7 @@ class Ingredient
         return $this;
     }
 
-    public function isHasStockCheckNeededBeforeBuying(): ?bool
+    public function hasStockCheckNeededBeforeBuying(): ?bool
     {
         return $this->hasStockCheckNeededBeforeBuying;
     }

@@ -34,12 +34,12 @@
                 <form>
                     <div class="card border-0 mb-4">
                         <div class="card-body bg-light">
-                            {% for grocery in store %}
-                                {% if loop.first and grocery.store.label is not empty %}
-                                    <h5 class="card-title mb-2">
-                                        {{ grocery.store.label }}
-                                    </h5>
-                                {% endif %}
+                            {% if store.store.label is not empty %}
+                                <h5 class="card-title mb-2">
+                                    {{ store.store.label }}
+                                </h5>
+                            {% endif %}
+                            {% for grocery in store.checkNotNeeded %}
                                 <div>
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" id="grocery-check-{{ grocery.id }}">
@@ -62,6 +62,32 @@
                                     </div>
                                 </div>
                             {% endfor %}
+                            {% if store.checkNeeded | length > 0 %}
+                                <h6 class="mt-3 mb-1 fst-italic">Il faut vérifier s'il reste :</h6>
+                                {% for grocery in store.checkNeeded %}
+                                    <div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="grocery-check-{{ grocery.id }}">
+                                            <label class="custom-control-label" for="grocery-check-{{ grocery.id }}">
+                                                {% if grocery.isMeasuredByUnit %}
+                                                    {{ grocery.unitQuantity }}
+                                                {% else %}
+                                                    {{ grocery.quantity }} {{ grocery.measureType }} de
+                                                {% endif %}
+                                                {{ grocery.label }}
+                                                {% if grocery.isMeasuredByUnit %}
+                                                    ({{ grocery.quantity }} {{ grocery.measureType }})
+                                                {% endif %}
+                                                <a href="{{ path('ingredient_show', {'id': grocery.id}) }}"
+                                                    target="_blank"
+                                                    class="text-muted">
+                                                    <small>Voir la fiche ingrédient</small>
+                                                </a>
+                                            </label>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
                         </div>
                     </div>
                 </form>

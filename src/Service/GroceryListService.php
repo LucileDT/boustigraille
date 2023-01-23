@@ -47,25 +47,47 @@ class GroceryListService
                     $storeId = empty($ingredient->getStore()) ? 0 : $ingredient->getStore()->getSortNumber();
 
                     if (!array_key_exists($storeId, $groceryList)) {
-                        $groceryList[$storeId] = [];
-                    }
-                    if (!array_key_exists($ingredientId, $groceryList[$storeId])) {
-                        $groceryList[$storeId][$ingredientId] = [
-                            'id' => $ingredientId,
-                            'label' => $ingredient->getLabel(),
-                            'quantity' => $quantity,
-                            'unitQuantity' => $unitQuantity,
-                            'unitSize' => $unitSize,
-                            'measureType' => $ingredient->getMeasureType(),
-                            'isMeasuredByUnit' => $isMeasuredByUnit,
+                        $groceryList[$storeId] = [
                             'store' => [
                                 'id' => empty($ingredient->getStore()) ? null : $ingredient->getStore()->getId(),
                                 'label' => empty($ingredient->getStore()) ? null : $ingredient->getStore()->getLabel(),
                             ],
+                            'checkNotNeeded' => [],
+                            'checkNeeded' => [],
                         ];
+                    }
+                    $item = [
+                        'id' => $ingredientId,
+                        'label' => $ingredient->getLabel(),
+                        'quantity' => $quantity,
+                        'unitQuantity' => $unitQuantity,
+                        'unitSize' => $unitSize,
+                        'measureType' => $ingredient->getMeasureType(),
+                        'isMeasuredByUnit' => $isMeasuredByUnit,
+                        'store' => [
+                            'id' => empty($ingredient->getStore()) ? null : $ingredient->getStore()->getId(),
+                            'label' => empty($ingredient->getStore()) ? null : $ingredient->getStore()->getLabel(),
+                        ],
+                    ];
+
+                    if (
+                        ($ingredient->hasStockCheckNeededBeforeBuying() and !array_key_exists($ingredientId, $groceryList[$storeId]['checkNeeded']))
+                        ||
+                        (!$ingredient->hasStockCheckNeededBeforeBuying() and !array_key_exists($ingredientId, $groceryList[$storeId]['checkNotNeeded']))
+                    ) {
+                        if ($ingredient->hasStockCheckNeededBeforeBuying()) {
+                            $groceryList[$storeId]['checkNeeded'][$ingredientId] = $item;
+                        } else {
+                            $groceryList[$storeId]['checkNotNeeded'][$ingredientId] = $item;
+                        }
                     } else {
-                        $groceryList[$storeId][$ingredientId]['quantity'] += $quantity;
-                        $groceryList[$storeId][$ingredientId]['unitQuantity'] += $unitQuantity;
+                        if ($ingredient->hasStockCheckNeededBeforeBuying()) {
+                            $groceryList[$storeId]['checkNeeded'][$ingredientId]['quantity'] += $quantity;
+                            $groceryList[$storeId]['checkNeeded'][$ingredientId]['unitQuantity'] += $unitQuantity;
+                        } else {
+                            $groceryList[$storeId]['checkNotNeeded'][$ingredientId]['quantity'] += $quantity;
+                            $groceryList[$storeId]['checkNotNeeded'][$ingredientId]['unitQuantity'] += $unitQuantity;
+                        }
                     }
                 }
             }
