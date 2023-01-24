@@ -52,7 +52,6 @@
 /.web-server-pid
 
 # Configuration files
-/.env
 /.env.test
 /.env.local
 /.env.local.php
