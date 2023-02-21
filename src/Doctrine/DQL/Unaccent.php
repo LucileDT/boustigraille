@@ -16,9 +16,9 @@ class Unaccent extends FunctionNode
 {
     private $string;
 
-    public function getSql(\Doctrine\ORM\Query\SqlWalker $sqlWalker)
+    public function getSql(\Doctrine\ORM\Query\SqlWalker $sqlWalker): string
     {
-        return 'UNACCENT(' . $this->string->dispatch($sqlWalker) .")";
+        return 'UNACCENT(' . $this->string->dispatch($sqlWalker) . ')';
     }
 
     public function parse(\Doctrine\ORM\Query\Parser $parser)
