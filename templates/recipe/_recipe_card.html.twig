@@ -31,7 +31,8 @@
         <h1 class="title">
             {{ recipe.name }}
         </h1>
-        {% if recipe.author.doShowUsernameOnRecipe or app.user == recipe.author or app.user.doFollowUsernameOnRecipe(recipe.author) %}
+
+        {% if recipe.author.doShowUsernameOnRecipe or (app.user is not null and app.user == recipe.author) or (app.user is not null and app.user.doFollowUsernameOnRecipe(recipe.author)) %}
             <p class="description">
                 Par {{ recipe.author.username }}
             </p>
