@@ -314,7 +314,7 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
      *
      * @return string[]
      */
-    public function getRoles()
+    public function getRoles(): array
     {
         $roles = [];
         foreach ($this->responsibilities as $responsibility)
