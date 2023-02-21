@@ -78,6 +78,9 @@
 # PHPStorm config folder
 /.idea
 
+# yarn cache and conf files
+.yarn/
+.yarnrc.yml
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
