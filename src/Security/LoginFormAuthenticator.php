@@ -57,7 +57,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         $session = $request->getSession();
         $session->getFlashBag()->add(
             'info',
-            sprintf('Bienvenue %s.', $$user->getUsername())
+            sprintf('Bienvenue %s.', $user->getUsername())
         );
 
         return new RedirectResponse($this->urlGenerator->generate(self::HOME_ROUTE));
