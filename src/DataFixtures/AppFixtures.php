@@ -9,15 +9,14 @@ use App\Entity\Responsibility;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
     private $encoder;
 
-    public function __construct(UserPasswordEncoderInterface $encoder)
+    public function __construct(private UserPasswordHasherInterface $hasher)
     {
-        $this->encoder = $encoder;
     }
 
     /**
@@ -32,14 +31,14 @@ class AppFixtures extends Fixture
         // Admin User
         $admin = new User();
         $admin->setUsername('admin');
-        $password = $this->encoder->encodePassword($admin, 'a');
+        $password = $this->hasher->hashPassword($admin, 'a');
         $admin->setPassword($password);
         $admin->addResponsibility($roleAdmin);
 
         // Base user
         $user = new User();
         $user->setUsername('base_user');
-        $password = $this->encoder->encodePassword($user, '-+');
+        $password = $this->hasher->hashPassword($user, '-+');
         $user->setPassword($password);
 
         $manager->persist($user);
