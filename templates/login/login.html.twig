@@ -37,7 +37,6 @@
                     >
                 </div>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                <input type="hidden" name="_target_path" value="{{ app.request.headers.get('referer') }}"/>
                 <button
                     type="submit"
                     class="btn btn-primary center-block col-xl-4 col-lg-5 col-12"

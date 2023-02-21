@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,42 +13,38 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="app_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, UserRepository $userRepository): Response
     {
         $currentUser = $this->getUser();
 
         $lastError = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        if (is_null($currentUser))
+        if (!is_null($currentUser))
         {
-            if (!is_null($lastError))
+            return $this->redirectToRoute('home');
+        }
+
+        if (!is_null($lastError))
+        {
+            if (is_a($lastError, 'Symfony\Component\Security\Core\Exception\BadCredentialsException'))
             {
-                if (is_a($lastError, 'Symfony\Component\Security\Core\Exception\BadCredentialsException'))
+                $this->addFlash('danger', 'Username ou mot de passe invalide.');
+            }
+            else
+            {
+                if ($lastError->getMessage() == "An exception occurred in driver: SQLSTATE[HY000] [2002] Connection refused")
                 {
-                    $this->addFlash('danger', 'Username ou mot de passe invalide.');
+                    $this->addFlash('danger', 'Impossibilité de se connecter à la base de données.');
                 }
                 else
                 {
-                    if ($lastError->getMessage() == "An exception occurred in driver: SQLSTATE[HY000] [2002] Connection refused")
-                    {
-                        $this->addFlash('danger', 'Impossibilité de se connecter à la base de données.');
-                    }
-                    else
-                    {
-                        $this->addFlash('danger', $lastError->getMessage());
-                    }
+                    $this->addFlash('danger', $lastError->getMessage());
                 }
             }
-
-            $response = $this->render('login/login.html.twig', []);
-        }
-        else
-        {
-            $response = $this->redirectToRoute('home');
         }
 
-        return $response;
+        return $this->render('login/login.html.twig', []);
     }
 
     /**

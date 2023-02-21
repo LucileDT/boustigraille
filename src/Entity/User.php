@@ -1,7 +1,6 @@
 <?php
 namespace App\Entity;
 
-use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -9,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * User is a class used to connect to the application. It contains the basic
@@ -22,7 +22,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *      message="Ce nom d'utilisateurice n'est pas disponible."
  * )
  */
-class User implements UserInterface, \JsonSerializable
+class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUserInterface
 {
     /**
      * @var int
@@ -177,6 +177,11 @@ class User implements UserInterface, \JsonSerializable
         return $this->username;
     }
 
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
+    }
+
     /**
      * Get plainPassword
      *
@@ -218,7 +223,7 @@ class User implements UserInterface, \JsonSerializable
      *
      * @return string
      */
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
