@@ -9,22 +9,14 @@ use App\Form\IngredientFromOpenFoodFactsType;
 use App\FormDataObject\IngredientFromOpenFoodFactsFDO;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Home controller
  */
 class HomeController extends AbstractController
 {
-    /**
-     * @Route("/", name="home")
-     * @param Request $request The request.
-     * @return Response
-     * @Security("not is_anonymous()")
-     */
-    public function indexAction()
+    #[Route('/', name: 'home', methods: ['GET'])]
+    public function index()
     {
         $ingredientFromOpenFoodFactsFDO = new IngredientFromOpenFoodFactsFDO();
         $formNewIngredient = $this->createForm(

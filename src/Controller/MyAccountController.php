@@ -17,24 +17,18 @@ use App\Repository\FollowUsernameOnRecipeRepository;
 use App\Repository\NotificationCategoryRepository;
 use App\Repository\NotificationReceiptRepository;
 use App\Repository\UserRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/my-account")
- */
+#[Route('/my-account', name: 'my_account_')]
 class MyAccountController extends AbstractController
 {
-    /**
-     * @Route("/", name="my_account_index", methods={"GET"})
-     * @Security("not is_anonymous()")
-     */
+    #[Route('/', name: 'index', methods: ['GET'])]
     public function index(
-        UserRepository $userRepository,
         FollowMealListRepository $followMealListRepository,
         FollowUsernameOnRecipeRepository $followUsernameOnRecipeRepository
     ): Response
@@ -49,12 +43,14 @@ class MyAccountController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/edit-nutritional-data", name="my_account_edit_nutritional_data", methods={"GET","POST"})
-     * @Security("not is_anonymous()")
-     */
-    public function editNutritionalData(Request $request, UserNutritionalDataFDO $userNutritionalDataFDO): Response
+    #[Route('/edit-nutritional-data', name: 'edit_nutritional_data', methods: ['GET', 'POST'])]
+    public function editNutritionalData(
+        Request $request,
+        UserNutritionalDataFDO $userNutritionalDataFDO,
+        EntityManagerInterface $entityManager
+    ): Response
     {
+        /** @var \App\Entity\User $currentUser */
         $currentUser = $this->getUser();
         $userNutritionalDataFDO->setProteins($currentUser->getProteins());
         $userNutritionalDataFDO->setCarbohydrates($currentUser->getCarbohydrates());
@@ -70,7 +66,6 @@ class MyAccountController extends AbstractController
             $currentUser->setFat($userNutritionalDataFDO->getFat());
             $currentUser->setEnergy($userNutritionalDataFDO->getEnergy());
 
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($currentUser);
             $entityManager->flush();
 
@@ -83,12 +78,14 @@ class MyAccountController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/edit-password", name="my_account_edit_password", methods={"GET","POST"})
-     * @Security("not is_anonymous()")
-     */
-    public function editPassword(UserPasswordHasherInterface $passwordHasher, Request $request): Response
+    #[Route('/edit-password', name: 'edit_password', methods: ['GET', 'POST'])]
+    public function editPassword(
+        Request $request,
+        UserPasswordHasherInterface $passwordHasher,
+        EntityManagerInterface $entityManager
+    ): Response
     {
+        /** @var \App\Entity\User $user */
         $user = $this->getUser();
         $form = $this->createForm(NewPasswordType::class);
         $form->handleRequest($request);
@@ -99,7 +96,8 @@ class MyAccountController extends AbstractController
                 $hashedNewPassword = $passwordHasher->hashPassword($user, $formData['new_password']);
                 $user->setPassword($hashedNewPassword);
             }
-            $this->getDoctrine()->getManager()->flush();
+
+            $entityManager->flush();
 
             return $this->redirectToRoute('my_account_index');
         }
@@ -110,18 +108,17 @@ class MyAccountController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/edit-privacy-settings", name="my_account_edit_privacy_settings", methods={"GET","POST"})
-     * @Security("not is_anonymous()")
-     */
+    #[Route('/edit-privacy-settings', name: 'edit_privacy_settings', methods: ['GET', 'POST'])]
     public function editPrivacySettings(
         UserRepository $userRepository,
         NotificationCategoryRepository $notificationCategoryRepository,
         FollowMealListRepository $followMealListRepository,
         FollowUsernameOnRecipeRepository $followUsernameOnRecipeRepository,
-        Request $request
+        Request $request,
+        EntityManagerInterface $entityManager
     ): Response
     {
+        /** @var \App\Entity\User $user */
         $user = $this->getUser();
         $privacyForm = $this->createForm(PrivacySettingsType::class, $user);
         $privacyForm->handleRequest($request);
@@ -130,7 +127,7 @@ class MyAccountController extends AbstractController
         $sentUsernameOnRecipeFollowPropositions = $followUsernameOnRecipeRepository->findBy(['followed' => $user]);
 
         if ($privacyForm->isSubmitted() && $privacyForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             return $this->redirectToRoute('my_account_index');
         }
 
@@ -167,7 +164,6 @@ class MyAccountController extends AbstractController
                     $notificationReceipt->setNotification($notification);
                     $notificationReceipt->setRecipient($askedUser);
 
-                    $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->persist($notification);
                     $entityManager->persist($followProposition);
                     $entityManager->persist($notificationReceipt);
@@ -175,7 +171,7 @@ class MyAccountController extends AbstractController
                 }
             }
 
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             return $this->redirectToRoute('my_account_index');
         }
 
@@ -212,7 +208,6 @@ class MyAccountController extends AbstractController
                     $notificationReceipt->setNotification($notification);
                     $notificationReceipt->setRecipient($askedUser);
 
-                    $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->persist($notification);
                     $entityManager->persist($followProposition);
                     $entityManager->persist($notificationReceipt);
@@ -220,10 +215,9 @@ class MyAccountController extends AbstractController
                 }
             }
 
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             return $this->redirectToRoute('my_account_index');
         }
-
 
         return $this->render('my_account/privacy.html.twig', [
             'user' => $user,
@@ -235,13 +229,11 @@ class MyAccountController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/notifications", name="my_account_notifications", methods={"GET"})
-     * @Security("not is_anonymous()")
-     */
+    #[Route('/notifications', name: 'notifications', methods: ['GET'])]
     public function notifications(
         Request $request,
-        NotificationReceiptRepository $notificationReceiptRepository
+        NotificationReceiptRepository $notificationReceiptRepository,
+        EntityManagerInterface $entityManager
     ): Response
     {
         $user = $this->getUser();
@@ -251,7 +243,7 @@ class MyAccountController extends AbstractController
         $readNotificationReceipts = $notificationReceiptRepository->findReadByUser($user);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             return $this->redirectToRoute('my_account_index');
         }
 

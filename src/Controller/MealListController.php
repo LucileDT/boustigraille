@@ -8,17 +8,15 @@ use App\Form\MealListType;
 use App\FormDataObject\GroceryListFDO;
 use App\Repository\MealListRepository;
 use App\Repository\RecipeRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/meal')]
+#[Route('/meal', name: 'meal_list_')]
 class MealListController extends AbstractController
 {
-    #[Route('/list', name: 'meal_list_index', methods: ['GET'])]
-    #[Security('not is_anonymous()')]
+    #[Route('/list', name: 'index', methods: ['GET'])]
     public function index(MealListRepository $mealListRepository): Response
     {
         $user = $this->getUser();
@@ -35,8 +33,7 @@ class MealListController extends AbstractController
         ]);
     }
 
-    #[Route('/new/{fromMealList}', name: 'meal_list_new', methods: ['GET', 'POST'])]
-    #[Security('not is_anonymous()')]
+    #[Route('/new/{fromMealList?}', name: 'new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
         MealListRepository $mealListRepository,
@@ -69,7 +66,7 @@ class MealListController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'meal_list_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'show', methods: ['GET'])]
     public function show(MealList $mealList): Response
     {
         return $this->render('meal_list/show.html.twig', [
@@ -77,8 +74,7 @@ class MealListController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'meal_list_edit', methods: ['GET', 'POST'])]
-    #[Security('not is_anonymous()')]
+    #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         Request $request,
         MealList $mealList,
@@ -102,8 +98,7 @@ class MealListController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'meal_list_delete', methods: ['POST'])]
-    #[Security('not is_anonymous()')]
+    #[Route('/{id}', name: 'delete', methods: ['POST'])]
     public function delete(Request $request, MealList $mealList, MealListRepository $mealListRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$mealList->getId(), $request->request->get('_token'))) {

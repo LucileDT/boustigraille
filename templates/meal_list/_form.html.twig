@@ -46,7 +46,7 @@
 {% import _self as renderMealQuantityTypeMacro %}
 
 {% if app.user is not null %}
-    <div id="recipes-list-data" data-url="{{ path('api_recipes_by_favorite') }}"></div>
+    <div id="recipes-list-data" data-url="{{ path('api_recipe_by_favorite') }}"></div>
     {{ form_start(form) }}
         <div class="mb-3">
             {{ form_label(form.personName) }}
@@ -92,7 +92,7 @@
         <div
             id="suggested-recipes"
             class="mb-4 d-flex justify-content-between flex-wrap"
-            data-url="{{ path('api_suggested_recipes') }}"
+            data-url="{{ path('api_recipe_suggested') }}"
         >
             <div id="dummy-recipe" class="d-none">
                 {{ include('recipe/_recipe_card.html.twig', {'recipe': dummy_recipe}) }}

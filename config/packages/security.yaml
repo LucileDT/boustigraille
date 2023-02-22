@@ -1,6 +1,4 @@
 security:
-    enable_authenticator_manager: true
-
     providers:
         users:
             entity:
@@ -29,10 +27,10 @@ security:
     access_control:
         # allow unauthenticated users to access specific pages
         - { path: ^/login, roles: [PUBLIC_ACCESS] }
-        - { path: '^/ingredient', roles: [PUBLIC_ACCESS] }
+        - { path: ^/ingredient, roles: [PUBLIC_ACCESS] }
         - { path: ^/recipe, roles: [PUBLIC_ACCESS] }
-        #  require authentication for all routes
-        - { path: '^/', roles: [IS_AUTHENTICATED_FULLY] }
+        #  require authentication for all routes by default
+        - { path: ^/, roles: [IS_AUTHENTICATED_FULLY] }
 
 when@test:
     security:
