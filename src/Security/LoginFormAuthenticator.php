@@ -50,7 +50,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        /** @var Utilisateur */
+        /** @var \App\Entity\User $user */
         $user = $token->getUser();
 
         /** @var Session */
