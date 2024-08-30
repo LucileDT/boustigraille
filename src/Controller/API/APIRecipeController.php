@@ -9,14 +9,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/api/recipe")
- */
+#[Route(path: '/api/recipe')]
 class APIRecipeController extends AbstractController
 {
-    /**
-     * @Route("/toggle-favorite/{id}", name="api_recipe_toggle_favorite", methods={"POST"})
-     */
+    #[Route(path: '/toggle-favorite/{id}', name: 'api_recipe_toggle_favorite', methods: ['POST'])]
     public function toggleFavorite(Request $request, Recipe $recipe): JsonResponse
     {
         $connectedUser = $this->getUser();
@@ -38,9 +34,7 @@ class APIRecipeController extends AbstractController
         return new JsonResponse(['toggled']);
     }
 
-    /**
-     * @Route("/recipe/by-favourite", name="api_recipes_by_favorite", methods={"GET"})
-     */
+    #[Route(path: '/recipe/by-favourite', name: 'api_recipes_by_favorite', methods: ['GET'])]
     public function getRecipesGroupedByFavorite(Request $request, RecipeRepository $recipeRepository): JsonResponse
     {
         $connectedUser = $this->getUser();
@@ -62,9 +56,7 @@ class APIRecipeController extends AbstractController
         return new JsonResponse($groupedData);
     }
 
-    /**
-     * @Route("/suggested", name="api_suggested_recipes", methods={"GET"})
-     */
+    #[Route(path: '/suggested', name: 'api_suggested_recipes', methods: ['GET'])]
     public function getSuggestedRecipes(Request $request, RecipeRepository $recipeRepository): JsonResponse
     {
         $connectedUser = $this->getUser();

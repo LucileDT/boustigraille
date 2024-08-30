@@ -7,47 +7,31 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=NotificationRepository::class)
- */
+#[ORM\Entity(repositoryClass: NotificationRepository::class)]
 class Notification
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $message;
 
-    /**
-     * @ORM\Column(type="date")
-     */
+    #[ORM\Column(type: 'date')]
     private $dateSent;
 
-    /**
-     * @ORM\OneToMany(targetEntity=NotificationReceipt::class, mappedBy="notification", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: NotificationReceipt::class, mappedBy: 'notification', orphanRemoval: true)]
     private $notificationReceipts;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sentNotifications")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'sentNotifications')]
     private $sender;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=NotificationCategory::class, inversedBy="notifications")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: NotificationCategory::class, inversedBy: 'notifications')]
     private $category;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Action::class, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: Action::class, cascade: ['persist', 'remove'])]
     private $action;
 
     public function __construct()

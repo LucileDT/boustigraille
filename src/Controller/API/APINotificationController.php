@@ -10,15 +10,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/api/notification")
- */
+#[Route(path: '/api/notification')]
 class APINotificationController extends AbstractController
 {
-    /**
-     * @Route("/has-unread", name="api_unread_notification", methods={"GET"})
-     * @Security("not is_anonymous()")
-     */
+    #[Route(path: '/has-unread', name: 'api_unread_notification', methods: ['GET'])]
+    #[Security('not is_anonymous()')]
     public function show(Request $request, NotificationReceiptRepository $notificationReceiptRepository): JsonResponse
     {
         $connectedUser = $this->getUser();
@@ -33,10 +29,8 @@ class APINotificationController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/toggle-read/{id}", name="api_notification_toggle_read", methods={"POST"})
-     * @Security("not is_anonymous()")
-     */
+    #[Route(path: '/toggle-read/{id}', name: 'api_notification_toggle_read', methods: ['POST'])]
+    #[Security('not is_anonymous()')]
     public function toggleRead(Request $request, NotificationReceipt $notificationReceipt): JsonResponse
     {
         $connectedUser = $this->getUser();

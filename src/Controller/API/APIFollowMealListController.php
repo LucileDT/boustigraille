@@ -3,20 +3,19 @@
 namespace App\Controller\API;
 
 use App\Entity\NotificationReceipt;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/api/follow-meal-list")
- */
+#[Route(path: '/api/follow-meal-list')]
 class APIFollowMealListController extends AbstractController
 {
     /**
-     * @Route("/toggle-follow/{id}", name="api_follow_meal_list_toggle_follow", methods={"POST"})
-     * @throws \Exception
+     * @throws Exception
      */
+    #[Route(path: '/toggle-follow/{id}', name: 'api_follow_meal_list_toggle_follow', methods: ['POST'])]
     public function toggleFollow(Request $request, NotificationReceipt $notificationReceipt): JsonResponse
     {
         if (!$this->isAuthorized($notificationReceipt)) {
@@ -39,7 +38,7 @@ class APIFollowMealListController extends AbstractController
         }
         else
         {
-            throw new \Exception('A follow proposition can\'t be accepted and refused at the same time.');
+            throw new Exception('A follow proposition can\'t be accepted and refused at the same time.');
         }
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($followMealList);
@@ -48,9 +47,7 @@ class APIFollowMealListController extends AbstractController
         return new JsonResponse(['toggled']);
     }
 
-    /**
-     * @Route("/accept-follow/{id}", name="api_follow_meal_list_accept_follow", methods={"POST"})
-     */
+    #[Route(path: '/accept-follow/{id}', name: 'api_follow_meal_list_accept_follow', methods: ['POST'])]
     public function acceptFollow(Request $request, NotificationReceipt $notificationReceipt): JsonResponse
     {
         if (!$this->isAuthorized($notificationReceipt)) {
@@ -69,9 +66,7 @@ class APIFollowMealListController extends AbstractController
         return new JsonResponse(['toggled']);
     }
 
-    /**
-     * @Route("/refuse-follow/{id}", name="api_follow_meal_list_refuse_follow", methods={"POST"})
-     */
+    #[Route(path: '/refuse-follow/{id}', name: 'api_follow_meal_list_refuse_follow', methods: ['POST'])]
     public function refuseFollow(Request $request, NotificationReceipt $notificationReceipt): JsonResponse
     {
         if (!$this->isAuthorized($notificationReceipt)) {

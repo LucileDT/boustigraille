@@ -19,11 +19,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
      * @param Request $request The request.
      * @return Response
-     * @Security("not is_anonymous()")
      */
+    #[Route(path: '/', name: 'home')]
+    #[Security('not is_anonymous()')]
     public function indexAction()
     {
         $ingredientFromOpenFoodFactsFDO = new IngredientFromOpenFoodFactsFDO();

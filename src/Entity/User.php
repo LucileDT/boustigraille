@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping\InverseJoinColumn;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -17,33 +18,25 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  * User is a class used to connect to the application. It contains the basic
  * information needed for this.
  *
- * @ORM\Table(name="`user`")
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  *
- * @UniqueEntity(
- *      fields={"username"},
- *      message="Ce nom d'utilisateurice n'est pas disponible."
- * )
  */
+#[ORM\Table(name: '`user`')]
+#[ORM\Entity(repositoryClass: \App\Repository\UserRepository::class)]
+#[UniqueEntity(fields: ['username'], message: "Ce nom d'utilisateurice n'est pas disponible.")]
 class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUserInterface
 {
     /**
      * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $username;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $password;
 
     /**
@@ -54,80 +47,51 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
 
     /**
      * @var Responsibility[]
-     *
-     * @ORM\ManyToMany(targetEntity="Responsibility")
-     * @ORM\JoinTable(
-     *      name="user_responsibility",
-     *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="responsibility_id", referencedColumnName="id")}
-     * )
      */
+    #[ORM\JoinTable(name: 'user_responsibility')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    #[InverseJoinColumn(name: 'responsibility_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: \Responsibility::class)]
     private $responsibilities;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
     private $proteins;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
     private $carbohydrates;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
     private $fat;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
     private $energy;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Recipe::class, inversedBy="favedBy")
-     * @ORM\OrderBy({"name" = "ASC"})
-     */
+    #[ORM\ManyToMany(targetEntity: Recipe::class, inversedBy: 'favedBy')]
+    #[ORM\OrderBy(['name' => 'ASC'])]
     private $favoriteRecipes;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default" : false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $doShowUsernameOnRecipe;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default" : false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $doShowWrittenMealListToOthers;
 
-    /**
-     * @ORM\OneToMany(targetEntity=NotificationReceipt::class, mappedBy="recipient", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: NotificationReceipt::class, mappedBy: 'recipient', orphanRemoval: true)]
     private $notificationReceipts;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="sender")
-     */
+    #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'sender')]
     private $sentNotifications;
 
-    /**
-     * @ORM\OneToMany(targetEntity=FollowMealList::class, mappedBy="follower", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: FollowMealList::class, mappedBy: 'follower', orphanRemoval: true)]
     private $followingMealLists;
 
-    /**
-     * @ORM\OneToMany(targetEntity=FollowMealList::class, mappedBy="followed", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: FollowMealList::class, mappedBy: 'followed', orphanRemoval: true)]
     private $followerMealLists;
 
-    /**
-     * @ORM\OneToMany(targetEntity=FollowUsernameOnRecipe::class, mappedBy="follower", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: FollowUsernameOnRecipe::class, mappedBy: 'follower', orphanRemoval: true)]
     private $followingUsernamesOnRecipes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=FollowUsernameOnRecipe::class, mappedBy="followed", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: FollowUsernameOnRecipe::class, mappedBy: 'followed', orphanRemoval: true)]
     private $followerUsernamesOnRecipes;
 
     function __construct($id = -1, $username = NULL, $plainPassword = NULL, $responsibilities = [])

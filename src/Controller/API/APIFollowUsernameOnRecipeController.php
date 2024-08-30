@@ -10,15 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/api/follow-username-on-recipe")
- */
+#[Route(path: '/api/follow-username-on-recipe')]
 class APIFollowUsernameOnRecipeController extends AbstractController
 {
     /**
-     * @Route("/toggle-follow/{id}", name="api_follow_username_on_recipe_toggle_follow", methods={"POST"})
      * @throws Exception
      */
+    #[Route(path: '/toggle-follow/{id}', name: 'api_follow_username_on_recipe_toggle_follow', methods: ['POST'])]
     public function toggleFollow(Request $request, NotificationReceipt $notificationReceipt): JsonResponse
     {
         if (!$this->isAuthorized($notificationReceipt)) {
@@ -50,9 +48,7 @@ class APIFollowUsernameOnRecipeController extends AbstractController
         return new JsonResponse(['toggled']);
     }
 
-    /**
-     * @Route("/accept-follow/{id}", name="api_follow_username_on_recipe_accept_follow", methods={"POST"})
-     */
+    #[Route(path: '/accept-follow/{id}', name: 'api_follow_username_on_recipe_accept_follow', methods: ['POST'])]
     public function acceptFollow(Request $request, NotificationReceipt $notificationReceipt): JsonResponse
     {
         if (!$this->isAuthorized($notificationReceipt)) {
@@ -71,9 +67,7 @@ class APIFollowUsernameOnRecipeController extends AbstractController
         return new JsonResponse(['toggled']);
     }
 
-    /**
-     * @Route("/refuse-follow/{id}", name="api_follow_username_on_recipe_refuse_follow", methods={"POST"})
-     */
+    #[Route(path: '/refuse-follow/{id}', name: 'api_follow_username_on_recipe_refuse_follow', methods: ['POST'])]
     public function refuseFollow(Request $request, NotificationReceipt $notificationReceipt): JsonResponse
     {
         if (!$this->isAuthorized($notificationReceipt)) {

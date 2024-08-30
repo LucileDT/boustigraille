@@ -7,36 +7,24 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=NotificationCategoryRepository::class)
- */
+#[ORM\Entity(repositoryClass: NotificationCategoryRepository::class)]
 class NotificationCategory
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="integer", length=8)
-     */
+    #[ORM\Column(type: 'integer', length: 8)]
     private $code;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $description;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="category", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'category', orphanRemoval: true)]
     private $notifications;
 
     public function __construct()

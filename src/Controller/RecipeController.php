@@ -17,14 +17,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/recipe")
- */
+#[Route(path: '/recipe')]
 class RecipeController extends AbstractController
 {
-    /**
-     * @Route("/", name="recipe_index", methods={"GET"})
-     */
+    #[Route(path: '/', name: 'recipe_index', methods: ['GET'])]
     public function index(RecipeRepository $recipeRepository): Response
     {
         return $this->render('recipe/index.html.twig', [
@@ -32,10 +28,8 @@ class RecipeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/new/{fromRecipe}", name="recipe_new", methods={"GET","POST"})
-     * @Security("not is_anonymous()")
-     */
+    #[Route(path: '/new/{fromRecipe}', name: 'recipe_new', methods: ['GET', 'POST'])]
+    #[Security('not is_anonymous()')]
     public function new(Request $request, Recipe $fromRecipe = null): Response
     {
         $recipe = new Recipe();
@@ -89,9 +83,7 @@ class RecipeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="recipe_show", methods={"GET"})
-     */
+    #[Route(path: '/{id}', name: 'recipe_show', methods: ['GET'])]
     public function show(Request $request, Recipe $recipe, ContentAuthorService $authorService): Response
     {
         $authorService->updateRecipesAuthor();
@@ -100,10 +92,8 @@ class RecipeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="recipe_edit", methods={"GET","POST"})
-     * @Security("not is_anonymous()")
-     */
+    #[Route(path: '/{id}/edit', name: 'recipe_edit', methods: ['GET', 'POST'])]
+    #[Security('not is_anonymous()')]
     public function edit(Request $request, Recipe $recipe): Response
     {
         $form = $this->createForm(RecipeType::class, $recipe);
@@ -140,10 +130,8 @@ class RecipeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="recipe_delete", methods={"POST"})
-     * @Security("not is_anonymous()")
-     */
+    #[Route(path: '/{id}', name: 'recipe_delete', methods: ['POST'])]
+    #[Security('not is_anonymous()')]
     public function delete(Request $request, Recipe $recipe): Response
     {
         if ($this->isCsrfTokenValid('delete'.$recipe->getId(), $request->request->get('_token'))) {

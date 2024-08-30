@@ -7,48 +7,43 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Responsibility
- *
- * @ORM\Table(name="responsibility")
- * @ORM\Entity(repositoryClass="App\Repository\ResponsibilityRepository")
  */
+#[ORM\Table(name: 'responsibility')]
+#[ORM\Entity(repositoryClass: \App\Repository\ResponsibilityRepository::class)]
 class Responsibility
 {
     const ADMIN = 'Admin';
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
     /**
      * Code of the responsibility used by Symfony to determine which role it is
      *
      * @var string
-     *
-     * @ORM\Column(name="code", type="string", length=255, unique=true)
      */
+    #[ORM\Column(name: 'code', type: 'string', length: 255, unique: true)]
     private $code;
 
     /**
      * Name of the responsibility
      *
      * @var string
-     *
-     * @ORM\Column(name="label", type="string", length=255, unique=true)
      */
+    #[ORM\Column(name: 'label', type: 'string', length: 255, unique: true)]
     private $label;
 
     /**
      * Description of the responsibility
      *
      * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=1000, nullable=true)
      */
+    #[ORM\Column(name: 'description', type: 'string', length: 1000, nullable: true)]
     private $description;
 
     /**

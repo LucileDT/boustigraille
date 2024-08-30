@@ -24,15 +24,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/my-account")
- */
+#[Route(path: '/my-account')]
 class MyAccountController extends AbstractController
 {
-    /**
-     * @Route("/", name="my_account_index", methods={"GET"})
-     * @Security("not is_anonymous()")
-     */
+    #[Route(path: '/', name: 'my_account_index', methods: ['GET'])]
+    #[Security('not is_anonymous()')]
     public function index(
         UserRepository $userRepository,
         FollowMealListRepository $followMealListRepository,
@@ -49,10 +45,8 @@ class MyAccountController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/edit-nutritional-data", name="my_account_edit_nutritional_data", methods={"GET","POST"})
-     * @Security("not is_anonymous()")
-     */
+    #[Route(path: '/edit-nutritional-data', name: 'my_account_edit_nutritional_data', methods: ['GET', 'POST'])]
+    #[Security('not is_anonymous()')]
     public function editNutritionalData(Request $request, UserNutritionalDataFDO $userNutritionalDataFDO): Response
     {
         $currentUser = $this->getUser();
@@ -83,10 +77,8 @@ class MyAccountController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/edit-password", name="my_account_edit_password", methods={"GET","POST"})
-     * @Security("not is_anonymous()")
-     */
+    #[Route(path: '/edit-password', name: 'my_account_edit_password', methods: ['GET', 'POST'])]
+    #[Security('not is_anonymous()')]
     public function editPassword(UserPasswordHasherInterface $passwordHasher, Request $request): Response
     {
         $user = $this->getUser();
@@ -110,10 +102,8 @@ class MyAccountController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/edit-privacy-settings", name="my_account_edit_privacy_settings", methods={"GET","POST"})
-     * @Security("not is_anonymous()")
-     */
+    #[Route(path: '/edit-privacy-settings', name: 'my_account_edit_privacy_settings', methods: ['GET', 'POST'])]
+    #[Security('not is_anonymous()')]
     public function editPrivacySettings(
         UserRepository $userRepository,
         NotificationCategoryRepository $notificationCategoryRepository,
@@ -235,10 +225,8 @@ class MyAccountController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/notifications", name="my_account_notifications", methods={"GET"})
-     * @Security("not is_anonymous()")
-     */
+    #[Route(path: '/notifications', name: 'my_account_notifications', methods: ['GET'])]
+    #[Security('not is_anonymous()')]
     public function notifications(
         Request $request,
         NotificationReceiptRepository $notificationReceiptRepository

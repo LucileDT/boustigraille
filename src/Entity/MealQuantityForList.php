@@ -5,33 +5,23 @@ namespace App\Entity;
 use App\Repository\MealQuantityForListRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=MealQuantityForListRepository::class)
- */
+#[ORM\Entity(repositoryClass: MealQuantityForListRepository::class)]
 class MealQuantityForList
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $quantity;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=MealList::class, inversedBy="meals")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: MealList::class, inversedBy: 'meals')]
     private $mealList;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Recipe::class, inversedBy="mealQuantityForLists")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Recipe::class, inversedBy: 'mealQuantityForLists')]
     private $meal;
 
     public function getId(): ?int

@@ -5,31 +5,21 @@ namespace App\Entity;
 use App\Repository\StoreRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=StoreRepository::class)
- */
+#[ORM\Entity(repositoryClass: StoreRepository::class)]
 class Store
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $label;
 
-    /**
-     * @ORM\Column(type="integer", unique=true)
-     */
+    #[ORM\Column(type: 'integer', unique: true)]
     private $sortNumber;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Ingredient::class, mappedBy="store", cascade={"persist"})
-     */
+    #[ORM\OneToMany(targetEntity: Ingredient::class, mappedBy: 'store', cascade: ['persist'])]
     private $ingredients;
 
     public function getId(): ?int

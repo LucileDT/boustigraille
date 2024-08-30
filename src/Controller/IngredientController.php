@@ -16,14 +16,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/ingredient")
- */
+#[Route(path: '/ingredient')]
 class IngredientController extends AbstractController
 {
-    /**
-     * @Route("/", name="ingredient_index", methods={"GET"})
-     */
+    #[Route(path: '/', name: 'ingredient_index', methods: ['GET'])]
     public function index(IngredientRepository $ingredientRepository): Response
     {
         $ingredientFromOpenFoodFactsFDO = new IngredientFromOpenFoodFactsFDO();
@@ -37,10 +33,8 @@ class IngredientController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/new", name="ingredient_new", methods={"GET","POST"})
-     * @Security("not is_anonymous()")
-     */
+    #[Route(path: '/new', name: 'ingredient_new', methods: ['GET', 'POST'])]
+    #[Security('not is_anonymous()')]
     public function new(Request $request): Response
     {
         $ingredient = new Ingredient();
@@ -68,10 +62,8 @@ class IngredientController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/new-from-openfoodfacts", name="ingredient_new_from_openfoodfacts", methods={"POST"})
-     * @Security("not is_anonymous()")
-     */
+    #[Route(path: '/new-from-openfoodfacts', name: 'ingredient_new_from_openfoodfacts', methods: ['POST'])]
+    #[Security('not is_anonymous()')]
     public function newFromOpenFoodFacts(
         EntityManagerInterface $entityManager,
         OpenFoodFactService $offService,
@@ -134,9 +126,7 @@ class IngredientController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/{id}", name="ingredient_show", methods={"GET"}, requirements={"id"="\d+"})
-     */
+    #[Route(path: '/{id}', name: 'ingredient_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(Ingredient $ingredient): Response
     {
         return $this->render('ingredient/show.html.twig', [
@@ -144,10 +134,8 @@ class IngredientController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="ingredient_edit", methods={"GET","POST"}, requirements={"id"="\d+"})
-     * @Security("not is_anonymous()")
-     */
+    #[Route(path: '/{id}/edit', name: 'ingredient_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
+    #[Security('not is_anonymous()')]
     public function edit(EntityManagerInterface $entityManager, Request $request, Ingredient $ingredient): Response
     {
         $form = $this->createForm(IngredientType::class, $ingredient);
@@ -166,10 +154,8 @@ class IngredientController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="ingredient_delete", methods={"POST"}, requirements={"id"="\d+"})
-     * @Security("not is_anonymous()")
-     */
+    #[Route(path: '/{id}', name: 'ingredient_delete', methods: ['POST'], requirements: ['id' => '\d+'])]
+    #[Security('not is_anonymous()')]
     public function delete(Request $request, Ingredient $ingredient): Response
     {
         if ($this->isCsrfTokenValid('delete'.$ingredient->getId(), $request->request->get('_token'))) {

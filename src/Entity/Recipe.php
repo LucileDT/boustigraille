@@ -8,58 +8,38 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
-/**
- * @ORM\Entity(repositoryClass=RecipeRepository::class)
- */
+#[ORM\Entity(repositoryClass: RecipeRepository::class)]
 class Recipe implements JsonSerializable
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\OneToMany(targetEntity=IngredientQuantityForRecipe::class, mappedBy="recipe", cascade={"persist"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: IngredientQuantityForRecipe::class, mappedBy: 'recipe', cascade: ['persist'], orphanRemoval: true)]
     private $ingredients;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $process;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $comment;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $mainPictureFilename;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private $author;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="favoriteRecipes")
-     * @ORM\OrderBy({"username" = "ASC"})
-     */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favoriteRecipes')]
+    #[ORM\OrderBy(['username' => 'ASC'])]
     private $favedBy;
 
-    /**
-     * @ORM\OneToMany(targetEntity=MealQuantityForList::class, mappedBy="meal", cascade={"persist"})
-     */
+    #[ORM\OneToMany(targetEntity: MealQuantityForList::class, mappedBy: 'meal', cascade: ['persist'])]
     private $mealQuantityForLists;
 
     public function getMealQuantityForLists()

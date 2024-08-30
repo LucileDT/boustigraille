@@ -5,38 +5,26 @@ namespace App\Entity;
 use App\Repository\NotificationReceiptRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=NotificationReceiptRepository::class)
- */
+#[ORM\Entity(repositoryClass: NotificationReceiptRepository::class)]
 class NotificationReceipt
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
+    #[ORM\Column(type: 'date', nullable: true)]
     private $dateRead;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="notificationReceipts")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'notificationReceipts')]
     private $recipient;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Notification::class, inversedBy="notificationReceipts")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Notification::class, inversedBy: 'notificationReceipts')]
     private $notification;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $processedAt;
 
     public function getId(): ?int

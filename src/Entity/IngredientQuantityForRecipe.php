@@ -5,38 +5,26 @@ namespace App\Entity;
 use App\Repository\IngredientQuantityForRecipeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=IngredientQuantityForRecipeRepository::class)
- */
+#[ORM\Entity(repositoryClass: IngredientQuantityForRecipeRepository::class)]
 class IngredientQuantityForRecipe
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Ingredient::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Ingredient::class)]
     private $ingredient;
 
-    /**
-     * @ORM\Column(type="float")
-     */
+    #[ORM\Column(type: 'float')]
     private $quantity;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Recipe::class, inversedBy="ingredients")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Recipe::class, inversedBy: 'ingredients')]
     private $recipe;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default" : false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isMeasuredByUnit;
 
     public function __construct(?IngredientQuantityForRecipe $ingredient = null)
