@@ -22,7 +22,7 @@ class AppFixtures extends Fixture
     /**
      * Load the fixtures.
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         // -- USERS -- //
         /** @var Responsibility $roleAdmin */
