@@ -10,12 +10,12 @@ use App\FormDataObject\RecipeFDO;
 use App\Repository\RecipeRepository;
 use App\Service\Migrations\ContentAuthorService;
 use App\Service\RecipeService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/recipe')]
 class RecipeController extends AbstractController
@@ -29,7 +29,7 @@ class RecipeController extends AbstractController
     }
 
     #[Route(path: '/new/{fromRecipe}', name: 'recipe_new', methods: ['GET', 'POST'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function new(Request $request, Recipe $fromRecipe = null): Response
     {
         $recipe = new Recipe();
@@ -93,7 +93,7 @@ class RecipeController extends AbstractController
     }
 
     #[Route(path: '/{id}/edit', name: 'recipe_edit', methods: ['GET', 'POST'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function edit(Request $request, Recipe $recipe): Response
     {
         $form = $this->createForm(RecipeType::class, $recipe);
@@ -131,7 +131,7 @@ class RecipeController extends AbstractController
     }
 
     #[Route(path: '/{id}', name: 'recipe_delete', methods: ['POST'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function delete(Request $request, Recipe $recipe): Response
     {
         if ($this->isCsrfTokenValid('delete'.$recipe->getId(), $request->request->get('_token'))) {

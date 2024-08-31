@@ -10,11 +10,11 @@ use App\Repository\IngredientRepository;
 use App\Service\OpenFoodFactService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/ingredient')]
 class IngredientController extends AbstractController
@@ -34,7 +34,7 @@ class IngredientController extends AbstractController
     }
 
     #[Route(path: '/new', name: 'ingredient_new', methods: ['GET', 'POST'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function new(Request $request): Response
     {
         $ingredient = new Ingredient();
@@ -63,7 +63,7 @@ class IngredientController extends AbstractController
     }
 
     #[Route(path: '/new-from-openfoodfacts', name: 'ingredient_new_from_openfoodfacts', methods: ['POST'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function newFromOpenFoodFacts(
         EntityManagerInterface $entityManager,
         OpenFoodFactService $offService,
@@ -135,7 +135,7 @@ class IngredientController extends AbstractController
     }
 
     #[Route(path: '/{id}/edit', name: 'ingredient_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function edit(EntityManagerInterface $entityManager, Request $request, Ingredient $ingredient): Response
     {
         $form = $this->createForm(IngredientType::class, $ingredient);
@@ -155,7 +155,7 @@ class IngredientController extends AbstractController
     }
 
     #[Route(path: '/{id}', name: 'ingredient_delete', methods: ['POST'], requirements: ['id' => '\d+'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function delete(Request $request, Ingredient $ingredient): Response
     {
         if ($this->isCsrfTokenValid('delete'.$ingredient->getId(), $request->request->get('_token'))) {

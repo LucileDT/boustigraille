@@ -17,18 +17,18 @@ use App\Repository\FollowUsernameOnRecipeRepository;
 use App\Repository\NotificationCategoryRepository;
 use App\Repository\NotificationReceiptRepository;
 use App\Repository\UserRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/my-account')]
 class MyAccountController extends AbstractController
 {
     #[Route(path: '/', name: 'my_account_index', methods: ['GET'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function index(
         UserRepository $userRepository,
         FollowMealListRepository $followMealListRepository,
@@ -46,7 +46,7 @@ class MyAccountController extends AbstractController
     }
 
     #[Route(path: '/edit-nutritional-data', name: 'my_account_edit_nutritional_data', methods: ['GET', 'POST'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function editNutritionalData(Request $request, UserNutritionalDataFDO $userNutritionalDataFDO): Response
     {
         $currentUser = $this->getUser();
@@ -78,7 +78,7 @@ class MyAccountController extends AbstractController
     }
 
     #[Route(path: '/edit-password', name: 'my_account_edit_password', methods: ['GET', 'POST'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function editPassword(UserPasswordHasherInterface $passwordHasher, Request $request): Response
     {
         $user = $this->getUser();
@@ -103,7 +103,7 @@ class MyAccountController extends AbstractController
     }
 
     #[Route(path: '/edit-privacy-settings', name: 'my_account_edit_privacy_settings', methods: ['GET', 'POST'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function editPrivacySettings(
         UserRepository $userRepository,
         NotificationCategoryRepository $notificationCategoryRepository,
@@ -226,7 +226,7 @@ class MyAccountController extends AbstractController
     }
 
     #[Route(path: '/notifications', name: 'my_account_notifications', methods: ['GET'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function notifications(
         Request $request,
         NotificationReceiptRepository $notificationReceiptRepository

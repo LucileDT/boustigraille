@@ -8,17 +8,17 @@ use App\Form\MealListType;
 use App\FormDataObject\GroceryListFDO;
 use App\Repository\MealListRepository;
 use App\Repository\RecipeRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/meal')]
 class MealListController extends AbstractController
 {
     #[Route('/list', name: 'meal_list_index', methods: ['GET'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function index(MealListRepository $mealListRepository): Response
     {
         $user = $this->getUser();
@@ -36,7 +36,7 @@ class MealListController extends AbstractController
     }
 
     #[Route('/new/{fromMealList}', name: 'meal_list_new', methods: ['GET', 'POST'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function new(
         Request $request,
         MealListRepository $mealListRepository,
@@ -78,7 +78,7 @@ class MealListController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'meal_list_edit', methods: ['GET', 'POST'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function edit(
         Request $request,
         MealList $mealList,
@@ -103,7 +103,7 @@ class MealListController extends AbstractController
     }
 
     #[Route('/{id}', name: 'meal_list_delete', methods: ['POST'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function delete(Request $request, MealList $mealList, MealListRepository $mealListRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$mealList->getId(), $request->request->get('_token'))) {

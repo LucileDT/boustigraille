@@ -4,17 +4,17 @@ namespace App\Controller\API;
 
 use App\Entity\NotificationReceipt;
 use App\Repository\NotificationReceiptRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/api/notification')]
 class APINotificationController extends AbstractController
 {
     #[Route(path: '/has-unread', name: 'api_unread_notification', methods: ['GET'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function show(Request $request, NotificationReceiptRepository $notificationReceiptRepository): JsonResponse
     {
         $connectedUser = $this->getUser();
@@ -30,7 +30,7 @@ class APINotificationController extends AbstractController
     }
 
     #[Route(path: '/toggle-read/{id}', name: 'api_notification_toggle_read', methods: ['POST'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function toggleRead(Request $request, NotificationReceipt $notificationReceipt): JsonResponse
     {
         $connectedUser = $this->getUser();

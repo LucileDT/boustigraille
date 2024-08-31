@@ -1,7 +1,4 @@
 <?php
-/**
- * Home controller
- */
 
 namespace App\Controller;
 
@@ -9,22 +6,18 @@ use App\Form\IngredientFromOpenFoodFactsType;
 use App\FormDataObject\IngredientFromOpenFoodFactsFDO;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * Home controller
+ * It manages the home page (shown when logged in)
  */
 class HomeController extends AbstractController
 {
-    /**
-     * @param Request $request The request.
-     * @return Response
-     */
     #[Route(path: '/', name: 'home')]
-    #[Security('not is_anonymous()')]
-    public function indexAction()
+    #[IsGranted('IS_AUTHENTICATED')]
+    public function indexAction(): Response
     {
         $ingredientFromOpenFoodFactsFDO = new IngredientFromOpenFoodFactsFDO();
         $formNewIngredient = $this->createForm(

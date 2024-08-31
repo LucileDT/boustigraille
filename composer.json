@@ -16,7 +16,6 @@
         "erusev/parsedown": "^1.7",
         "imagine/imagine": "^1.2",
         "phpdocumentor/reflection-docblock": "^5.4",
-        "sensio/framework-extra-bundle": "^6.1",
         "symfony/asset": "6.2.*",
         "symfony/console": "6.2.*",
         "symfony/dotenv": "6.2.*",

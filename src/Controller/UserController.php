@@ -8,18 +8,18 @@ use App\Form\UserNutritionalDataType;
 use App\Form\UserType;
 use App\FormDataObject\UserNutritionalDataFDO;
 use App\Repository\UserRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/user')]
 class UserController extends AbstractController
 {
     #[Route(path: '/', name: 'user_index', methods: ['GET'])]
-    #[Security("is_granted('ROLE_ADMIN')")]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(UserRepository $userRepository): Response
     {
         return $this->render('user/index.html.twig', [
@@ -28,7 +28,7 @@ class UserController extends AbstractController
     }
 
     #[Route(path: '/new', name: 'user_new', methods: ['GET', 'POST'])]
-    #[Security("is_granted('ROLE_ADMIN')")]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(UserPasswordHasherInterface $passwordHasher, Request $request): Response
     {
         $user = new User();
@@ -54,7 +54,7 @@ class UserController extends AbstractController
     }
 
     #[Route(path: '/{id}', name: 'user_show', methods: ['GET'])]
-    #[Security("is_granted('ROLE_ADMIN')")]
+    #[IsGranted('ROLE_ADMIN')]
     public function show(User $user): Response
     {
         return $this->render('user/show.html.twig', [
@@ -63,7 +63,7 @@ class UserController extends AbstractController
     }
 
     #[Route(path: '/{id}/edit', name: 'user_edit', methods: ['GET', 'POST'])]
-    #[Security("is_granted('ROLE_ADMIN')")]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(UserPasswordHasherInterface $passwordHasher, Request $request, User $user): Response
     {
         $form = $this->createForm(UserType::class, $user);
@@ -86,7 +86,7 @@ class UserController extends AbstractController
     }
 
     #[Route(path: '/{id}', name: 'user_delete', methods: ['POST'])]
-    #[Security("is_granted('ROLE_ADMIN')")]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, User $user): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {

@@ -5,17 +5,17 @@ namespace App\Controller;
 use App\Form\GroceryListType;
 use App\FormDataObject\GroceryListFDO;
 use App\Service\GroceryListService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/grocery/list')]
 class GroceryListController extends AbstractController
 {
     #[Route('/', name: 'grocery_list_index', methods: ['GET', 'POST'])]
-    #[Security('not is_anonymous()')]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function index(Request $request): Response
     {
         $groceryListFDO = new GroceryListFDO();
