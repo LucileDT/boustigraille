@@ -194,7 +194,7 @@
                     type="text"
                     class="form-control me-2"
                     id="username"
-                    name="username"
+                    name="_username"
                     placeholder="Username"
                     value="{% if username is defined %}{{ username }}{% endif %}"
                 >
@@ -202,10 +202,14 @@
                     type="password"
                     class="form-control me-2"
                     id="password"
-                    name="password"
+                    name="_password"
                     placeholder="Mot de passe"
                 >
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                {# redirection after form submission #}
+                {% if (app.request.pathinfo != '/login') %}
+                    <input type="hidden" name="_target_path" value="{{ app.request.requesturi }}">
+                {% endif %}
                 <button
                     type="submit"
                     class="btn btn-outline-primary"

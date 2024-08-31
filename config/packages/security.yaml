@@ -1,14 +1,14 @@
 security:
-    enable_authenticator_manager: true
+    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
+    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users:
+        users_in_memory:
             entity:
                 class: App\Entity\User
                 property: username
-
-    password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
     firewalls:
         dev:
@@ -16,13 +16,19 @@ security:
             security: false
         main:
             lazy: true
-            provider: users
-            custom_authenticator:
-               - App\Security\LoginFormAuthenticator
+            form_login:
+                login_path: app_login
+                check_path: app_login
             logout:
-                path: app_logout
-                # where to redirect after logout
+                path: /logout
                 target: home
+            provider: users_in_memory
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#the-firewall
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
@@ -31,7 +37,7 @@ security:
         - { path: ^/login, roles: [PUBLIC_ACCESS] }
         - { path: '^/ingredient', roles: [PUBLIC_ACCESS] }
         - { path: ^/recipe, roles: [PUBLIC_ACCESS] }
-        #  require authentication for all routes
+        #  require authentication for all other routes
         - { path: '^/', roles: [IS_AUTHENTICATED_FULLY] }
 
 when@test:
