@@ -16,10 +16,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route(path: '/ingredient')]
+#[Route(path: '/ingredient', name: 'ingredient_')]
 class IngredientController extends AbstractController
 {
-    #[Route(path: '/', name: 'ingredient_index', methods: ['GET'])]
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function index(IngredientRepository $ingredientRepository): Response
     {
         $ingredientFromOpenFoodFactsFDO = new IngredientFromOpenFoodFactsFDO();
@@ -33,9 +33,9 @@ class IngredientController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/new', name: 'ingredient_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHENTICATED')]
-    public function new(Request $request): Response
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $ingredient = new Ingredient();
         $form = $this->createForm(IngredientType::class, $ingredient);
@@ -47,7 +47,6 @@ class IngredientController extends AbstractController
         ]);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ingredient);
             $entityManager->flush();
 
@@ -62,10 +61,9 @@ class IngredientController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/new-from-openfoodfacts', name: 'ingredient_new_from_openfoodfacts', methods: ['POST'])]
+    #[Route(path: '/new-from-openfoodfacts', name: 'new_from_openfoodfacts', methods: ['POST'])]
     #[IsGranted('IS_AUTHENTICATED')]
     public function newFromOpenFoodFacts(
-        EntityManagerInterface $entityManager,
         OpenFoodFactService $offService,
         Request $request,
         IngredientFromOpenFoodFactsFDO $ingredientIdentifier): Response
@@ -126,7 +124,7 @@ class IngredientController extends AbstractController
         }
     }
 
-    #[Route(path: '/{id}', name: 'ingredient_show', methods: ['GET'], requirements: ['id' => '\d+'])]
+    #[Route(path: '/{id}', name: 'show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(Ingredient $ingredient): Response
     {
         return $this->render('ingredient/show.html.twig', [
@@ -134,7 +132,7 @@ class IngredientController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{id}/edit', name: 'ingredient_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
+    #[Route(path: '/{id}/edit', name: 'edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHENTICATED')]
     public function edit(EntityManagerInterface $entityManager, Request $request, Ingredient $ingredient): Response
     {
@@ -154,12 +152,11 @@ class IngredientController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{id}', name: 'ingredient_delete', methods: ['POST'], requirements: ['id' => '\d+'])]
+    #[Route(path: '/{id}', name: 'delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     #[IsGranted('IS_AUTHENTICATED')]
-    public function delete(Request $request, Ingredient $ingredient): Response
+    public function delete(Request $request, Ingredient $ingredient, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$ingredient->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($ingredient);
             $entityManager->flush();
         }

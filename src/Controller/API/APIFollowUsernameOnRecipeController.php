@@ -4,20 +4,20 @@ namespace App\Controller\API;
 
 use App\Entity\NotificationReceipt;
 use DateTimeImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/api/follow-username-on-recipe')]
+#[Route(path: '/api/follow-username-on-recipe', name: 'api_follow_username_on_recipe_')]
 class APIFollowUsernameOnRecipeController extends AbstractController
 {
     /**
      * @throws Exception
      */
-    #[Route(path: '/toggle-follow/{id}', name: 'api_follow_username_on_recipe_toggle_follow', methods: ['POST'])]
-    public function toggleFollow(Request $request, NotificationReceipt $notificationReceipt): JsonResponse
+    #[Route(path: '/toggle-follow/{id}', name: 'toggle_follow', methods: ['POST'])]
+    public function toggleFollow(EntityManagerInterface $entityManager, NotificationReceipt $notificationReceipt): JsonResponse
     {
         if (!$this->isAuthorized($notificationReceipt)) {
             return new JsonResponse(['not allowed']);
@@ -41,15 +41,15 @@ class APIFollowUsernameOnRecipeController extends AbstractController
         {
             throw new Exception('A follow proposition can\'t be accepted and refused at the same time.');
         }
-        $entityManager = $this->getDoctrine()->getManager();
+
         $entityManager->persist($followUsernameOnRecipe);
         $entityManager->flush();
 
         return new JsonResponse(['toggled']);
     }
 
-    #[Route(path: '/accept-follow/{id}', name: 'api_follow_username_on_recipe_accept_follow', methods: ['POST'])]
-    public function acceptFollow(Request $request, NotificationReceipt $notificationReceipt): JsonResponse
+    #[Route(path: '/accept-follow/{id}', name: 'accept_follow', methods: ['POST'])]
+    public function acceptFollow(EntityManagerInterface $entityManager, NotificationReceipt $notificationReceipt): JsonResponse
     {
         if (!$this->isAuthorized($notificationReceipt)) {
             return new JsonResponse(['not allowed']);
@@ -60,15 +60,15 @@ class APIFollowUsernameOnRecipeController extends AbstractController
         $followUsernameOnRecipe->setAcceptedAt($now);
         $followUsernameOnRecipe->setRefusedAt(null);
         $notificationReceipt->setProcessedAt($now);
-        $entityManager = $this->getDoctrine()->getManager();
+
         $entityManager->persist($followUsernameOnRecipe);
         $entityManager->flush();
 
         return new JsonResponse(['toggled']);
     }
 
-    #[Route(path: '/refuse-follow/{id}', name: 'api_follow_username_on_recipe_refuse_follow', methods: ['POST'])]
-    public function refuseFollow(Request $request, NotificationReceipt $notificationReceipt): JsonResponse
+    #[Route(path: '/refuse-follow/{id}', name: 'refuse_follow', methods: ['POST'])]
+    public function refuseFollow(EntityManagerInterface $entityManager, NotificationReceipt $notificationReceipt): JsonResponse
     {
         if (!$this->isAuthorized($notificationReceipt)) {
             return new JsonResponse(['not allowed']);
@@ -79,7 +79,7 @@ class APIFollowUsernameOnRecipeController extends AbstractController
         $followUsernameOnRecipe->setRefusedAt($now);
         $followUsernameOnRecipe->setAcceptedAt(null);
         $notificationReceipt->setProcessedAt($now);
-        $entityManager = $this->getDoctrine()->getManager();
+
         $entityManager->persist($followUsernameOnRecipe);
         $entityManager->flush();
 
@@ -89,6 +89,7 @@ class APIFollowUsernameOnRecipeController extends AbstractController
     private function isAuthorized(NotificationReceipt $notificationReceipt): bool
     {
         $isAuthorized = true;
+        /** @var \App\Entity\User $connectedUser */
         $connectedUser = $this->getUser();
         if (empty($connectedUser))
         {

@@ -4,10 +4,10 @@ namespace App\Controller;
 
 use App\Form\IngredientFromOpenFoodFactsType;
 use App\FormDataObject\IngredientFromOpenFoodFactsFDO;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Home controller
@@ -15,9 +15,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
  */
 class HomeController extends AbstractController
 {
-    #[Route(path: '/', name: 'home')]
+    #[Route(path: '/', name: 'home', methods: ['GET'])]
     #[IsGranted('IS_AUTHENTICATED')]
-    public function indexAction(): Response
+    public function index(): Response
     {
         $ingredientFromOpenFoodFactsFDO = new IngredientFromOpenFoodFactsFDO();
         $formNewIngredient = $this->createForm(

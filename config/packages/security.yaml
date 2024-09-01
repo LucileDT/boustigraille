@@ -35,10 +35,10 @@ security:
     access_control:
         # allow unauthenticated users to access specific pages
         - { path: ^/login, roles: [PUBLIC_ACCESS] }
-        - { path: '^/ingredient', roles: [PUBLIC_ACCESS] }
+        - { path: ^/ingredient, roles: [PUBLIC_ACCESS] }
         - { path: ^/recipe, roles: [PUBLIC_ACCESS] }
         #  require authentication for all other routes
-        - { path: '^/', roles: [IS_AUTHENTICATED_FULLY] }
+        - { path: ^/, roles: [IS_AUTHENTICATED_FULLY] }
 
 when@test:
     security:

@@ -4,18 +4,19 @@ namespace App\Controller\API;
 
 use App\Entity\NotificationReceipt;
 use App\Repository\NotificationReceiptRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route(path: '/api/notification')]
+#[Route(path: '/api/notification', name: 'api_notification_')]
+#[IsGranted('IS_AUTHENTICATED')]
 class APINotificationController extends AbstractController
 {
-    #[Route(path: '/has-unread', name: 'api_unread_notification', methods: ['GET'])]
+    #[Route(path: '/has-unread', name: 'unread', methods: ['GET'])]
     #[IsGranted('IS_AUTHENTICATED')]
-    public function show(Request $request, NotificationReceiptRepository $notificationReceiptRepository): JsonResponse
+    public function show(NotificationReceiptRepository $notificationReceiptRepository): JsonResponse
     {
         $connectedUser = $this->getUser();
         $unreadNotificationReceipts = $notificationReceiptRepository->findUnreadByUser($connectedUser);
@@ -29,9 +30,9 @@ class APINotificationController extends AbstractController
         }
     }
 
-    #[Route(path: '/toggle-read/{id}', name: 'api_notification_toggle_read', methods: ['POST'])]
+    #[Route(path: '/toggle-read/{id}', name: 'toggle_read', methods: ['POST'])]
     #[IsGranted('IS_AUTHENTICATED')]
-    public function toggleRead(Request $request, NotificationReceipt $notificationReceipt): JsonResponse
+    public function toggleRead(EntityManagerInterface $entityManager, NotificationReceipt $notificationReceipt): JsonResponse
     {
         $connectedUser = $this->getUser();
         if ($notificationReceipt->getRecipient() !== $connectedUser) {
@@ -44,7 +45,6 @@ class APINotificationController extends AbstractController
             $notificationReceipt->setDateRead(null);
         }
 
-        $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($notificationReceipt);
         $entityManager->flush();
 

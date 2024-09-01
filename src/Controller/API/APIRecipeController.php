@@ -4,17 +4,19 @@ namespace App\Controller\API;
 
 use App\Entity\Recipe;
 use App\Repository\RecipeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/api/recipe')]
+#[Route(path: '/api/recipe', name: 'api_recipe_')]
 class APIRecipeController extends AbstractController
 {
-    #[Route(path: '/toggle-favorite/{id}', name: 'api_recipe_toggle_favorite', methods: ['POST'])]
-    public function toggleFavorite(Request $request, Recipe $recipe): JsonResponse
+    #[Route(path: '/toggle-favorite/{id}', name: 'toggle_favorite', methods: ['POST'])]
+    public function toggleFavorite(EntityManagerInterface $entityManager, Recipe $recipe): JsonResponse
     {
+        /** @var \App\Entity\User $connectedUser */
         $connectedUser = $this->getUser();
         if (empty($connectedUser))
         {
@@ -26,7 +28,7 @@ class APIRecipeController extends AbstractController
         } else {
             $connectedUser->addFavoriteRecipe($recipe);
         }
-        $entityManager = $this->getDoctrine()->getManager();
+
         $entityManager->persist($connectedUser);
         $entityManager->persist($recipe);
         $entityManager->flush();
@@ -34,9 +36,10 @@ class APIRecipeController extends AbstractController
         return new JsonResponse(['toggled']);
     }
 
-    #[Route(path: '/recipe/by-favourite', name: 'api_recipes_by_favorite', methods: ['GET'])]
+    #[Route(path: '/recipe/by-favourite', name: 'by_favorite', methods: ['GET'])]
     public function getRecipesGroupedByFavorite(Request $request, RecipeRepository $recipeRepository): JsonResponse
     {
+        /** @var \App\Entity\User $connectedUser */
         $connectedUser = $this->getUser();
         if (empty($connectedUser))
         {
@@ -56,9 +59,10 @@ class APIRecipeController extends AbstractController
         return new JsonResponse($groupedData);
     }
 
-    #[Route(path: '/suggested', name: 'api_suggested_recipes', methods: ['GET'])]
+    #[Route(path: '/suggested', name: 'suggested', methods: ['GET'])]
     public function getSuggestedRecipes(Request $request, RecipeRepository $recipeRepository): JsonResponse
     {
+        /** @var \App\Entity\User $connectedUser */
         $connectedUser = $this->getUser();
         if (empty($connectedUser))
         {

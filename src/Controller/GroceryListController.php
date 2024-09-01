@@ -11,10 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/grocery/list')]
+#[Route('/grocery/list', name: 'grocery_list_')]
 class GroceryListController extends AbstractController
 {
-    #[Route('/', name: 'grocery_list_index', methods: ['GET', 'POST'])]
+    #[Route(path: '/', name: 'index', methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHENTICATED')]
     public function index(Request $request): Response
     {

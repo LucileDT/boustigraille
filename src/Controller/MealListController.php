@@ -14,10 +14,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/meal')]
+#[Route('/meal', name: 'meal_list_')]
 class MealListController extends AbstractController
 {
-    #[Route('/list', name: 'meal_list_index', methods: ['GET'])]
+    #[Route('/list', name: 'index', methods: ['GET'])]
     #[IsGranted('IS_AUTHENTICATED')]
     public function index(MealListRepository $mealListRepository): Response
     {
@@ -35,7 +35,7 @@ class MealListController extends AbstractController
         ]);
     }
 
-    #[Route('/new/{fromMealList}', name: 'meal_list_new', methods: ['GET', 'POST'])]
+    #[Route('/new/{fromMealList?}', name: 'new', methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHENTICATED')]
     public function new(
         Request $request,
@@ -56,7 +56,7 @@ class MealListController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $mealList->setAuthor($this->getUser());
-            $this->updatDatesAccordingToStartingAndEndingTimes($mealList);
+            $this->updateDatesAccordingToStartingAndEndingTimes($mealList);
             $mealListRepository->add($mealList);
 
             return $this->redirectToRoute('meal_list_index', [], Response::HTTP_SEE_OTHER);
@@ -69,7 +69,7 @@ class MealListController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'meal_list_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'show', methods: ['GET'])]
     public function show(MealList $mealList): Response
     {
         return $this->render('meal_list/show.html.twig', [
@@ -77,7 +77,7 @@ class MealListController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'meal_list_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHENTICATED')]
     public function edit(
         Request $request,
@@ -90,7 +90,7 @@ class MealListController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->updatDatesAccordingToStartingAndEndingTimes($mealList);
+            $this->updateDatesAccordingToStartingAndEndingTimes($mealList);
             $mealListRepository->add($mealList);
             return $this->redirectToRoute('meal_list_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -102,7 +102,7 @@ class MealListController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'meal_list_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'delete', methods: ['POST'])]
     #[IsGranted('IS_AUTHENTICATED')]
     public function delete(Request $request, MealList $mealList, MealListRepository $mealListRepository): Response
     {
@@ -113,7 +113,8 @@ class MealListController extends AbstractController
         return $this->redirectToRoute('meal_list_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    private function updatDatesAccordingToStartingAndEndingTimes(&$mealList) {
+    private function updateDatesAccordingToStartingAndEndingTimes(&$mealList): void
+    {
         if (!$mealList->isStartingAtLunch()) {
             $afternoonInterval = new \DateInterval("PT16H");
             $mealList->setStartDate(date_add($mealList->getStartDate(), $afternoonInterval));

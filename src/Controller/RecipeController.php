@@ -4,12 +4,12 @@ namespace App\Controller;
 
 use App\Entity\IngredientQuantityForRecipe;
 use App\Entity\Recipe;
-use App\Entity\User;
 use App\Form\RecipeType;
-use App\FormDataObject\RecipeFDO;
 use App\Repository\RecipeRepository;
 use App\Service\Migrations\ContentAuthorService;
 use App\Service\RecipeService;
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,10 +17,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route(path: '/recipe')]
+#[Route(path: '/recipe', name: 'recipe_')]
 class RecipeController extends AbstractController
 {
-    #[Route(path: '/', name: 'recipe_index', methods: ['GET'])]
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function index(RecipeRepository $recipeRepository): Response
     {
         return $this->render('recipe/index.html.twig', [
@@ -28,9 +28,9 @@ class RecipeController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/new/{fromRecipe}', name: 'recipe_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/new/{fromRecipe?}', name: 'new', methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHENTICATED')]
-    public function new(Request $request, Recipe $fromRecipe = null): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, ?Recipe $fromRecipe): Response
     {
         $recipe = new Recipe();
         if (!empty($fromRecipe)) {
@@ -70,7 +70,6 @@ class RecipeController extends AbstractController
             }
             $recipe->setAuthor($this->getUser());
 
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($recipe);
             $entityManager->flush();
 
@@ -83,8 +82,11 @@ class RecipeController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{id}', name: 'recipe_show', methods: ['GET'])]
-    public function show(Request $request, Recipe $recipe, ContentAuthorService $authorService): Response
+    /**
+     * @throws Exception
+     */
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    public function show(Recipe $recipe, ContentAuthorService $authorService): Response
     {
         $authorService->updateRecipesAuthor();
         return $this->render('recipe/show.html.twig', [
@@ -92,9 +94,9 @@ class RecipeController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{id}/edit', name: 'recipe_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHENTICATED')]
-    public function edit(Request $request, Recipe $recipe): Response
+    public function edit(Request $request, Recipe $recipe, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
@@ -119,7 +121,7 @@ class RecipeController extends AbstractController
                 }
             }
 
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
 
             return $this->redirectToRoute('recipe_show',['id' => $recipe->getId()]);
         }
@@ -130,12 +132,11 @@ class RecipeController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{id}', name: 'recipe_delete', methods: ['POST'])]
+    #[Route(path: '/{id}', name: 'delete', methods: ['POST'])]
     #[IsGranted('IS_AUTHENTICATED')]
-    public function delete(Request $request, Recipe $recipe): Response
+    public function delete(Request $request, Recipe $recipe, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$recipe->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($recipe);
             $entityManager->flush();
         }
