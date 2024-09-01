@@ -84,7 +84,8 @@ class AppFixtures extends Fixture
 
         $oeuf = new Ingredient();
         $oeuf->setLabel('Oeuf');
-        $oeuf->setMeasureType('unité');
+        $oeuf->setMeasureType('g');
+        $oeuf->setUnitSize('53');
         $oeuf->setProteins(12);
         $oeuf->setCarbohydrates(0,7);
         $oeuf->setFat(10);
