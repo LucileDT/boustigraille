@@ -19,7 +19,10 @@ $alert-color-scale:     0;
 
 // import Select2
 @import '~select2';
-@import '~select2-bootstrap-5-theme';
+// https://github.com/apalfrey/select2-bootstrap-5-theme/issues/75
+$s2bs5-border-color: $border-color;
+@import '~select2-bootstrap-5-theme/src/include-all';
+//@import '~select2-bootstrap-5-theme';
 
 $header-height: 100px;
 $footer-height-padding: calc(3rem + 3rem + 55px);
