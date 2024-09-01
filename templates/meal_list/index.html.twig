@@ -10,15 +10,22 @@
     {{ encore_entry_script_tags('meal_list_card') }}
 {% endblock %}
 
+{% block page_breadcrumb %}
+    <div class="container-fluid">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Listes de repas</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+
 {% block page_title %}
     <div class="container-fluid mt-3">
         <div class="row">
             <div class="col">
                 <div class="page-heading">
-                    <h6>
-                        <a href="{{ path('home') }}">Accueil</a>
-                        / Listes de repas
-                    </h6>
                     <h2>Listes de repas</h2>
                 </div>
             </div>

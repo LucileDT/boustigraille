@@ -9,26 +9,34 @@
         {{ meal_list.personName }}
 {% endblock %}
 
+{% block page_breadcrumb %}
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+                <li class="breadcrumb-item"><a href="{{ path('meal_list_index') }}">Listes de repas</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Édition de la liste de repas du
+                    {{ meal_list.startDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
+                    au
+                    {{ meal_list.endDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
+                    de
+                    {{ meal_list.personName }}
+                </li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+
 {% block page_title %}
-    <div class="container-fluid mt-3">
+    <div class="container mt-3">
         <div class="row">
             <div class="col">
                 <div class="page-heading">
-                    <h6>
-                        <a href="{{ path('home') }}">Accueil</a>
-                        /
-                        <a href="{{ path('meal_list_index') }}">Listes de repas</a>
-                        /
-                        Édition de la liste de repas du
-                        {{ meal_list.startDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
-                        au
-                        {{ meal_list.endDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
-                        de
-                        {{ meal_list.personName }}
-                    </h6>
                     <h2>
                         Édition de la liste de repas du
                         {{ meal_list.startDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
+                        <br>
                         au
                         {{ meal_list.endDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
                         de
@@ -41,9 +49,11 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col">
-            {{ include('meal_list/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                {{ include('meal_list/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+            </div>
         </div>
     </div>
 {% endblock %}

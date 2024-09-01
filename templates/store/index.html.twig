@@ -2,16 +2,23 @@
 
 {% block title %}Liste des magasins{% endblock %}
 
+{% block page_breadcrumb %}
+    <div class="container-fluid">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+                <li class="breadcrumb-item">Administration</li>
+                <li class="breadcrumb-item active" aria-current="page">Liste des magasins</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+
 {% block page_title %}
     <div class="container-fluid mt-3">
         <div class="row">
             <div class="col">
                 <div class="page-heading">
-                    <h6>
-                        <a href="{{ path('home') }}">Accueil</a>
-                        / Administration
-                        / Liste des magasins
-                    </h6>
                     <h2>Liste des magasins</h2>
                 </div>
             </div>

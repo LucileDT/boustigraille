@@ -2,16 +2,23 @@
 
 {% block title %}Liste des comptes{% endblock %}
 
+{% block page_breadcrumb %}
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+                <li class="breadcrumb-item">Administration</li>
+                <li class="breadcrumb-item active" aria-current="page">Liste des comptes</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+
 {% block page_title %}
-    <div class="container-fluid mt-3">
+    <div class="container mt-3">
         <div class="row">
             <div class="col">
                 <div class="page-heading">
-                    <h6>
-                        <a href="{{ path('home') }}">Accueil</a>
-                        / Administration
-                        / Liste des comptes
-                    </h6>
                     <h2>Liste des comptes</h2>
                 </div>
             </div>
@@ -25,39 +32,41 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col">
-            <table class="table table-stripped">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Id</th>
-                        <th>Username</th>
-                        <th>Responsibilités</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for user in users %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <table class="table table-stripped">
+                    <thead class="thead-light">
                         <tr>
-                            <td>{{ user.id }}</td>
-                            <td>{{ user.username }}</td>
-                            <td>
-                                {%  for responsibility in user.responsibilities %}
-                                    <span>{{ responsibility.label }}</span>
-                                {% endfor %}
-                            </td>
-                            <td class="text-end">
-                                <a class="btn-primary btn" href="{{ path('user_show', {'id': user.id}) }}">Voir</a>
-                                <a class="btn-secondary btn" href="{{ path('user_edit', {'id': user.id}) }}">Éditer</a>
-                            </td>
+                            <th>Id</th>
+                            <th>Username</th>
+                            <th>Responsibilités</th>
+                            <th></th>
                         </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="4">Pas de données trouvées</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>
+                                    {%  for responsibility in user.responsibilities %}
+                                        <span>{{ responsibility.label }}</span>
+                                    {% endfor %}
+                                </td>
+                                <td class="text-end">
+                                    <a class="btn-primary btn" href="{{ path('user_show', {'id': user.id}) }}">Voir</a>
+                                    <a class="btn-secondary btn" href="{{ path('user_edit', {'id': user.id}) }}">Éditer</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">Pas de données trouvées</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 {% endblock %}

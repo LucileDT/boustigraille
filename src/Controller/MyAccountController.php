@@ -75,7 +75,7 @@ class MyAccountController extends AbstractController
             return $this->redirectToRoute('user_show', ['id' => $currentUser->getId()]);
         }
 
-        return $this->render('user/edit-nutritional-data.html.twig', [
+        return $this->render('my_account/edit-nutritional-data.html.twig', [
             'user' => $currentUser,
             'form' => $form->createView(),
         ]);
