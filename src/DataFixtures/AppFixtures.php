@@ -25,8 +25,14 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         // -- USERS -- //
-        /** @var Responsibility $roleAdmin */
-        $roleAdmin = $manager->getRepository(Responsibility::class)->find(1);
+        $roleAdmin = new Responsibility(
+            1,
+            'ROLE_ADMIN',
+            'Administrateurice de la base de données',
+            'Permet à l\'utilisateurice de créer, éditer et supprimer les comptes utilisateurs de la base de données, ainsi que de gérer les repas et ingrédients.'
+        );
+
+        $manager->persist($roleAdmin);
 
         // Admin User
         $admin = new User();
@@ -53,6 +59,7 @@ class AppFixtures extends Fixture
         $patate->setCarbohydrates(16,7);
         $patate->setFat(0,3);
         $patate->setEnergy(80,5);
+        $patate->setHasStockCheckNeededBeforeBuying(true);
         $manager->persist($patate);
 
         $oignon = new Ingredient();
@@ -62,6 +69,7 @@ class AppFixtures extends Fixture
         $oignon->setCarbohydrates(9);
         $oignon->setFat(0,2);
         $oignon->setEnergy(43);
+        $oignon->setHasStockCheckNeededBeforeBuying(true);
         $manager->persist($oignon);
 
         $boeuf = new Ingredient();
@@ -71,13 +79,25 @@ class AppFixtures extends Fixture
         $boeuf->setCarbohydrates(0);
         $boeuf->setFat(2,3);
         $boeuf->setEnergy(113);
+        $boeuf->setHasStockCheckNeededBeforeBuying(false);
         $manager->persist($boeuf);
+
+        $oeuf = new Ingredient();
+        $oeuf->setLabel('Oeuf');
+        $oeuf->setMeasureType('unité');
+        $oeuf->setProteins(12);
+        $oeuf->setCarbohydrates(0,7);
+        $oeuf->setFat(10);
+        $oeuf->setEnergy(141);
+        $oeuf->setHasStockCheckNeededBeforeBuying(true);
+        $manager->persist($oeuf);
 
         $manager->flush();
 
         // -- RECIPES -- //
         $poeleeCampagnarde = new Recipe();
         $poeleeCampagnarde->setName('Poêlée campagnarde');
+        $poeleeCampagnarde->setAuthor($user);
         $manager->persist($poeleeCampagnarde);
 
         $manager->flush();
@@ -86,20 +106,30 @@ class AppFixtures extends Fixture
         $patateQuantity = new IngredientQuantityForRecipe();
         $patateQuantity->setIngredient($patate);
         $patateQuantity->setQuantity('300');
+        $patateQuantity->setIsMeasuredByUnit(false);
         $patateQuantity->setRecipe($poeleeCampagnarde);
         $manager->persist($patateQuantity);
 
         $oignonQuantity = new IngredientQuantityForRecipe();
         $oignonQuantity->setIngredient($oignon);
         $oignonQuantity->setQuantity('200');
+        $oignonQuantity->setIsMeasuredByUnit(false);
         $oignonQuantity->setRecipe($poeleeCampagnarde);
         $manager->persist($oignonQuantity);
 
         $boeufQuantity = new IngredientQuantityForRecipe();
         $boeufQuantity->setIngredient($boeuf);
         $boeufQuantity->setQuantity('250');
+        $boeufQuantity->setIsMeasuredByUnit(false);
         $boeufQuantity->setRecipe($poeleeCampagnarde);
         $manager->persist($boeufQuantity);
+
+        $oeufQuantity = new IngredientQuantityForRecipe();
+        $oeufQuantity->setIngredient($oeuf);
+        $oeufQuantity->setQuantity('1');
+        $oeufQuantity->setIsMeasuredByUnit(true);
+        $oeufQuantity->setRecipe($poeleeCampagnarde);
+        $manager->persist($oeufQuantity);
 
         $manager->flush();
     }
