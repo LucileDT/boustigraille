@@ -2,48 +2,57 @@
 
 {% block title %}Connexion{% endblock %}
 
+{% block page_breadcrumb %}
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Connexion</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+
 {% block page_title %}
-    <div class="container-fluid">
+    <div class="container">
         <div class="page-heading">
-            <h6>
-                <a href="{{ path('home') }}">Accueil</a>
-                / Connexion
-            </h6>
             <h2>Bienvenue sur Boustigraille, pour accéder au logiciel, identifiez-vous.</h2>
         </div>
     </div>
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-md-4 offset-md-4 text-center">
-            <form action="{{ path('app_login') }}" method="post">
-                <div class="mb-3">
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="username"
-                        name="_username"
-                        placeholder="Username"
-                        value="{% if username is defined %}{{ username }}{% endif %}"
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-4 text-center">
+                <form action="{{ path('app_login') }}" method="post">
+                    <div class="mb-3">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="username"
+                            name="_username"
+                            placeholder="Username"
+                            value="{% if username is defined %}{{ username }}{% endif %}"
+                        >
+                    </div>
+                    <div class="mb-3">
+                        <input type="password"
+                            class="form-control"
+                            id="password"
+                            name="_password"
+                            placeholder="Mot de passe"
+                        >
+                    </div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <button
+                        type="submit"
+                        class="btn btn-primary center-block col-xl-4 col-lg-5 col-12"
                     >
-                </div>
-                <div class="mb-3">
-                    <input type="password"
-                        class="form-control"
-                        id="password"
-                        name="_password"
-                        placeholder="Mot de passe"
-                    >
-                </div>
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                <button
-                    type="submit"
-                    class="btn btn-primary center-block col-xl-4 col-lg-5 col-12"
-                >
-                    Connexion
-                </button>
-            </form>
+                        Connexion
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}

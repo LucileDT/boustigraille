@@ -2,16 +2,24 @@
 
 {% block title %}Nouveau compte{% endblock %}
 
+{% block page_breadcrumb %}
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+                <li class="breadcrumb-item">Administration</li>
+                <li class="breadcrumb-item"><a href="{{ path('user_index') }}">Liste des comptes</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Nouveau compte</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+
 {% block page_title %}
-    <div class="container-fluid mt-3">
+    <div class="container mt-3">
         <div class="row">
             <div class="col">
                 <div class="page-heading">
-                    <h6>
-                        <a href="{{ path('home') }}">Accueil</a>
-                        / Administration
-                        / Nouveau compte
-                    </h6>
                     <h2>Nouveau compte</h2>
                 </div>
             </div>
@@ -21,9 +29,11 @@
 
 
 {% block body %}
-    <div class="row">
-        <div class="col">
-            {{ include('user/_form.html.twig') }}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                {{ include('user/_form.html.twig') }}
+            </div>
         </div>
     </div>
 {% endblock %}

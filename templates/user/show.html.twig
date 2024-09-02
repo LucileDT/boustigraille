@@ -2,18 +2,24 @@
 
 {% block title %}Compte utilisateur{% endblock %}
 
+{% block page_breadcrumb %}
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+                <li class="breadcrumb-item">Administration</li>
+                <li class="breadcrumb-item"><a href="{{ path('user_index') }}">Liste des comptes</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Compte de {{ user.username }}</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+
 {% block page_title %}
-    <div class="container-fluid mt-3">
+    <div class="container mt-3">
         <div class="row">
             <div class="col">
                 <div class="page-heading">
-                    <h6>
-                        <a href="{{ path('home') }}">Accueil</a>
-                        / Administration
-                        /
-                        <a href="{{ path('user_index') }}">Liste des comptes</a>
-                        / Compte de {{ user.username }}
-                    </h6>
                     <h2>
                         Compte de {{ user.username }}
                     </h2>
@@ -35,47 +41,49 @@
 
 
 {% block body %}
-    <div class="row">
-        <div class="col">
-            <table class="table">
-                <tbody>
-                    <tr>
-                        <th>Id</th>
-                        <td>{{ user.id }}</td>
-                    </tr>
-                    <tr>
-                        <th>Username</th>
-                        <td>{{ user.username }}</td>
-                    </tr>
-                    <tr class="border-bottom">
-                        <th>Responsabilités</th>
-                        <td>
-                            {%  for responsibility in user.responsibilities %}
-                                <span>{{ responsibility.label }}</span>
-                            {% endfor %}
-                        </td>
-                    </tr>
-                    <tr class="bg-light border-bottom">
-                        <td>Valeurs nutritionnelles</td>
-                        <td>
-                            <table class="w-100 bg-white text-center table-bordered table mb-0">
-                                <tr class="border-bottom">
-                                    <td>Protéines</td>
-                                    <td>Lipides</td>
-                                    <td>Glucides</td>
-                                    <td>Énergie</td>
-                                </tr>
-                                <tr class="border-bottom">
-                                    <td>{{ user.proteins }} g</td>
-                                    <td>{{ user.fat }} g</td>
-                                    <td>{{ user.carbohydrates }} g</td>
-                                    <td>{{ user.energy }} kcal</td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ user.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Username</th>
+                            <td>{{ user.username }}</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th>Responsabilités</th>
+                            <td>
+                                {%  for responsibility in user.responsibilities %}
+                                    <span>{{ responsibility.label }}</span>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <tr class="bg-light border-bottom">
+                            <td>Valeurs nutritionnelles</td>
+                            <td>
+                                <table class="w-100 bg-white text-center table-bordered table mb-0">
+                                    <tr class="border-bottom">
+                                        <td>Protéines</td>
+                                        <td>Lipides</td>
+                                        <td>Glucides</td>
+                                        <td>Énergie</td>
+                                    </tr>
+                                    <tr class="border-bottom">
+                                        <td>{{ user.proteins }} g</td>
+                                        <td>{{ user.fat }} g</td>
+                                        <td>{{ user.carbohydrates }} g</td>
+                                        <td>{{ user.energy }} kcal</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 {% endblock %}

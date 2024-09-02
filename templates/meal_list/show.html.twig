@@ -9,26 +9,34 @@
         {{ meal_list.personName }}
 {% endblock %}
 
+{% block page_breadcrumb %}
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+                <li class="breadcrumb-item"><a href="{{ path('meal_list_index') }}">Listes de repas</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Liste de repas du
+                    {{ meal_list.startDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
+                    au
+                    {{ meal_list.endDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
+                    de
+                    {{ meal_list.personName }}
+                </li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+
 {% block page_title %}
-    <div class="container-fluid mt-3">
+    <div class="container mt-3">
         <div class="row">
             <div class="col">
                 <div class="page-heading">
-                    <h6>
-                        <a href="{{ path('home') }}">Accueil</a>
-                        /
-                        <a href="{{ path('meal_list_index') }}">Liste de repas</a>
-                        /
-                        Liste de repas du
-                        {{ meal_list.startDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
-                        au
-                        {{ meal_list.endDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
-                        de
-                        {{ meal_list.personName }}
-                    </h6>
                     <h2>
                         Liste de repas du
                         {{ meal_list.startDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
+                        <br>
                         au
                         {{ meal_list.endDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
                         de
@@ -54,61 +62,63 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row mt-5">
-        <div class="col">
-            <table class="table">
-                <tbody>
-                    {% if app.user is not null %}
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col">
+                <table class="table">
+                    <tbody>
+                        {% if app.user is not null %}
+                            <tr>
+                                <th>Id</th>
+                                <td>{{ meal_list.id }}</td>
+                            </tr>
+                        {% endif %}
                         <tr>
-                            <th>Id</th>
-                            <td>{{ meal_list.id }}</td>
+                            <th>Personne</th>
+                            <td>{{ meal_list.personName }}</td>
                         </tr>
-                    {% endif %}
-                    <tr>
-                        <th>Personne</th>
-                        <td>{{ meal_list.personName }}</td>
-                    </tr>
-                    <tr>
-                        <th>Du</th>
-                        <td>
-                            {{ meal_list.startDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Au</th>
-                        <td>
-                            {{ meal_list.endDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Repas</th>
-                        <td>
-                            {% if meal_list.meals|length > 0 %}
-                                <div class="d-inline-block text-left">
-                                    <ul class="pl-4">
-                                        {% for mealQuantityForList in meal_list.meals %}
-                                            <li>
-                                                {% if mealQuantityForList.meal.mainPictureFilename is empty %}
-                                                    <img class="img-thumbnail img-thumbnail-small" src="{{ asset('build/image/default-recipe-main-picture.jpg') }}">
-                                                {% else %}
-                                                    <img class="img-thumbnail img-thumbnail-small" src="{{ asset('uploads/pictures/' ~ mealQuantityForList.meal.mainPictureFilename) }}">
-                                                {% endif %}
-                                                <a href="{{ path('recipe_show', {'id': mealQuantityForList.meal.id}) }}">{{mealQuantityForList.meal.name }}</a>&nbsp;x{{mealQuantityForList.quantity}}
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            {% else %}
-                                Aucun repas n'est prévu (pour le moment)
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Commentaire</th>
-                        <td>{{ meal_list.comment }}</td>
-                    </tr>
-                </tbody>
-            </table>
+                        <tr>
+                            <th>Du</th>
+                            <td>
+                                {{ meal_list.startDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isStartingAtLunch ? 'midi' : 'soir' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Au</th>
+                            <td>
+                                {{ meal_list.endDate | format_date('long', locale='fr') }}&nbsp;{{ meal_list.isEndingAtLunch ? 'midi' : 'soir' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Repas</th>
+                            <td>
+                                {% if meal_list.meals|length > 0 %}
+                                    <div class="d-inline-block text-left">
+                                        <ul class="pl-4">
+                                            {% for mealQuantityForList in meal_list.meals %}
+                                                <li>
+                                                    {% if mealQuantityForList.meal.mainPictureFilename is empty %}
+                                                        <img class="img-thumbnail img-thumbnail-small" src="{{ asset('build/image/default-recipe-main-picture.jpg') }}">
+                                                    {% else %}
+                                                        <img class="img-thumbnail img-thumbnail-small" src="{{ asset('uploads/pictures/' ~ mealQuantityForList.meal.mainPictureFilename) }}">
+                                                    {% endif %}
+                                                    <a href="{{ path('recipe_show', {'id': mealQuantityForList.meal.id}) }}">{{mealQuantityForList.meal.name }}</a>&nbsp;x{{mealQuantityForList.quantity}}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% else %}
+                                    Aucun repas n'est prévu (pour le moment)
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Commentaire</th>
+                            <td>{{ meal_list.comment }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 {% endblock %}
