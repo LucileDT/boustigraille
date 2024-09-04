@@ -32,7 +32,9 @@
             {{ recipe.name }}
         </h1>
 
-        {% if recipe.author.doShowUsernameOnRecipe or (app.user is not null and app.user == recipe.author) or (app.user is not null and app.user.doFollowUsernameOnRecipe(recipe.author)) %}
+        {% if recipe.author.doShowUsernameOnRecipe or (app.user is not null and app.user == recipe.author) %}
+                {# Commented for notifications and follow rework #}
+                {# or (app.user is not null and app.user.doFollowUsernameOnRecipe(recipe.author)) #}
             <p class="description">
                 Par {{ recipe.author.username }}
             </p>

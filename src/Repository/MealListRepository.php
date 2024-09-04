@@ -46,6 +46,7 @@ class MealListRepository extends ServiceEntityRepository
         }
     }
 
+    // TODO: create a base query and refact the three next methods
     /**
      * @return MealList[] Returns an array of past MealList
      */
@@ -55,9 +56,11 @@ class MealListRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('m')
             ->leftJoin('m.author', 'a')
-            ->leftJoin('a.followerMealLists', 'fml')
+            // Commented for notifications and follow rework
+            // ->leftJoin('a.followerMealLists', 'fml')
             ->andWhere('m.endDate < :now')
-            ->andWhere('m.author = :connectedUser OR a.doShowWrittenMealListToOthers = :true OR (fml.follower = :connectedUser AND fml.acceptedAt IS NOT NULL)')
+            ->andWhere('m.author = :connectedUser OR a.doShowWrittenMealListToOthers = :true')
+                    // OR (fml.follower = :connectedUser AND fml.acceptedAt IS NOT NULL)')
             ->setParameter('now', $now)
             ->setParameter('connectedUser', $connectedUser)
             ->setParameter('true', true)
@@ -76,9 +79,11 @@ class MealListRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('m')
             ->leftJoin('m.author', 'a')
-            ->leftJoin('a.followerMealLists', 'fml')
+            // Commented for notifications and follow rework
+            // ->leftJoin('a.followerMealLists', 'fml')
             ->andWhere(':now >= m.startDate and :now <= m.endDate')
-            ->andWhere('m.author = :connectedUser OR a.doShowWrittenMealListToOthers = :true OR (fml.follower = :connectedUser AND fml.acceptedAt IS NOT NULL)')
+            ->andWhere('m.author = :connectedUser OR a.doShowWrittenMealListToOthers = :true')
+                    // OR (fml.follower = :connectedUser AND fml.acceptedAt IS NOT NULL)')
             ->setParameter('now', $now)
             ->setParameter('connectedUser', $connectedUser)
             ->setParameter('true', true)
@@ -97,9 +102,11 @@ class MealListRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('m')
             ->leftJoin('m.author', 'a')
-            ->leftJoin('a.followerMealLists', 'fml')
+            // Commented for notifications and follow rework
+            // ->leftJoin('a.followerMealLists', 'fml')
             ->andWhere('m.startDate > :now')
-            ->andWhere('m.author = :connectedUser OR a.doShowWrittenMealListToOthers = :true OR (fml.follower = :connectedUser AND fml.acceptedAt IS NOT NULL)')
+            ->andWhere('m.author = :connectedUser OR a.doShowWrittenMealListToOthers = :true')
+                // OR (fml.follower = :connectedUser AND fml.acceptedAt IS NOT NULL)')
             ->setParameter('now', $now)
             ->setParameter('connectedUser', $connectedUser)
             ->setParameter('true', true)
