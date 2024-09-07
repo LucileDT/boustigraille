@@ -1,0 +1,16 @@
+<span class="icon">
+    {% if icon == 1 %}
+        {% set icon = 'restaurant-fill' %}
+    {% elseif icon == 2 %}
+        {% set icon = 'cup-line' %}
+    {% elseif icon == 3 %}
+        {% set icon = 'cake-3-fill' %}
+    {% elseif icon == 4 %}
+        {% set icon = 'bread-fill' %}
+    {% elseif icon == 5 %}
+        {% set icon = 'bowl-fill' %}
+    {% else %}
+        {% set icon = 'restaurant-2-line' %}
+    {% endif %}
+    <i class="ri-{{ icon }}"></i>
+</span>

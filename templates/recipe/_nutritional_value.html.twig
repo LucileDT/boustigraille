@@ -1,0 +1,65 @@
+{% set nutritionalElementValue = attribute(recipe, nutritionalElement) %}
+
+<div>
+    {# recipe nutritional data #}
+    <div class="d-flex align-items-center mt-2">
+        <span class="label">
+            {% if nutritionalElement == 'proteins' %}
+                Protéines
+            {% elseif nutritionalElement == 'carbohydrates' %}
+                Glucides
+            {% elseif nutritionalElement == 'fat' %}
+                Lipides
+            {% elseif nutritionalElement == 'energy' %}
+                Énergie
+            {% endif %}
+        </span>
+        <span class="flex-grow-1 px-3"><hr class="m-0"></span>
+        <span>
+            {# user nutritional information #}
+            {% if app.user is not null and attribute(app.user, nutritionalElement) > 0 %}
+                {% set userNutritionalElement = attribute(app.user, nutritionalElement) %}
+                {% set percentageDifference = (((nutritionalElementValue - userNutritionalElement) / userNutritionalElement) * 100) | round %}
+                <small class="text-muted">
+                    <span class="user-{{ nutritionalElement }}">{{ userNutritionalElement }}</span>&nbsp;g
+                    {% if nutritionalElementValue >= userNutritionalElement %}
+                        (<i class="ri-arrow-up-circle-fill text-success"></i>
+                        <span class="percentage-{{ nutritionalElement }}">+{{ percentageDifference }}</span>%)
+                    {% else %}
+                        (<i class="ri-arrow-down-circle-fill text-danger"></i>
+                        <span class="percentage-{{ nutritionalElement }}">{{ percentageDifference }}</span>%)
+                    {% endif %}
+                    /
+                </small>
+            {% endif %}
+
+            {# recipe nutritional amount #}
+            <span class="recipe-{{ nutritionalElement }}">
+                {{ nutritionalElementValue | round }}
+            </span>&nbsp;{{ nutritionalElement == 'energy' ? 'kcal' : 'g' }}
+        </span>
+    </div>
+
+    {# ingredient nutritional data #}
+    <div class="ingredient-nutritional-collapse collapse">
+        {% for ingredientQuantity in ingredientQuantities %}
+            {% set ingredient = ingredientQuantity.ingredient %}
+            <div class="ingredient-nutritional-data d-flex align-items-center ms-4 text-muted">
+                <span class="label">
+                    {{ ingredient.label }}
+                </span>
+                <span class="flex-grow-1 px-3"><hr class="m-0"></span>
+                <span class="ingredient-nutritional-data-value">
+                    <span class="recipe-{{ nutritionalElement }}">
+                        {% if ingredientQuantity.isMeasuredByUnit %}
+                            {{ (attribute(ingredient, nutritionalElement) / 100 * (ingredientQuantity.quantity * ingredient.unitSize)) | round }}
+                        {% else %}
+                            {{ (attribute(ingredient, nutritionalElement) / 100 * ingredientQuantity.quantity) | round }}
+                        {% endif %}
+                    </span>&nbsp;{{ nutritionalElement == 'energy' ? 'kcal' : 'g' }}
+                </span>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+

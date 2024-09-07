@@ -1,14 +1,16 @@
+@use "../klassy_cafe/assets/css/variables";
+
 // customize Bootstrap
 $font-family-sans-serif: 'Poppins', sans-serif;
 $min-contrast-ratio: 2;
-$primary:               #678EDB;
-$secondary:             #BC6ECC;
-$success:               #7BBF48;
-$info:                  #4EA7C5;
-$warning:               #FB7F37;
-$danger:                #F35A5A;
-$dark:                  #595C5F;
-$light:                 #F2F4F6;
+$primary:               variables.$klassy-primary-color;
+$secondary:             variables.$klassy-secondary-color;
+$success:               variables.$klassy-success-color;
+$info:                  variables.$klassy-info-color;
+$warning:               variables.$klassy-warning-color;
+$danger:                variables.$klassy-danger-color;
+$dark:                  variables.$klassy-dark-color;
+$light:                 variables.$klassy-light-color;
 $alert-bg-scale:        0;
 $alert-border-scale:    0;
 $alert-color-scale:     0;
