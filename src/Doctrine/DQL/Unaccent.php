@@ -4,6 +4,7 @@ namespace App\Doctrine\DQL;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\Lexer;
+use Doctrine\ORM\Query\TokenType;
 
 /**
 * Unaccent string using postgresql extension unaccent :
@@ -23,11 +24,11 @@ class Unaccent extends FunctionNode
 
     public function parse(\Doctrine\ORM\Query\Parser $parser): void
     {
-        $parser->match(Lexer::T_IDENTIFIER);
-        $parser->match(Lexer::T_OPEN_PARENTHESIS);
+        $parser->match(TokenType::T_IDENTIFIER);
+        $parser->match(TokenType::T_OPEN_PARENTHESIS);
 
         $this->string = $parser->StringPrimary();
 
-        $parser->match(Lexer::T_CLOSE_PARENTHESIS);
+        $parser->match(TokenType::T_CLOSE_PARENTHESIS);
     }
 }
