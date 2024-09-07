@@ -28,23 +28,23 @@ export function toggleFavorite(favoriteButton) {
         method: 'POST',
         dataType: 'json',
     }).done(function() {
-        let icon = $(toggleFavoriteButton).find('i');
+        let $icon = $(toggleFavoriteButton).find('i');
+        $icon.tooltip('dispose');
         let recipeWasFaved = toggleFavoriteButton.data('marked-as-favorite');
         toggleFavoriteButton.data('marked-as-favorite', !recipeWasFaved);
 
         if (toggleFavoriteButton.data('marked-as-favorite')) {
-            icon.addClass('ri-heart-fill');
-            icon.removeClass('ri-heart-add-line');
-            icon.attr('title', 'Retirer de mes favoris');
+            $icon.addClass('ri-heart-fill');
+            $icon.removeClass('ri-heart-add-line');
+            $icon.attr('title', 'Retirer de mes favoris');
         } else {
-            icon.addClass('ri-heart-add-line');
-            icon.removeClass('ri-heart-fill');
-            icon.attr('title', 'Ajouter à mes favoris');
+            $icon.addClass('ri-heart-add-line');
+            $icon.removeClass('ri-heart-fill');
+            $icon.attr('title', 'Ajouter à mes favoris');
         }
 
-        icon.tooltip('dispose');
-        icon.tooltip();
-        icon.tooltip('show');
+        $icon.tooltip();
+        $icon.tooltip('show');
     });
 }
 

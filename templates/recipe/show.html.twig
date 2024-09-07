@@ -14,7 +14,7 @@
 {% block title %}{{ recipe.name }}{% endblock %}
 
 {% block page_breadcrumb %}
-    <div class="container-fluid">
+    <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
@@ -26,127 +26,193 @@
     </div>
 {% endblock %}
 
-{% block page_title %}
-    <div class="container-fluid mt-3">
-        <div class="row">
-            <div class="col">
-                <div class="page-heading">
-                    <h2>
-                        {% if app.user is not null %}
-                            <span
-                                class="toggle-favorite-button"
-                                data-url="{{ path('api_recipe_toggle_favorite', {'id': recipe.id}) }}"
-                                data-marked-as-favorite="{{ app.user.hasFaved(recipe) }}"
-                            ></span>
-                        {% endif %}
-                        {{ recipe.name }}
-                    </h2>
-                </div>
-            </div>
-            {% if app.user is not null %}
-                <div class="col-12 col-lg-3 text-end">
-                    <div class="d-flex justify-content-end">
-                        {{ include('recipe/_delete_form.html.twig') }}
-                        <a
-                            class="btn btn-primary btn-large ms-2"
-                            href="{{ path('recipe_edit', {'id': recipe.id}) }}"
-                        >
-                            Éditer
-                        </a>
-                    </div>
-                </div>
-            {% endif %}
-        </div>
-    </div>
-{% endblock %}
+{% block page_title %}{% endblock %}
 
 {% block body %}
-    <div class="row mt-4 mb-5">
-        <div class="col">
-            <div class="recipe-header">
-                {% if recipe.mainPictureFilename is empty %}
-                    <img class="image-foreground" src="{{ asset('build/image/default-recipe-main-picture.jpg') }}">
-                {% else %}
-                    <img class="image-foreground" src="{{ asset('uploads/pictures/' ~ recipe.mainPictureFilename) }}">
-                {% endif %}
-                {% if recipe.mainPictureFilename is empty %}
-                    <img class="image-background" src="{{ asset('build/image/default-recipe-main-picture.jpg') }}">
-                {% else %}
-                    <img class="image-background" src="{{ asset('uploads/pictures/' ~ recipe.mainPictureFilename) }}">
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-5 col-12">
-            <div class="bg-light p-5">
-                <h3 class="mb-3 mb-2">
-                    <form class="d-flex align-items-center">
-                        <label class="" for="staticEmail2">Ingrédients pour</label>
-                        <select class="flex-grow-1 ms-3 form-select w-auto" id="ingredients-quantity">
+    <div class="container mt-5">
+        <div class="row">
+            {# blue section #}
+            <div id="recipe-data" class="col bg-primary">
+                {#  recipe picture #}
+                <div class="recipe-picture-container">
+                    <div class="recipe-picture">
+                        {% if recipe.mainPictureFilename is empty %}
+                            <img src="{{ asset('build/image/default-recipe-main-picture.jpg') }}">
+                        {% else %}
+                            <img src="{{ asset('uploads/pictures/' ~ recipe.mainPictureFilename) }}">
+                        {% endif %}
+                    </div>
+                </div>
+
+                {# recipe general data (only name & author at the moment) #}
+                <div class="recipe-general-data text-center text-white">
+                    <div class="recipe-name">
+                        <h1>{{ recipe.name }}</h1>
+                        {# todo add author #}
+                    </div>
+                    <hr>
+                </div>
+
+                {# recipe ingredients #}
+                <div class="recipe-ingredients bg-white">
+                    <h2 class="d-flex align-items-center">
+                        <label class="text-nowrap" for="ingredients-quantity">Ingrédients pour</label>
+                        <select class="ms-2 form-select form-select-sm" id="ingredients-quantity">
                             <option value="1">1 part</option>
                             {% for i in 2..10 %}
                                 <option
-                                    value="{{ i }}"
-                                    {% if i == 4 %}
-                                        selected="selected"
-                                    {% endif %}
-                                    >
+                                        value="{{ i }}"
+                                        {% if i == 4 %}
+                                            selected="selected"
+                                        {% endif %}
+                                >
                                     {{ i }} parts
                                 </option>
                             {% endfor %}
                         </select>
-                    </form>
-                </h3>
-                <div class="my-4">
+                    </h2>
                     <form id="ingredients">
                         {% for ingredientQuantity in recipe.ingredients %}
                             {% set ingredient = ingredientQuantity.ingredient %}
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="ingredient-check-{{ ingredient.id }}">
-                                <label class="custom-control-label" for="ingredient-check-{{ ingredient.id }}">
-                                    <span class="quantity"
-                                        data-quantity-for-one-portion="{{ ingredientQuantity.quantity }}">
-                                        {{ ingredientQuantity.quantity }}
+                            <div class="ingredient custom-control custom-checkbox d-flex">
+                                <input type="checkbox" class="custom-control-input"
+                                       id="ingredient-check-{{ ingredient.id }}">
+                                <label
+                                        class="custom-control-label ms-2 flex-grow-1 d-flex align-items-center"
+                                        for="ingredient-check-{{ ingredient.id }}"
+                                >
+                                    <span class="label">
+                                        <span
+                                                class="quantity"
+                                                data-quantity-for-one-portion="{{ ingredientQuantity.quantity }}"
+                                        >
+                                            {{ ingredientQuantity.quantity }}
+                                        </span>
+
+                                        {% if not ingredientQuantity.isMeasuredByUnit %}
+                                            {{ ingredient.measureType }} de
+                                        {% endif %}
+
+                                        <span class="text-lowercase">{{ ingredient.label }}</span>
+
+                                        {% if ingredientQuantity.isMeasuredByUnit %}
+                                            (<span class="quantity-for-unit" data-unit-size="{{ ingredient.unitSize }}">
+                                                {{ ingredientQuantity.quantity * ingredient.unitSize }}
+                                            </span> {{ ingredient.measureType }})
+                                        {% endif %}
                                     </span>
-                                    {% if not ingredientQuantity.isMeasuredByUnit %}
-                                        {{ ingredient.measureType }} de
-                                    {% endif %}
-                                    <span class="text-lowercase">{{ ingredient.label }}</span>
-                                    {% if ingredientQuantity.isMeasuredByUnit %}
-                                        (<span class="quantity-for-unit" data-unit-size="{{ ingredient.unitSize }}">
-                                            {{ ingredientQuantity.quantity * ingredient.unitSize }}
-                                        </span> {{ ingredient.measureType }})
-                                    {% endif %}
-                                    <a href="{{ path('ingredient_show', {'id': ingredient.id}) }}"
-                                    target="_blank"
-                                        class="text-muted">
+
+                                    <span class="flex-grow-1 px-3"><hr class="m-0"></span>
+
+                                    <a
+                                            href="{{ path('ingredient_show', {'id': ingredient.id}) }}"
+                                            target="_blank"
+                                            class="see-ingredients-details text-muted d-none d-md-inline"
+                                    >
                                         <small>Voir la fiche ingrédient</small>
                                     </a>
+                                    <a
+                                            href="{{ path('ingredient_show', {'id': ingredient.id}) }}"
+                                            target="_blank"
+                                            class="btn btn-sm btn-secondary d-md-none"
+                                            title="Voir la fiche ingrédient"
+                                            data-bs-toggle="tooltip"
+                                    >
+                                        <i class="ri-information-fill"></i>
+                                    </a>
+
                                 </label>
                             </div>
                         {% endfor %}
                     </form>
                 </div>
-                {{ include('recipe/_nutritional_values.html.twig', {'title': 'Valeurs nutritionnelles pour une part', 'paddingTop': 2}) }}
-                {{ include('recipe/_nutritional_values_ingredients.html.twig', {'ingredientQuantities': recipe.ingredients}) }}
+
+                {# recipe nutritional data #}
+                <div class="recipe-nutritional-data bg-white">
+                    <h2 class="d-flex justify-content-between align-items-center">
+                        <span>
+                            Valeurs nutritionnelles
+                            <small class="text-muted">(pour une part)</small>
+                        </span>
+                        <button
+                                id="expand-nutritional-information"
+                                type="button"
+                                class="btn btn-link text-info text-decoration-none pe-0 text-nowrap"
+                                data-bs-toggle="collapse"
+                                data-bs-target=".ingredient-nutritional-collapse"
+                                aria-expanded="false"
+                        >
+                            + d'info
+                            <i class="chevron ri-arrow-up-s-line"></i>
+                            <i class="chevron ri-arrow-down-s-line d-none"></i>
+                        </button>
+                    </h2>
+
+                    <div id="nutritional-data">
+                        {{ include('recipe/_nutritional_value.html.twig', {'nutritionalElement': 'proteins', 'ingredientQuantities': recipe.ingredients}) }}
+                        {{ include('recipe/_nutritional_value.html.twig', {'nutritionalElement': 'carbohydrates', 'ingredientQuantities': recipe.ingredients}) }}
+                        {{ include('recipe/_nutritional_value.html.twig', {'nutritionalElement': 'fat', 'ingredientQuantities': recipe.ingredients}) }}
+                        {{ include('recipe/_nutritional_value.html.twig', {'nutritionalElement': 'energy', 'ingredientQuantities': recipe.ingredients}) }}
+                    </div>
+                </div>
             </div>
-        </div>
-        <div id="recipe-text-body" class="col">
-            <h2 class="">Préparation</h2>
-            <div class="ms-5 my-4">
-                {% if recipe.process | length > 0 %}
-                    {{ recipe.process | markdown_to_html }}
-                {% else %}
-                    Vas-y à l'instinct c:
+
+            {# grey section #}
+            <div id="recipe-instructions-and-comment" class="col bg-light d-flex flex-column">
+                <h2 class="d-flex justify-content-between">
+                    Préparation
+                    {% if app.user is not null %}
+                        <span
+                                class="toggle-favorite-button"
+                                data-url="{{ path('api_recipe_toggle_favorite', {'id': recipe.id}) }}"
+                                data-marked-as-favorite="{{ app.user.hasFaved(recipe) }}"
+                        ></span>
+                    {% endif %}
+                </h2>
+                <div class="flex-grow-1">
+                    {% if recipe.process | length > 0 %}
+                        <div class="instructions">
+                            {{ recipe.process | markdown_to_html }}
+                        </div>
+                    {% else %}
+                        {% set icon = random(1, 6) %}
+                        <div class="instructions-placeholder d-flex flex-column align-items-center justify-content-center h-100">
+                            <div>
+                                {{ include('recipe/_placeholder_icon.html.twig', {'icon': icon}) }}
+                                <span class="px-3">Vas-y à l'instinct</span>
+                                {{ include('recipe/_placeholder_icon.html.twig', {'icon': icon}) }}
+                            </div>
+
+                            {% if random(0, 39) == 0 %}
+                                <small class="mt-5">Pitié mets à jour cette recette si tu la prépares</small>
+                                😭 😭 😭
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+                {% if recipe.comment | length > 0 %}
+                    <div class="comment">
+                        <h2>Notes</h2>
+                        <div class="comment-content fst-italic">
+                            {{ recipe.comment }}
+                        </div>
+                    </div>
+                {% endif %}
+                {% if app.user is not null %}
+                    {# recipe buttons #}
+                    <div class="buttons-container">
+                        <div class="d-flex w-100">
+                            <a
+                                    class="btn btn-primary btn-sm flex-grow-1 me-2"
+                                    href="{{ path('recipe_edit', {'id': recipe.id}) }}"
+                            >
+                                Éditer
+                            </a>
+                            {{ include('recipe/_delete_form.html.twig') }}
+                        </div>
+                    </div>
                 {% endif %}
             </div>
-            {% if recipe.comment | length > 0 %}
-                <h2 class="mt-5 pt-2">Notes</h2>
-                <div class="ms-5 my-4 text-muted font-italic">
-                    {{ recipe.comment }}
-                </div>
-            {% endif %}
         </div>
     </div>
 {% endblock %}

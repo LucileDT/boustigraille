@@ -8,19 +8,24 @@ $(document).ready(function () {
         let portionsCount = $(this).val();
         updateIngredientsQuantity(portionsCount);
     });
+
+    $('#expand-nutritional-information').on('click', function () {
+        $('.chevron').toggleClass('d-none');
+    });
 });
 
 function updateIngredientsQuantity(portionsCount) {
     $('#ingredients input').each(function (index) {
-        let inputLabel = $('label[for="' + $(this).attr('id') + '"]');
-        let quantityElement = $(inputLabel).children('span.quantity');
-        let quantityForOnePortion = quantityElement.data('quantity-for-one-portion');
-        quantityElement.html(quantityForOnePortion * portionsCount);
+        let $inputLabel = $('label[for="' + $(this).attr('id') + '"]');
+        let $quantityElement = $inputLabel.children('span.label').children('span.quantity');
 
-        let quantityForUnitElement = $(inputLabel).children('span.quantity-for-unit');
-        if (quantityForUnitElement.length > 0) {
-            let unitSize = quantityForUnitElement.data('unit-size');
-            quantityForUnitElement.html(quantityForOnePortion * portionsCount * unitSize);
+        let quantityForOnePortion = $quantityElement.data('quantity-for-one-portion');
+        $quantityElement.html(quantityForOnePortion * portionsCount);
+
+        let $quantityForUnitElement = $inputLabel.children('span.quantity-for-unit');
+        if ($quantityForUnitElement.length > 0) {
+            let unitSize = $quantityForUnitElement.data('unit-size');
+            $quantityForUnitElement.html(quantityForOnePortion * portionsCount * unitSize);
         }
     });
 }
