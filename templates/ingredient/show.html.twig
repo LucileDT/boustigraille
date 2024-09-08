@@ -28,7 +28,7 @@
             <div class="col col-md-3">
                 <div class="bg-primary text-center py-4">
                     <h3>Fiche ingrédient</h3>
-                    <h2>
+                    <h2 class="text-white">
                         <span class="ingredient-id me-1">#{{ ingredient.id }}</span>
                         {{ ingredient.label }}
                         {% if ingredient.barCode is not empty %}
@@ -179,6 +179,16 @@
                 <div class="bg-light p-4 mt-4">
                     <div class="fw-semibold mb-2">Commentaire</div>
                     {{ ingredient.comment ?? '-' }}
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+                <h2>Recettes utilisant cet ingrédient</h2>
+                <div id="klassy-cards-container" class="d-flex justify-content-between flex-wrap">
+                    {% for ingredientQuantity in ingredient.ingredientQuantityForRecipes %}
+                        {{ include('recipe/_recipe_card.html.twig', {'recipe': ingredientQuantity.recipe}) }}
+                    {% endfor %}
                 </div>
             </div>
         </div>

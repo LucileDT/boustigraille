@@ -16,7 +16,7 @@ class Recipe implements JsonSerializable
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\OneToMany(targetEntity: IngredientQuantityForRecipe::class, mappedBy: 'recipe', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: IngredientQuantityForRecipe::class, cascade: ['persist'], orphanRemoval: true)]
     private $ingredients;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

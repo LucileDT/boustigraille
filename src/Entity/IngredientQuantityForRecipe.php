@@ -14,7 +14,7 @@ class IngredientQuantityForRecipe
     private $id;
 
     #[ORM\JoinColumn(nullable: false)]
-    #[ORM\ManyToOne(targetEntity: Ingredient::class)]
+    #[ORM\ManyToOne(targetEntity: Ingredient::class, inversedBy: 'ingredientQuantityForRecipes')]
     private $ingredient;
 
     #[ORM\Column(type: 'float')]

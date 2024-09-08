@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\IngredientRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
@@ -55,6 +56,9 @@ class Ingredient
 
     #[ORM\Column(type: 'boolean')]
     private $hasStockCheckNeededBeforeBuying;
+
+    #[ORM\OneToMany(mappedBy: 'ingredient', targetEntity: IngredientQuantityForRecipe::class, cascade: ['persist'], orphanRemoval: true)]
+    private $ingredientQuantityForRecipes;
 
     public function getId(): ?int
     {
@@ -227,5 +231,13 @@ class Ingredient
         $this->hasStockCheckNeededBeforeBuying = $hasStockCheckNeededBeforeBuying;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|IngredientQuantityForRecipe[]
+     */
+    public function getIngredientQuantityForRecipes(): ?Collection
+    {
+        return $this->ingredientQuantityForRecipes;
     }
 }
