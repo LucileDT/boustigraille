@@ -66,7 +66,9 @@ class IngredientController extends AbstractController
     public function newFromOpenFoodFacts(
         OpenFoodFactService $offService,
         Request $request,
-        IngredientFromOpenFoodFactsFDO $ingredientIdentifier): Response
+        IngredientFromOpenFoodFactsFDO $ingredientIdentifier,
+        IngredientRepository $ingredientRepository
+    ): Response
     {
         $form = $this->createForm(IngredientFromOpenFoodFactsType::class, $ingredientIdentifier);
         $form->handleRequest($request);
@@ -92,6 +94,13 @@ class IngredientController extends AbstractController
             else
             {
                 $productBarCode = $ingredientIdentifier->getIdentifier();
+            }
+
+            $existingIngredient = $ingredientRepository->findOneBy(['barCode' => $productBarCode]);
+            if (!empty($existingIngredient)) {
+                $this->addFlash('info', 'Cet ingrédient est déjà présent dans notre base de données, vous avez été redirigé sur sa page.');
+
+                return $this->redirectToRoute('ingredient_edit', ['id' => $existingIngredient->getId()]);
             }
 
             try
