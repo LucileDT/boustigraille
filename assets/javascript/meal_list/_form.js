@@ -223,22 +223,24 @@ $(document).ready(function () {
                 } else {
                     $newRecipe.find('.description').html('');
                 }
+                let $seeRecipeButton = $dummyRecipe.find('.recipe-details-page-button').clone();
+                $seeRecipeButton.addClass('btn-outline');
                 $newRecipe.find('.main-text-button > .row').remove();
-                let button = $('<button>')
+                let $addToMealListButton = $('<button>')
                     .addClass('btn')
                     .addClass('btn-sm')
-                    .addClass('btn-outline')
                     .addClass('add-to-meal-list')
                     .attr('type', 'button')
                     .data('recipe-id', this.id)
                     .html('Ajouter à la liste de repas')
                 ;
-                button.on('click', function () {
+                $addToMealListButton.on('click', function () {
                     addSuggestedRecipeToMealList($(this));
                 });
                 let $row = $('<div>').addClass('row');
                 let $col = $('<div>').addClass('col');
-                $col.append(button);
+                $col.append($seeRecipeButton);
+                $col.append($addToMealListButton);
                 $row.append($col);
                 $newRecipe.find('.main-text-button').append($row);
 

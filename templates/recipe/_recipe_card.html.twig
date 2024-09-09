@@ -1,11 +1,11 @@
 <div
-    class="card klassy-cafe-card mb-4 mx-0"
-    {% if recipe.mainPictureFilename is empty %}
-        style="background-image: url({{ asset('build/image/default-recipe-main-picture.jpg') }}"
-    {% else %}
-        style="background-image: url({{ asset('uploads/pictures/' ~ recipe.mainPictureFilename) }}"
-    {% endif %}
-    >
+        class="card klassy-cafe-card mb-4 mx-0"
+        {% if recipe.mainPictureFilename is empty %}
+            style="background-image: url({{ asset('build/image/default-recipe-main-picture.jpg') }}"
+        {% else %}
+            style="background-image: url({{ asset('uploads/pictures/' ~ recipe.mainPictureFilename) }}"
+        {% endif %}
+>
     <div class="top-box">
         <h6 class="energy-box d-flex justify-content-center align-items-center">
             <span>
@@ -41,18 +41,18 @@
             <div class="row g-2">
                 <div class="col">
                     <a
-                        class="btn btn-sm mb-2"
-                        href="{{ path('recipe_show', {'id': recipe.id}) }}"
-                        >
+                            class="recipe-details-page-button btn btn-sm mb-2"
+                            href="{{ path('recipe_show', {'id': recipe.id}) }}"
+                    >
                         Voir
                     </a>
                 </div>
                 {% if app.user is not null %}
                     <div class="col">
                         <a
-                            class="btn btn-sm mb-2"
-                            href="{{ path('recipe_edit', {'id': recipe.id}) }}"
-                            >
+                                class="btn btn-sm mb-2"
+                                href="{{ path('recipe_edit', {'id': recipe.id}) }}"
+                        >
                             Éditer
                         </a>
                     </div>
@@ -62,9 +62,9 @@
                 <div class="row">
                     <div class="col">
                         <a
-                            class="btn btn-sm btn-outline"
-                            href="{{ path('recipe_new', {'fromRecipe': recipe.id}) }}"
-                            >
+                                class="btn btn-sm btn-outline"
+                                href="{{ path('recipe_new', {'fromRecipe': recipe.id}) }}"
+                        >
                             Copier la recette
                         </a>
                     </div>
