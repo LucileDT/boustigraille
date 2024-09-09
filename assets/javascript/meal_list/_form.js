@@ -15,20 +15,20 @@ $(document).ready(function () {
             if (e.keyCode === 13) {
                 e.preventDefault();
 
-                let $collectionHolderClass = $('#add-recipe-button').data('collectionHolderClass');
-                let mealsList = $('.' + $collectionHolderClass);
-                let currentMeal = $(this).parents('.meal');
-                if (currentMeal.is(':last-child')) {
+                let collectionHolderClass = $('#add-recipe-button').data('collectionHolderClass');
+                let $mealsList = $('.' + collectionHolderClass);
+                let $currentMeal = $(this).parents('.meal');
+                if ($currentMeal.is(':last-child')) {
                     // focused input is the last one, add a new meal form
-                    addFormToCollection($collectionHolderClass);
+                    addFormToCollection(collectionHolderClass);
 
                     // switch cursor to the newly created meal
-                    mealsList.find('.meal-quantity').last().focus();
+                    $mealsList.find('.meal-quantity').last().focus();
                 }
                 else
                 {
                     // focused input is in the middle of the list, switch cursor to the next meal
-                    currentMeal.next().find('.meal-quantity').focus();
+                    $currentMeal.next().find('.meal-quantity').focus();
                 }
             }
         });
@@ -167,22 +167,22 @@ $(document).ready(function () {
 
     function addSuggestedRecipeToMealList(button) {
         // add a new meal form
-        let $collectionHolderClass = $('#add-recipe-button').data('collectionHolderClass');
-        addFormToCollection($collectionHolderClass);
+        let collectionHolderClass = $('#add-recipe-button').data('collectionHolderClass');
+        addFormToCollection(collectionHolderClass);
 
         // make selector have the good recipe selected
         let recipeId = button.data('recipe-id');
-        let recipeSelect = $('#meals .meal-select:last');
-        recipeSelect.val(recipeId);
-        recipeSelect.trigger('change');
+        let $recipeSelect = $('#meals .meal-select:last');
+        $recipeSelect.val(recipeId);
+        $recipeSelect.trigger('change');
 
         // focus on its input
-        recipeSelect.parents('.meal').find('.meal-quantity').focus();
+        $recipeSelect.parents('.meal').find('.meal-quantity').focus();
     }
 
     function showSuggestedRecipes() {
-        let recipesContainer = $('#suggested-recipes');
-        let urlSuggestedRecipes = recipesContainer.data('url');
+        let $recipesContainer = $('#suggested-recipes');
+        let urlSuggestedRecipes = $recipesContainer.data('url');
         $.ajax({
             url: urlSuggestedRecipes,
             method: 'GET',
@@ -202,28 +202,28 @@ $(document).ready(function () {
 
             $('#suggested-recipes-loader').addClass('d-none');
 
-            let dummyRecipe = recipesContainer.find('#dummy-recipe > .klassy-cafe-card');
+            let $dummyRecipe = $recipesContainer.find('#dummy-recipe > .klassy-cafe-card');
             $(data).each(function () {
-                let newRecipe = dummyRecipe.clone();
-                newRecipe.removeClass('mb-4');
-                newRecipe.addClass('suggested-recipe');
+                let $newRecipe = $dummyRecipe.clone();
+                $newRecipe.removeClass('mb-4');
+                $newRecipe.addClass('suggested-recipe');
 
                 // change recipe card content accordingly
-                newRecipe.find('.energy-count').html(Math.round(this.energy));
-                newRecipe.find('.title').html(this.name);
-                newRecipe.find('.title').html(this.name);
+                $newRecipe.find('.energy-count').html(Math.round(this.energy));
+                $newRecipe.find('.title').html(this.name);
+                $newRecipe.find('.title').html(this.name);
                 if (this.main_picture_filename) {
-                    newRecipe.css('background-image', 'url("/uploads/pictures/' + this.main_picture_filename + '")');
+                    $newRecipe.css('background-image', 'url("/uploads/pictures/' + this.main_picture_filename + '")');
                 } else {
-                    newRecipe.css('background-image', 'url("/build/image/default-recipe-main-picture.jpg")');
+                    $newRecipe.css('background-image', 'url("/build/image/default-recipe-main-picture.jpg")');
                 }
 
                 if (this.author) {
-                    newRecipe.find('.description').html('Par ' + this.author.username);
+                    $newRecipe.find('.description').html('Par ' + this.author.username);
                 } else {
-                    newRecipe.find('.description').html('');
+                    $newRecipe.find('.description').html('');
                 }
-                newRecipe.find('.main-text-button > .row').remove();
+                $newRecipe.find('.main-text-button > .row').remove();
                 let button = $('<button>')
                     .addClass('btn')
                     .addClass('btn-sm')
@@ -236,34 +236,34 @@ $(document).ready(function () {
                 button.on('click', function () {
                     addSuggestedRecipeToMealList($(this));
                 });
-                let row = $('<div>').addClass('row');
-                let col = $('<div>').addClass('col');
-                col.append(button);
-                row.append(col);
-                newRecipe.find('.main-text-button').append(row);
+                let $row = $('<div>').addClass('row');
+                let $col = $('<div>').addClass('col');
+                $col.append(button);
+                $row.append($col);
+                $newRecipe.find('.main-text-button').append($row);
 
                 // update toggling fav url
-                let url = newRecipe.find('.toggle-favorite-button').data('url');
+                let url = $newRecipe.find('.toggle-favorite-button').data('url');
                 let updatedUrl = url.replace(/\/([0-9])+$/, '/' + this.id);
-                newRecipe.find('.toggle-favorite-button').data('url', updatedUrl);
-                newRecipe.find('.toggle-favorite-button').attr('data-url', updatedUrl);
+                $newRecipe.find('.toggle-favorite-button').data('url', updatedUrl);
+                $newRecipe.find('.toggle-favorite-button').attr('data-url', updatedUrl);
 
                 // recipes here are always marked as favorites
-                newRecipe.find('.toggle-favorite-button').attr('data-marked-as-favorite', 1);
+                $newRecipe.find('.toggle-favorite-button').attr('data-marked-as-favorite', 1);
 
                 // make fav button working
-                toggleButtonTooltip(newRecipe.find('.toggle-favorite-button'), newRecipe.find('.action-icon'));
-                newRecipe.find('.toggle-favorite-button').on('click', function () {
+                toggleButtonTooltip($newRecipe.find('.toggle-favorite-button'), $newRecipe.find('.action-icon'));
+                $newRecipe.find('.toggle-favorite-button').on('click', function () {
                     toggleFavorite(this);
                     showSuggestedRecipes();
                 });
-                recipesContainer.append(newRecipe);
+                $recipesContainer.append($newRecipe);
             });
 
             // add placeholder if there is less than 6 suggested recipes
             if (data.length < 6) {
                 for (let i = 0; i < 6 - data.length; i++) {
-                    let emptyRecipe = $('<div>')
+                    let $emptyRecipe = $('<div>')
                         .addClass('card')
                         .addClass('klassy-cafe-card')
                         .addClass('mx-0')
@@ -274,13 +274,13 @@ $(document).ready(function () {
                         .addClass('justify-content-center')
                         .addClass('text-center')
                     ;
-                    let infoText = $('<small>')
+                    let $infoText = $('<small>')
                         .addClass('text-muted')
                         .addClass('fst-italic')
                         .html('Ajoutez d\'autres recettes à vos favoris pour avoir plus de suggestions')
                     ;
-                    emptyRecipe.append(infoText);
-                    recipesContainer.append(emptyRecipe);
+                    $emptyRecipe.append($infoText);
+                    $recipesContainer.append($emptyRecipe);
                 }
             }
         });
@@ -320,10 +320,10 @@ $(document).ready(function () {
     }
 
     $('body').on('click', '#add-recipe-button', function (e) {
-        let $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
+        let collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
 
         // add a new meal form
-        addFormToCollection($collectionHolderClass);
+        addFormToCollection(collectionHolderClass);
     });
 
     $('#meal_list_startDate').on('change', function (e) {
