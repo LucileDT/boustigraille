@@ -1,6 +1,11 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('recipe_card') }}
+{% endblock %}
+
 {% block javascript %}
+    {{ encore_entry_script_tags('recipe_card') }}
     {{ encore_entry_script_tags('recipe_toggle_favorite') }}
 {% endblock %}
 

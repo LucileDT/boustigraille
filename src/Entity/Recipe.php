@@ -39,8 +39,11 @@ class Recipe implements JsonSerializable
     #[ORM\OrderBy(['username' => 'ASC'])]
     private $favedBy;
 
-    #[ORM\OneToMany(targetEntity: MealQuantityForList::class, mappedBy: 'meal', cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'meal', targetEntity: MealQuantityForList::class, cascade: ['persist'])]
     private $mealQuantityForLists;
+
+    #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'recipes', cascade: ['persist'])]
+    private Collection $tags;
 
     public function getMealQuantityForLists()
     {
@@ -51,6 +54,7 @@ class Recipe implements JsonSerializable
     {
         $this->ingredients = new ArrayCollection();
         $this->favedBy = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -246,5 +250,32 @@ class Recipe implements JsonSerializable
             'energy' => $this->getEnergy(),
             'author' => $this->getAuthor(),
         ];
+    }
+
+    /**
+     * @return Collection<int, Tag>
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): static
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+            $tag->addRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): static
+    {
+        if ($this->tags->removeElement($tag)) {
+            $tag->removeRecipe($this);
+        }
+
+        return $this;
     }
 }

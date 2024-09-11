@@ -1,8 +1,10 @@
 {% block javascript %}
+    {{ encore_entry_script_tags('recipe_card') }}
     {{ encore_entry_script_tags('meal_list_form') }}
 {% endblock %}
 
 {% block stylesheets %}
+    {{ encore_entry_link_tags('recipe_card') }}
     {{ encore_entry_link_tags('meal_list_form') }}
 {% endblock %}
 

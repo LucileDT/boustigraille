@@ -3,7 +3,7 @@
 {% block title %}Édition de la recette {{ recipe.name }}{% endblock %}
 
 {% block page_breadcrumb %}
-    <div class="container-fluid">
+    <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block page_title %}
-    <div class="container-fluid mt-3">
+    <div class="container mt-3">
         <div class="row">
             <div class="col">
                 <div class="page-heading">
@@ -28,9 +28,11 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col">
-            {{ include('recipe/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                {{ include('recipe/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+            </div>
         </div>
     </div>
 {% endblock %}

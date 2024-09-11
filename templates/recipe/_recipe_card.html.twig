@@ -28,15 +28,24 @@
         {% endif %}
     </div>
     <div class="info-box d-flex flex-column justify-content-between">
-        <h1 class="title">
-            {{ recipe.name }}
-        </h1>
+        <div>
+            <h1 class="title">
+                {{ recipe.name }}
+            </h1>
 
-        {% if recipe.author.doShowUsernameOnRecipe or (app.user is not null and app.user == recipe.author) or (app.user is not null and app.user.doFollowUsernameOnRecipe(recipe.author)) %}
-            <p class="description">
-                Par {{ recipe.author.username }}
-            </p>
-        {% endif %}
+            {% if recipe.author.doShowUsernameOnRecipe or (app.user is not null and app.user == recipe.author) or (app.user is not null and app.user.doFollowUsernameOnRecipe(recipe.author)) %}
+                <p class="description fst-italic mb-0">
+                    Par {{ recipe.author.username }}
+                </p>
+            {% endif %}
+            <div id="recipe-tags">
+                {% for tag in recipe.tags %}
+                    <span class="recipe-tag">
+                        {{ tag.label }}
+                    </span>
+                {% endfor %}
+            </div>
+        </div>
         <div class="main-text-button">
             <div class="row g-2">
                 <div class="col">

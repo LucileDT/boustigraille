@@ -49,6 +49,13 @@
                     <div class="recipe-name">
                         <h1>{{ recipe.name }}</h1>
                         {# todo add author #}
+                        <div id="recipe-tags" class="d-flex align-items-center justify-content-center mt-4">
+                            {% for tag in recipe.tags %}
+                                <div class="recipe-tag">
+                                    {{ tag.label }}
+                                </div>
+                            {% endfor %}
+                        </div>
                     </div>
                     <hr>
                 </div>

@@ -20,6 +20,14 @@
     }
 }
 
+#recipe_process {
+    min-height: 10rem;
+}
+
+#recipe_comment {
+    min-height: 5rem;
+}
+
 @include media-breakpoint-up(sm) {
     #nutritional-values {
         th {
