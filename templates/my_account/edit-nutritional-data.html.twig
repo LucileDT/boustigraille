@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouvelle liste de repas{% endblock %}
+{% block title %}Édition de mes valeurs nutritionnelles{% endblock %}
 
 {% block page_breadcrumb %}
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
-                <li class="breadcrumb-item"><a href="{{ path('meal_list_index') }}">Listes de repas</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Nouvelle liste de repas</li>
+                <li class="breadcrumb-item"><a href="{{ path('my_account_index') }}">Mon compte</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Édition de mes valeurs nutritionnelles</li>
             </ol>
         </nav>
     </div>
@@ -19,7 +19,7 @@
         <div class="row">
             <div class="col">
                 <div class="page-heading">
-                    <h2>Nouvelle liste de repas</h2>
+                    <h2>Édition de mes valeurs nutritionnelles</h2>
                 </div>
             </div>
         </div>
@@ -30,7 +30,10 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                {{ include('meal_list/_form.html.twig') }}
+                {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+                {{ form_end(form) }}
             </div>
         </div>
     </div>

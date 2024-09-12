@@ -2,18 +2,24 @@
 
 {% block title %}Édition de l'ingrédient {{ ingredient.label }}{% endblock %}
 
+{% block page_breadcrumb %}
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+                <li class="breadcrumb-item">Ingrédients</li>
+                <li class="breadcrumb-item"><a href="{{ path('ingredient_index') }}">Liste des ingrédients</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Édition de l'ingrédient {{ ingredient.label }}</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+
 {% block page_title %}
-    <div class="container-fluid mt-3">
+    <div class="container mt-3">
         <div class="row">
             <div class="col">
                 <div class="page-heading">
-                    <h6>
-                        <a href="{{ path('home') }}">Accueil</a>
-                        / Ingrédients
-                        /
-                        <a href="{{ path('ingredient_index') }}">Liste des ingrédients</a>
-                        / Édition de l'ingrédient {{ ingredient.label }}
-                    </h6>
                     <h2>Édition de l'ingrédient {{ ingredient.label }}</h2>
                 </div>
             </div>
@@ -22,9 +28,11 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col">
-            {{ include('ingredient/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                {{ include('ingredient/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+            </div>
         </div>
     </div>
 {% endblock %}

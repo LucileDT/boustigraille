@@ -1,66 +1,235 @@
-.recipe-header {
-    width: 100%;
-    overflow: hidden;
-    height: 230px;
-}
+@use "../../klassy_cafe/assets/css/variables";
+// main sections padding
+$sections-padding: 2rem;
 
-.recipe-header .image-background {
-    width: 100%;
-    height: auto;
+// recipe picture size
+$picture-height: 15rem;
+$picture-width: $picture-height;
+$picture-border-width: 1.5rem;
+$full-picture-height: $picture-width + $picture-border-width * 2;
+
+// white sections in blue section padding
+$white-sections-padding: calc(#{$sections-padding} / 2) calc(#{$sections-padding} / 1.5);
+
+#recipe-data {
     position: relative;
-    top: -850px;
-    filter: blur(30px) contrast(50%) brightness(0.8);
-}
+    margin-top: calc(#{$full-picture-height} / 2);
+    padding: calc(#{$full-picture-height} / 2 + $sections-padding) $sections-padding $sections-padding $sections-padding;
 
-.recipe-header .image-foreground {
-    position: relative;
-    display: block;
-    margin-right: auto;
-    margin-left: auto;
-    width: auto;
-    z-index: 2;
-    max-height: 100%;
-}
+    .recipe-picture-container {
+        position: absolute;
+        top: calc(-#{$full-picture-height} / 2);
+        right: 0;
+        left: 0;
 
-.recipe-header .recipe-name {
-    position: relative;
-    z-index: 3;
-    top: calc(-230px + 1rem);
-    left: 1rem;
-    font-weight: bold;
-}
+        > .recipe-picture {
+            border-radius: 50%;
+            background-color: variables.$klassy-primary-color;
+            padding: $picture-border-width;
+            width: calc(#{$picture-width} + #{$picture-border-width} * 2);
+            margin: auto;
 
-.recipe-header .recipe-name i#toggle-favorite-button {
-    position: relative;
-    z-index: 3;
-}
-
-.recipe-header .recipe-controls {
-    position: relative;
-    text-align: center;
-    top: -110px;
-    z-index: 3;
-}
-
-.recipe-header .recipe-controls .btn {
-    min-width: 8%;
-}
-
-#recipe-text-body {
-    ul, ol {
-        padding-left: 3rem;
-        margin-bottom: 0.8rem;
+            > img {
+                border-radius: 50%;
+                width: $picture-width;
+                height: $picture-height;
+            }
+        }
     }
 
-    ul, ol, li {
-        list-style: initial;
+    .recipe-name {
+        > h1 {
+            font-family: Poppins, sans-serif;
+            font-weight: 900;
+            font-size: 2.2rem;
+            margin-bottom: 0;
+        }
+
+        .recipe-tag {
+            text-transform: uppercase;
+            background-color: rgba(255, 255, 255, .15);
+            color: white;
+            margin-left: .8rem;
+            padding: .4rem .8rem;
+        }
     }
 
-    ol > li {
-        list-style-type: decimal;
+    hr {
+        margin: 2rem 5rem;
     }
 
-    li {
-        padding-left: 1rem;
+    .recipe-ingredients {
+        padding: $white-sections-padding;
+        margin-bottom: 2rem;
+        font-weight: 200;
+
+        > h2 {
+            font-weight: 200;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+
+            > .form-select {
+                width: auto;
+                font-family: "Poppins", sans-serif;
+                font-weight: 200;
+            }
+        }
+
+        .ingredient {
+            margin-top: 0.4rem;
+
+            a.see-ingredients-details:hover {
+                text-decoration: underline !important;
+            }
+        }
+    }
+
+    .recipe-nutritional-data {
+        padding: $white-sections-padding;
+        font-weight: 200;
+
+        > h2 {
+            font-weight: 200;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+
+            small {
+                font-size: .8rem;
+            }
+        }
+
+        .ingredient-nutritional-data {
+            color: var(--bs-secondary-color) !important;
+            opacity: .7;
+            font-size: 14px;
+
+            .ingredient-nutritional-data-value {
+                min-width: 3.5rem;
+                text-align: end;
+            }
+        }
+    }
+}
+
+#recipe-instructions-and-comment {
+    margin-top: calc(#{$full-picture-height} / 2);
+    padding: $sections-padding;
+
+    h2 {
+        font-size: 1.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .instructions-placeholder {
+        opacity: .4;
+        font-size: 1.5rem;
+    }
+
+    .instructions {
+        h1, h2 {
+            &:after {
+                content: '🛈 Utilise les titres de niveau 3 (###)';
+                background-color: variables.$klassy-info-color;
+                color: white;
+                font-size: .8rem;
+                padding: 0.35em 0.65em;
+                border-radius: .375rem;
+                position: relative;
+                bottom: .5rem;
+                left: .5rem;
+                display: inline-block;
+                font-weight: 700;
+                line-height: 1;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: baseline;
+            }
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 2rem;
+        }
+
+        ul,
+        ul > li,
+        ol > li {
+            list-style: unset;
+            z-index: 2;
+            position: relative;
+        }
+
+        ul, ol {
+            &:first-child > li:first-of-type {
+                margin-top: 0;
+            }
+        }
+
+        li {
+            margin-bottom: 1rem;
+            margin-top: 1rem;
+            margin-left: 1.6rem;
+            padding-left: 0.5rem;
+        }
+
+        ol {
+            counter-reset: item;
+            list-style-type: none;
+
+            li {
+                &:before {
+                    text-align: center;
+                    color: white;
+                    font-family: Poppins, sans-serif;
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    content: counter(item) "  ";
+                    counter-increment: item;
+                    position: absolute;
+                    left: -1.6rem;
+                    background-color: variables.$klassy-success-color;
+                    z-index: -1;
+                    display: inline-block;
+                    width: 1.6rem;
+                    height: 1.6rem;
+                    border-radius: 50%;
+                }
+            }
+        }
+
+        ul {
+            list-style-type: none;
+
+            li:before {
+                content: ' ';
+                width: .8rem;
+                height: .8rem;
+                border-radius: 50%;
+                display: inline-block;
+                background-color: variables.$klassy-success-color;
+                position: absolute;
+                left: -1.2rem;
+                top: .4rem;
+            }
+        }
+    }
+
+    .comment {
+        h2 {
+            font-size: 1.9rem;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+        }
+
+        .comment-content {
+            border-left: 5px solid variables.$klassy-dark-color;
+            margin-left: .8rem;
+            padding: .5rem .8rem;
+            opacity: .5;
+            font-weight: 200;
+        }
+    }
+
+    .buttons-container {
+        margin-top: 2rem;
     }
 }

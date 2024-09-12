@@ -297,6 +297,23 @@ $(document).ready(function () {
     // activate Select2 on ingredient selectors
     toggleSelect2OnIngredientSelector();
 
+    // activate Select2 on tags selector
+    $('#recipe_tags').select2({
+        theme: "bootstrap-5",
+        tags: true, // allows dynamic tag creation
+        createTag: function (params) {
+            let term = $.trim(params.term);
+
+            if (term === '') { return null; }
+
+            return {
+                id: term,
+                text: term,
+                newTag: true // add additional parameters
+            }
+        }
+    });
+
     // get the element that holds the collection of ingredients
     let $collectionHolder = $('#ingredients');
 

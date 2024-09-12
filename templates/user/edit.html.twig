@@ -2,18 +2,24 @@
 
 {% block title %}Édition du compte {{ user.username }}{% endblock %}
 
+{% block page_breadcrumb %}
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+                <li class="breadcrumb-item">Administration</li>
+                <li class="breadcrumb-item"><a href="{{ path('user_index') }}">Liste des comptes</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Édition du compte {{ user.username }}</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+
 {% block page_title %}
-    <div class="container-fluid mt-3">
+    <div class="container mt-3">
         <div class="row">
             <div class="col">
                 <div class="page-heading">
-                    <h6>
-                        <a href="{{ path('home') }}">Accueil</a>
-                        / Administration
-                        /
-                        <a href="{{ path('user_index') }}">Liste des comptes</a>
-                        / Édition du compte {{ user.username }}
-                    </h6>
                     <h2>Édition du compte {{ user.username }}</h2>
                 </div>
             </div>
@@ -23,9 +29,11 @@
 
 
 {% block body %}
-    <div class="row">
-        <div class="col">
-            {{ include('user/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                {{ include('user/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+            </div>
         </div>
     </div>
 {% endblock %}

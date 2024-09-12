@@ -2,18 +2,24 @@
 
 {% block title %}Nouvel ingrédient{% endblock %}
 
+{% block page_breadcrumb %}
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+                <li class="breadcrumb-item">Ingrédients</li>
+                <li class="breadcrumb-item"><a href="{{ path('ingredient_index') }}">Liste des ingrédients</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Nouvel ingrédient</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+
 {% block page_title %}
-    <div class="container-fluid mt-3">
+    <div class="container mt-3">
         <div class="row">
             <div class="col">
                 <div class="page-heading">
-                    <h6>
-                        <a href="{{ path('home') }}">Accueil</a>
-                        / Ingrédients
-                        /
-                        <a href="{{ path('ingredient_index') }}">Liste des ingrédients</a>
-                        / Nouvel ingrédient
-                    </h6>
                     <h2>Nouvel ingrédient</h2>
                 </div>
             </div>
@@ -22,30 +28,32 @@
 {% endblock %}
 
 {% block body %}
-    {% if app.user is not null and addOpenFoodFactsForm %}
-        <div class="card border-0 mb-5">
-            <div class="card-body bg-light">
-                <h5 class="card-title lh-1 mt-2">
-                    <span class="badge bg-info">Optionnel</span>
-                    Importer un ingrédient depuis
-                    <a href="https://fr.openfoodfacts.org" target="_blank">
-                        <i class="ri-external-link-fill"></i>
-                        Open Food Facts
-                    </a>
-                </h5>
-                <div class="pt-3 mb-0">
-                    {{ include('ingredient/_create_from_openfoodfacts_form.html.twig', {
-                        'button_label': 'Créer depuis Open Food Facts',
-                        'form': formFromOpenFoodFact
-                    }) }}
+    <div class="container">
+        {% if app.user is not null and addOpenFoodFactsForm %}
+            <div class="card border-0 mb-5">
+                <div class="card-body bg-light">
+                    <h5 class="card-title lh-1 mt-2">
+                        <span class="badge bg-info">Optionnel</span>
+                        Importer un ingrédient depuis
+                        <a href="https://fr.openfoodfacts.org" target="_blank">
+                            <i class="ri-external-link-fill"></i>
+                            Open Food Facts
+                        </a>
+                    </h5>
+                    <div class="pt-3 mb-0">
+                        {{ include('ingredient/_create_from_openfoodfacts_form.html.twig', {
+                            'button_label': 'Créer depuis Open Food Facts',
+                            'form': formFromOpenFoodFact
+                        }) }}
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endif %}
+        {% endif %}
 
-    <div class="row">
-        <div class="col">
-            {{ include('ingredient/_form.html.twig') }}
+        <div class="row">
+            <div class="col">
+                {{ include('ingredient/_form.html.twig') }}
+            </div>
         </div>
     </div>
 {% endblock %}

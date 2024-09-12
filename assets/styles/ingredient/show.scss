@@ -1,0 +1,36 @@
+@use "../../klassy_cafe/assets/css/variables";
+
+h2, .h2 {
+    line-height: 40px;
+    margin-top: 0.7rem;
+    margin-bottom: 0.7rem;
+    font-size: 1.7rem;
+    font-weight: 900;
+
+    .ingredient-id {
+        font-size: 1.3rem;
+        font-weight: 500;
+        opacity: .6;
+    }
+}
+
+h3, .h3 {
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: white;
+    opacity: .6;
+}
+
+.table {
+    th, td {
+        background-color: transparent;
+    }
+}
+
+.ingredient-general-information {
+    th {
+        text-wrap: nowrap;
+        width: 1px;
+    }
+}

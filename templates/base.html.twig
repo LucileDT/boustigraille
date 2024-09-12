@@ -44,10 +44,25 @@
                     {% endfor %}
                 </div>
 
+
+                <div class="container-fluid">
+                    <div class="breadcrumb-navbar">
+                        {% block page_breadcrumb %}
+                            <div class="container-fluid">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item active" aria-current="page">Accueil</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        {% endblock %}
+                    </div>
+                </div>
+
+
                 {% block page_title %}
                     <div class="container-fluid mt-3">
                         <div class="page-heading">
-                            <h6>Accueil</h6>
                             <h2>Tableau de bord</h2>
                         </div>
                     </div>

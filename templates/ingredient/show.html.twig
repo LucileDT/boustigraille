@@ -1,147 +1,196 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('ingredient_show') }}
+{% endblock %}
+
 {% block title %}{{ ingredient.label }}{% endblock %}
 
-{% block page_title %}
-    <div class="container-fluid mt-3">
+{% block page_breadcrumb %}
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+                <li class="breadcrumb-item">Ingrédients</li>
+                <li class="breadcrumb-item"><a href="{{ path('ingredient_index') }}">Liste des ingrédients</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ ingredient.label }}</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block page_title %}{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
         <div class="row">
-            <div class="col">
-                <div class="page-heading">
-                    <h6>
-                        <a href="{{ path('home') }}">Accueil</a>
-                        / Ingrédients
-                        /
-                        <a href="{{ path('ingredient_index') }}">Liste des ingrédients</a>
-                        / {{ ingredient.label }}
-                    </h6>
-                    <h2>Fiche ingrédient - {{ ingredient.label }}</h2>
-                </div>
-            </div>
-            {% if app.user is not null or ingredient.barCode is not empty %}
-                <div class="col-12 col-lg-3 text-end">
-                    <div class="d-flex justify-content-end">
-                        {% if app.user is not null %}
-                            {{ include('ingredient/_delete_form.html.twig') }}
-                        {% endif %}
+            {# first column #}
+            <div class="col col-md-3">
+                <div class="bg-primary text-center py-4">
+                    <h3>Fiche ingrédient</h3>
+                    <h2 class="text-white">
+                        <span class="ingredient-id me-1">#{{ ingredient.id }}</span>
+                        {{ ingredient.label }}
                         {% if ingredient.barCode is not empty %}
                             <a
-                                class="btn btn-secondary btn-large ms-2"
-                                href="https://fr.openfoodfacts.org/produit/{{ ingredient.barCode }}"
-                                target="_blank"
-                                data-toggle="tooltip"
-                                title="Voir sur OpenFoodFacts"
+                                    class="ms-2 text-white"
+                                    href="https://fr.openfoodfacts.org/produit/{{ ingredient.barCode }}"
+                                    target="_blank"
+                                    data-bs-toggle="tooltip"
+                                    title="Voir sur OpenFoodFacts"
                             >
                                 <i class="ri-bar-chart-box-fill"></i>
                             </a>
                         {% endif %}
-                        {% if app.user is not null %}
-                            <a
-                                class="btn btn-primary btn-large ms-2"
-                                href="{{ path('ingredient_edit', {'id': ingredient.id}) }}"
-                            >
-                                Éditer
-                            </a>
-                        {% endif %}
-                    </div>
+                    </h2>
+                    {% if app.user is not null or ingredient.barCode is not empty %}
+                        <div class="px-4">
+                            <div class="row">
+                                {% if app.user is not null %}
+                                    <div class="col">
+                                        <a
+                                                class="btn btn-light w-100"
+                                                href="{{ path('ingredient_edit', {'id': ingredient.id}) }}"
+                                        >
+                                            Éditer
+                                        </a>
+                                    </div>
+                                {% endif %}
+                                {% if app.user is not null %}
+                                    <div class="col d-none">
+                                        {{ include('ingredient/_delete_form.html.twig') }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
-            {% endif %}
+
+                <div class="bg-light p-4 mt-4">
+                    <table class="w-100 ingredient-general-information">
+                        <tr>
+                            <th class="fw-semibold text-end">Code barre&nbsp;:</th>
+                            <td><code>{{ ingredient.barCode ?? '-' }}</code></td>
+                        </tr>
+                        <tr>
+                            <th class="fw-semibold text-end">Marque&nbsp;:</th>
+                            <td>
+                                {% if ingredient.brand is empty %}
+                                    <span class="text-muted fst-italic">
+                                Générique
+                            </span>
+                                {% else %}
+                                    {{ ingredient.brand }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="fw-semibold text-end">Magasin&nbsp;:</th>
+                            <td>
+                                {% if ingredient.store is not empty %}
+                                    {{ ingredient.store.label }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="bg-light p-4 mt-4">
+                    <table class="w-100 ingredient-general-information">
+                        <tr>
+                            <th class="fw-semibold text-end">
+                                Unité de mesure&nbsp;:
+                            </th>
+                            <td>{{ ingredient.measureType }}</td>
+                        </tr>
+                        <tr>
+                            <th class="fw-semibold text-end">Vendu par paquets de&nbsp;:</th>
+                            <td>
+                                {% if ingredient.shopBatchSize is not empty %}
+                                    {{ ingredient.shopBatchSize }} {{ ingredient.measureType }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="fw-semibold text-end">Taille d'une unité&nbsp;:</th>
+                            <td>
+                                {% if ingredient.unitSize is not empty %}
+                                    {{ ingredient.unitSize }} {{ ingredient.measureType }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="fw-semibold text-end">Taille d'une part moyenne&nbsp;:</th>
+                            <td>
+                                {% if ingredient.portionSize is not empty %}
+                                    {{ ingredient.portionSize }} {{ ingredient.measureType }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            {# second column #}
+            <div class="col">
+                <div class="bg-light p-4">
+                    <table class="w-100 ingredient-general-information">
+                        <tr>
+                            <th class="fw-semibold text-end">Stock&nbsp;:</th>
+                            <td>
+                                {% if ingredient.hasStockCheckNeededBeforeBuying %}
+                                    Vérifier dans les placards avant d'acheter
+                                {% else %}
+                                    À acheter systématiquement
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="bg-light p-4 mt-4">
+                    <table class="table mb-0 border-top">
+                        <tr>
+                            <th class="fw-semibold">Protéines</th>
+                            <td class="text-end">{{ ingredient.proteins }} g</td>
+                        </tr>
+                        <tr>
+                            <th class="fw-semibold">Glucides</th>
+                            <td class="text-end">{{ ingredient.carbohydrates }} g</td>
+                        </tr>
+                        <tr>
+                            <th class="fw-semibold">Lipides</th>
+                            <td class="text-end">{{ ingredient.fat }} g</td>
+                        </tr>
+                        <tr>
+                            <th class="fw-semibold">Énergie</th>
+                            <td class="text-end">{{ ingredient.energy }} kcal</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="bg-light p-4 mt-4">
+                    <div class="fw-semibold mb-2">Commentaire</div>
+                    {{ ingredient.comment ?? '-' }}
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+                <h2>Recettes utilisant cet ingrédient</h2>
+                <div id="klassy-cards-container" class="d-flex justify-content-between flex-wrap">
+                    {% for ingredientQuantity in ingredient.ingredientQuantityForRecipes %}
+                        {{ include('recipe/_recipe_card.html.twig', {'recipe': ingredientQuantity.recipe}) }}
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
-{% endblock %}
-
-{% block body %}
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ ingredient.id }}</td>
-            </tr>
-            <tr>
-                <th>Code barre</th>
-                <td><code>{{ ingredient.barCode }}</code></td>
-            </tr>
-            <tr>
-                <th>Label</th>
-                <td>{{ ingredient.label }}</td>
-            </tr>
-            <tr>
-                <th>Marque</th>
-                <td>
-                    {% if ingredient.brand is empty %}
-                        <span class="text-muted font-italic">
-                            Générique
-                        </span>
-                    {% else %}
-                        {{ ingredient.brand }}
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>Magasin</th>
-                <td>
-                    {% if ingredient.store is not empty %}
-                        {{ ingredient.store.label }}
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>Stock</th>
-                <td>
-                    {% if ingredient.hasStockCheckNeededBeforeBuying %}
-                        Vérifier dans les placards avant d'acheter
-                    {% else %}
-                        À acheter systématiquement
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>Unité de mesure (g, ml, l, ...)</th>
-                <td>{{ ingredient.measureType }}</td>
-            </tr>
-            <tr>
-                <th>Vendu par paquets de</th>
-                <td>
-                    {% if ingredient.shopBatchSize is not empty %}
-                        {{ ingredient.shopBatchSize }} {{ ingredient.measureType }}
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>Taille d'une unité</th>
-                <td>
-                    {% if ingredient.unitSize is not empty %}
-                        {{ ingredient.unitSize }} {{ ingredient.measureType }}
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>Taille d'une part moyenne</th>
-                <td>
-                    {% if ingredient.portionSize is not empty %}
-                        {{ ingredient.portionSize }} {{ ingredient.measureType }}
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>Protéines</th>
-                <td>{{ ingredient.proteins }} g</td>
-            </tr>
-            <tr>
-                <th>Glucides</th>
-                <td>{{ ingredient.carbohydrates }} g</td>
-            </tr>
-            <tr>
-                <th>Lipides</th>
-                <td>{{ ingredient.fat }} g</td>
-            </tr>
-            <tr>
-                <th>Énergie</th>
-                <td>{{ ingredient.energy }} kcal</td>
-            </tr>
-            <tr>
-                <th>Commentaire</th>
-                <td>{{ ingredient.comment }}</td>
-            </tr>
-        </tbody>
-    </table>
 {% endblock %}

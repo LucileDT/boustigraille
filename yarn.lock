@@ -3935,10 +3935,10 @@ regjsparser@^0.9.1:
   dependencies:
     jsesc "~0.5.0"
 
-remixicon@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.npmjs.org/remixicon/-/remixicon-2.5.0.tgz"
-  integrity sha512-q54ra2QutYDZpuSnFjmeagmEiN9IMo56/zz5dDNitzKD23oFRw77cWo4TsrAdmdkPiEn8mxlrTqxnkujDbEGww==
+remixicon@^4.3:
+  version "4.3.0"
+  resolved "https://registry.npmjs.org/remixicon/-/remixicon-4.3.0.tgz"
+  integrity sha512-jRYQ37dTFSkJtvcxwTUAkIiXkYRvA9EDvVuXPNrmt2xf/VS//CRgFtsX2TAFBoQOhh9SDh7l6La4Xu12snEyxg==
 
 renderkid@^3.0.0:
   version "3.0.0"
