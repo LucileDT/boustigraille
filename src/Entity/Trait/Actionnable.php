@@ -1,26 +1,12 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Trait;
 
-use App\Repository\ActionRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ActionRepository::class)]
-#[ORM\InheritanceType('JOINED')]
-#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
-#[ORM\DiscriminatorMap([
-    'follow_meal_list' => 'FollowMealList',
-    'follow_username_on_recipe' =>
-        'FollowUsernameOnRecipe'
-])]
-abstract class Action
+trait Actionnable
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
-
     #[ORM\Column(type: 'datetime_immutable')]
     private ?DateTimeImmutable $proposedAt;
 
@@ -29,11 +15,6 @@ abstract class Action
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?DateTimeImmutable $refusedAt;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getProposedAt(): ?DateTimeImmutable
     {

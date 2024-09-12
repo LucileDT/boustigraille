@@ -76,6 +76,18 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $doShowWrittenMealListToOthers;
 
+    #[ORM\OneToMany(mappedBy: 'follower', targetEntity: FollowRequest::class)]
+    private Collection $followRequestsSent;
+
+    #[ORM\OneToMany(mappedBy: 'followed', targetEntity: FollowRequest::class)]
+    private Collection $followRequestsReceived;
+
+    #[ORM\OneToMany(mappedBy: 'sender', targetEntity: NotificationSent::class)]
+    private Collection $notificationsSent;
+
+    #[ORM\OneToMany(mappedBy: 'recipient', targetEntity: NotificationReceived::class)]
+    private Collection $notificationsReceived;
+
     // Commented for notifications and follow rework
     // #[ORM\OneToMany(targetEntity: NotificationReceipt::class, mappedBy: 'recipient', orphanRemoval: true)]
     // private $notificationReceipts;
@@ -111,6 +123,10 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
         // $this->followerUsernamesOnRecipes = new ArrayCollection();
         $this->doShowUsernameOnRecipe = false;
         $this->doShowWrittenMealListToOthers = false;
+        $this->followRequestsSent = new ArrayCollection();
+        $this->followRequestsReceived = new ArrayCollection();
+        $this->notificationsSent = new ArrayCollection();
+        $this->notificationsReceived = new ArrayCollection();
     }
 
     /**
@@ -599,5 +615,125 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
             'id' => $this->getId(),
             'username' => $this->getUsername(),
         ];
+    }
+
+    /**
+     * @return Collection<int, FollowRequest>
+     */
+    public function getFollowRequestsSent(): Collection
+    {
+        return $this->followRequestsSent;
+    }
+
+    public function addFollowRequestsSent(FollowRequest $followRequestsSent): static
+    {
+        if (!$this->followRequestsSent->contains($followRequestsSent)) {
+            $this->followRequestsSent->add($followRequestsSent);
+            $followRequestsSent->setFollower($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFollowRequestsSent(FollowRequest $followRequestsSent): static
+    {
+        if ($this->followRequestsSent->removeElement($followRequestsSent)) {
+            // set the owning side to null (unless already changed)
+            if ($followRequestsSent->getFollower() === $this) {
+                $followRequestsSent->setFollower(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FollowRequest>
+     */
+    public function getFollowRequestsReceived(): Collection
+    {
+        return $this->followRequestsReceived;
+    }
+
+    public function addFollowRequestsReceived(FollowRequest $followRequestsReceived): static
+    {
+        if (!$this->followRequestsReceived->contains($followRequestsReceived)) {
+            $this->followRequestsReceived->add($followRequestsReceived);
+            $followRequestsReceived->setFollowed($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFollowRequestsReceived(FollowRequest $followRequestsReceived): static
+    {
+        if ($this->followRequestsReceived->removeElement($followRequestsReceived)) {
+            // set the owning side to null (unless already changed)
+            if ($followRequestsReceived->getFollowed() === $this) {
+                $followRequestsReceived->setFollowed(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, NotificationSent>
+     */
+    public function getNotificationsSent(): Collection
+    {
+        return $this->notificationsSent;
+    }
+
+    public function addNotificationSent(NotificationSent $notificationSent): static
+    {
+        if (!$this->notificationsSent->contains($notificationSent)) {
+            $this->notificationsSent->add($notificationSent);
+            $notificationSent->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationSent(NotificationSent $notificationSent): static
+    {
+        if ($this->notificationsSent->removeElement($notificationSent)) {
+            // set the owning side to null (unless already changed)
+            if ($notificationSent->getSender() === $this) {
+                $notificationSent->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, NotificationReceived>
+     */
+    public function getNotificationsReceived(): Collection
+    {
+        return $this->notificationsReceived;
+    }
+
+    public function addNotificationReceived(NotificationReceived $notificationReceived): static
+    {
+        if (!$this->notificationsReceived->contains($notificationReceived)) {
+            $this->notificationsReceived->add($notificationReceived);
+            $notificationReceived->setRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationReceived(NotificationReceived $notificationReceived): static
+    {
+        if ($this->notificationsReceived->removeElement($notificationReceived)) {
+            // set the owning side to null (unless already changed)
+            if ($notificationReceived->getRecipient() === $this) {
+                $notificationReceived->setRecipient(null);
+            }
+        }
+
+        return $this;
     }
 }
