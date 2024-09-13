@@ -8,6 +8,7 @@ use App\Form\ProposeMealListFollowType;
 use App\Form\ProposeUsernameInRecipeFollowType;
 use App\Form\UserNutritionalDataType;
 use App\FormDataObject\UserNutritionalDataFDO;
+use App\Repository\NotificationHistoryRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -225,29 +226,29 @@ class MyAccountController extends AbstractController
     //     ]);
     // }
 
-    // #[Route(path: '/notifications', name: 'notifications', methods: ['GET'])]
-    // #[IsGranted('IS_AUTHENTICATED')]
-    // public function notifications(
-    //     Request $request,
-    //     NotificationReceiptRepository $notificationReceiptRepository,
-    //     EntityManagerInterface $entityManager
-    // ): Response
-    // {
-    //     $user = $this->getUser();
-    //     $form = $this->createForm(PrivacySettingsType::class, $user);
-    //     $form->handleRequest($request);
-    //     $unreadNotificationReceipts = $notificationReceiptRepository->findUnreadByUser($user);
-    //     $readNotificationReceipts = $notificationReceiptRepository->findReadByUser($user);
+    #[Route(path: '/notifications', name: 'notifications', methods: ['GET'])]
+    #[IsGranted('IS_AUTHENTICATED')]
+    public function notifications(
+        Request $request,
+        NotificationHistoryRepository $notificationHistoryRepository,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(PrivacySettingsType::class, $user);
+        $form->handleRequest($request);
+        $unreadNotificationHistory = $notificationHistoryRepository->findUnreadByUser($user);
+        $readNotificationHistory = $notificationHistoryRepository->findReadByUser($user);
 
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         $entityManager->flush();
-    //         return $this->redirectToRoute('my_account_index');
-    //     }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            return $this->redirectToRoute('my_account_index');
+        }
 
-    //     return $this->render('my_account/notifications.html.twig', [
-    //         'user' => $user,
-    //         'unread_notification_receipts' => $unreadNotificationReceipts,
-    //         'read_notification_receipts' => $readNotificationReceipts,
-    //     ]);
-    // }
+        return $this->render('my_account/notifications.html.twig', [
+            'user' => $user,
+            'unread_notification_history' => $unreadNotificationHistory,
+            'read_notification_history' => $readNotificationHistory,
+        ]);
+    }
 }

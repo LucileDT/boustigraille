@@ -2,6 +2,8 @@
 
 namespace App\Controller\API;
 
+use App\Entity\NotificationHistory;
+use App\Repository\NotificationHistoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,40 +16,44 @@ class APINotificationController extends AbstractController
 {
     #[Route(path: '/has-unread', name: 'unread', methods: ['GET'])]
     #[IsGranted('IS_AUTHENTICATED')]
-    public function show(): JsonResponse
+    public function show(
+        NotificationHistoryRepository $notificationHistoryRepository
+    ): JsonResponse
     {
         $connectedUser = $this->getUser();
-        // Commented for notifications and follow rework
-        // $unreadNotificationReceipts = $notificationReceiptRepository->findUnreadByUser($connectedUser);
-        if (empty($unreadNotificationReceipts)) {
+        $unreadNotificationHistory = $notificationHistoryRepository->findUnreadByUser($connectedUser);
+        if (empty($unreadNotificationHistory)) {
             return new JsonResponse(['has_notification' => false, 'notifications_count' => 0]);
         } else {
             return new JsonResponse([
                 'has_notification' => true,
-                'notifications_count' => count($unreadNotificationReceipts),
+                'notifications_count' => count($unreadNotificationHistory),
             ]);
         }
     }
 
     #[Route(path: '/toggle-read/{id}', name: 'toggle_read', methods: ['POST'])]
     #[IsGranted('IS_AUTHENTICATED')]
-    public function toggleRead(EntityManagerInterface $entityManager): JsonResponse
+    public function toggleRead(
+        NotificationHistory $notificationHistory,
+        EntityManagerInterface $entityManager
+    ): JsonResponse
     {
-        // Commented for notifications and follow rework
-        // $connectedUser = $this->getUser();
-        // if ($notificationReceipt->getRecipient() !== $connectedUser) {
+        $notificationReceived = $notificationHistory->getNotificationReceived();
+        $connectedUser = $this->getUser();
+        if ($notificationReceived->getRecipient() !== $connectedUser) {
             return new JsonResponse('unauthorized');
-        // }
+        }
 
-        // if (empty($notificationReceipt->getDateRead())) {
-        //     $notificationReceipt->setDateRead(new \DateTime());
-        // } else {
-        //     $notificationReceipt->setDateRead(null);
-        // }
+        if (empty($notificationReceived->getReadAt())) {
+            $notificationReceived->setReadAt(new \DateTimeImmutable());
+        } else {
+            $notificationReceived->setReadAt(null);
+        }
 
-        // $entityManager->persist($notificationReceipt);
-        // $entityManager->flush();
+        $entityManager->persist($notificationReceived);
+        $entityManager->flush();
 
-        // return new JsonResponse(['toggled']);
+        return new JsonResponse(['toggled']);
     }
 }

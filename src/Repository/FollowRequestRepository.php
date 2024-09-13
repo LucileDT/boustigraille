@@ -21,28 +21,18 @@ class FollowRequestRepository extends ServiceEntityRepository
         parent::__construct($registry, FollowRequest::class);
     }
 
-//    /**
-//     * @return FollowRequest[] Returns an array of FollowRequest objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?FollowRequest
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    // Commented for notifications and follow rework
+    // Adapt with follow type as filter
+    // /**
+    //  * @return FollowMealList[] / FollowUsernameOnRecipe[]
+    //  */
+    // public function findUserOnesAccepted($user) {
+    //     return $this->createQueryBuilder('fml')
+    //         ->andWhere('fml.followed = :followed')
+    //         ->andWhere('fml.acceptedAt IS NOT NULL')
+    //         ->setParameter('followed', $user)
+    //         ->getQuery()
+    //         ->getResult()
+    //         ;
+    // }
 }

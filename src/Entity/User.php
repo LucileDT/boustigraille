@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 
+use App\Notifier\BoustigrailleRecipientInterface;
 use Doctrine\ORM\Mapping\InverseJoinColumn;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,7 +24,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Table(name: '`user`')]
 #[ORM\Entity(repositoryClass: \App\Repository\UserRepository::class)]
 #[UniqueEntity(fields: ['username'], message: "Ce nom d'utilisateurice n'est pas disponible.")]
-class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUserInterface
+class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUserInterface, BoustigrailleRecipientInterface
 {
     /**
      * @var int
@@ -89,12 +90,6 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
     private Collection $notificationsReceived;
 
     // Commented for notifications and follow rework
-    // #[ORM\OneToMany(targetEntity: NotificationReceipt::class, mappedBy: 'recipient', orphanRemoval: true)]
-    // private $notificationReceipts;
-
-    // #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'sender')]
-    // private $sentNotifications;
-
     // #[ORM\OneToMany(targetEntity: FollowMealList::class, mappedBy: 'follower', orphanRemoval: true)]
     // private $followingMealLists;
 
@@ -115,8 +110,6 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
         $this->responsibilities = $responsibilities;
         $this->favoriteRecipes = new ArrayCollection();
         // Commented for notifications and follow rework
-        // $this->notificationReceipts = new ArrayCollection();
-        // $this->sentNotifications = new ArrayCollection();
         // $this->followingMealLists = new ArrayCollection();
         // $this->followerMealLists = new ArrayCollection();
         // $this->followingUsernamesOnRecipes = new ArrayCollection();
@@ -134,7 +127,7 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -421,66 +414,6 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
     }
 
     // Commented for notifications and follow rework
-    // /**
-    //  * @return Collection<int, NotificationReceipt>
-    //  */
-    // public function getNotificationReceipts(): Collection
-    // {
-    //     return $this->notificationReceipts;
-    // }
-
-    // public function addNotificationReceipt(NotificationReceipt $notificationReceipt): self
-    // {
-    //     if (!$this->notificationReceipts->contains($notificationReceipt)) {
-    //         $this->notificationReceipts[] = $notificationReceipt;
-    //         $notificationReceipt->setRecipient($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeNotificationReceipt(NotificationReceipt $notificationReceipt): self
-    // {
-    //     if ($this->notificationReceipts->removeElement($notificationReceipt)) {
-    //         // set the owning side to null (unless already changed)
-    //         if ($notificationReceipt->getRecipient() === $this) {
-    //             $notificationReceipt->setRecipient(null);
-    //         }
-    //     }
-
-    //     return $this;
-    // }
-
-    // /**
-    //  * @return Collection<int, Notification>
-    //  */
-    // public function getSentNotifications(): Collection
-    // {
-    //     return $this->sentNotifications;
-    // }
-
-    // public function addSentNotification(Notification $sentNotification): self
-    // {
-    //     if (!$this->sentNotifications->contains($sentNotification)) {
-    //         $this->sentNotifications[] = $sentNotification;
-    //         $sentNotification->setSender($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeSentNotification(Notification $sentNotification): self
-    // {
-    //     if ($this->sentNotifications->removeElement($sentNotification)) {
-    //         // set the owning side to null (unless already changed)
-    //         if ($sentNotification->getSender() === $this) {
-    //             $sentNotification->setSender(null);
-    //         }
-    //     }
-
-    //     return $this;
-    // }
-
     // /**
     //  * @return Collection<int, FollowMealList>
     //  */

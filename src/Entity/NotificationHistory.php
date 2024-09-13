@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\NotificationHistoryRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Notifier\Notification\Notification;
 
 #[ORM\Entity(repositoryClass: NotificationHistoryRepository::class)]
 class NotificationHistory
@@ -24,7 +25,7 @@ class NotificationHistory
     private ?string $emoji = null;
 
     #[ORM\Column]
-    private ?int $importance = null;
+    private ?string $importance = null;
 
     #[ORM\Column(type: Types::JSON)]
     private array $channels = [];
@@ -76,12 +77,12 @@ class NotificationHistory
         return $this;
     }
 
-    public function getImportance(): ?int
+    public function getImportance(): ?string
     {
         return $this->importance;
     }
 
-    public function setImportance(int $importance): static
+    public function setImportance(string $importance): static
     {
         $this->importance = $importance;
 
@@ -132,5 +133,14 @@ class NotificationHistory
         $this->notificationReceived = $notificationReceived;
 
         return $this;
+    }
+
+    public function hydrateFromNotificationAndRecipient(Notification $notification, User $recipient)
+    {
+        $this->subject = $notification->getSubject();
+        $this->content = $notification->getContent();
+        $this->emoji = $notification->getEmoji();
+        $this->importance = $notification->getImportance();
+        $this->channels = $notification->getChannels($recipient);
     }
 }

@@ -7,6 +7,6 @@ framework:
             urgent: ['email']
             high: ['email']
             medium: ['email']
-            low: ['email']
+            low: ['browser']
         admin_recipients:
             - { email: admin@example.com }

@@ -37,12 +37,13 @@
     <div class="container">
         <div class="row mb-4">
             <div class="col">
-                {% if unread_notification_receipts | length > 0 %}
-                    {% for notification_receipt in unread_notification_receipts %}
+                {% if unread_notification_history | length > 0 %}
+                    {% for notification_history in unread_notification_history %}
                         {{
                             include('my_account/_notification.html.twig', {
-                                'notification_receipt': notification_receipt,
+                                'notification_history': notification_history,
                                 'button_label': 'Marquer comme&nbsp;lu',
+                                'color': 'info',
                             })
                         }}
                     {% endfor %}
@@ -60,12 +61,13 @@
                         Notifications déjà lues
                     </h2>
                 </div>
-                {% if read_notification_receipts | length > 0 %}
-                    {% for notification_receipt in read_notification_receipts %}
+                {% if read_notification_history | length > 0 %}
+                    {% for notification_history in read_notification_history %}
                         {{
                             include('my_account/_notification.html.twig', {
-                                'notification_receipt': notification_receipt,
+                                'notification_history': notification_history,
                                 'button_label': 'Marquer comme non&nbsp;lu',
+                                'color': 'dark',
                             })
                         }}
                     {% endfor %}
