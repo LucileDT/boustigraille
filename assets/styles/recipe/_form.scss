@@ -20,6 +20,19 @@
     }
 }
 
+#recipe_durations {
+    .form_duration {
+        > div {
+            flex: 1 0 0%;
+            margin-bottom: .3rem !important;
+
+            > label {
+                margin-bottom: .3rem;
+            }
+        }
+    }
+}
+
 #recipe_process {
     min-height: 10rem;
 }

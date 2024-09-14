@@ -58,6 +58,25 @@ $white-sections-padding: calc(#{$sections-padding} / 2) calc(#{$sections-padding
         margin: 2rem 5rem;
     }
 
+    .recipe-durations {
+        padding: $white-sections-padding;
+        margin-bottom: 2rem;
+
+        .durations-label {
+            font-size: 1.5rem;
+            font-weight: 200;
+        }
+
+        .duration-title {
+            font-family: "Poppins", sans-serif;
+            font-weight: 200;
+        }
+
+        .duration-category {
+            min-width: 4rem;
+        }
+    }
+
     .recipe-ingredients {
         padding: $white-sections-padding;
         margin-bottom: 2rem;

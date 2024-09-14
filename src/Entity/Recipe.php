@@ -3,8 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\RecipeRepository;
+use DateInterval;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
@@ -14,26 +17,26 @@ class Recipe implements JsonSerializable
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private int $id;
 
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: IngredientQuantityForRecipe::class, cascade: ['persist'], orphanRemoval: true)]
     private $ingredients;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $name;
+    private string $name;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $process;
+    private ?string $process;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $comment;
+    private ?string $comment;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $mainPictureFilename;
 
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: User::class)]
-    private $author;
+    private User $author;
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favoriteRecipes')]
     #[ORM\OrderBy(['username' => 'ASC'])]
@@ -44,6 +47,15 @@ class Recipe implements JsonSerializable
 
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'recipes', cascade: ['persist'])]
     private Collection $tags;
+
+    #[ORM\Column(nullable: true)]
+    private ?DateInterval $preparationDuration = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?DateInterval $cookingDuration = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?DateInterval $restDuration = null;
 
     public function getMealQuantityForLists()
     {
@@ -275,6 +287,42 @@ class Recipe implements JsonSerializable
         if ($this->tags->removeElement($tag)) {
             $tag->removeRecipe($this);
         }
+
+        return $this;
+    }
+
+    public function getPreparationDuration(): ?DateInterval
+    {
+        return $this->preparationDuration;
+    }
+
+    public function setPreparationDuration(?DateInterval $preparationDuration): static
+    {
+        $this->preparationDuration = $preparationDuration;
+
+        return $this;
+    }
+
+    public function getCookingDuration(): ?DateInterval
+    {
+        return $this->cookingDuration;
+    }
+
+    public function setCookingDuration(?DateInterval $cookingDuration): static
+    {
+        $this->cookingDuration = $cookingDuration;
+
+        return $this;
+    }
+
+    public function getRestDuration(): ?DateInterval
+    {
+        return $this->restDuration;
+    }
+
+    public function setRestDuration(?DateInterval $restDuration): static
+    {
+        $this->restDuration = $restDuration;
 
         return $this;
     }

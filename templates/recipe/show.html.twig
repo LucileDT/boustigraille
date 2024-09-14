@@ -45,11 +45,11 @@
                 </div>
 
                 {# recipe general data (only name & author at the moment) #}
-                <div class="recipe-general-data text-center text-white">
-                    <div class="recipe-name">
+                <div class="recipe-general-data">
+                    <div class="recipe-name text-center text-white">
                         <h1>{{ recipe.name }}</h1>
                         {# todo add author #}
-                        <div id="recipe-tags" class="d-flex align-items-center justify-content-center mt-4">
+                        <div id="recipe-tags" class="d-flex align-items-center justify-content-center mt-4 text-center text-white">
                             {% for tag in recipe.tags %}
                                 <div class="recipe-tag">
                                     {{ tag.label }}
@@ -57,7 +57,40 @@
                             {% endfor %}
                         </div>
                     </div>
-                    <hr>
+                    <hr class="text-white">
+                    <div class="recipe-durations bg-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="durations-label">
+                                <i class="ri-timer-line"></i> Durée
+                            </div>
+                            <div class="d-flex">
+                                <div class="duration-category">
+                                    <div class="duration-title">
+                                        Préparation
+                                    </div>
+                                    <div class="">
+                                        {{ recipe.preparationDuration | date_interval }}
+                                    </div>
+                                </div>
+                                <div class="ms-4 duration-category">
+                                    <div class="duration-title">
+                                        Cuisson
+                                    </div>
+                                    <div class="">
+                                        {{ recipe.cookingDuration | date_interval }}
+                                    </div>
+                                </div>
+                                <div class="ms-4 duration-category">
+                                    <div class="duration-title">
+                                        Repos
+                                    </div>
+                                    <div class="">
+                                        {{ recipe.restDuration | date_interval }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {# recipe ingredients #}
