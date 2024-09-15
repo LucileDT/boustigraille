@@ -61,6 +61,9 @@ class Recipe implements JsonSerializable
     #[ORM\ManyToOne(inversedBy: 'recipes')]
     private ?DifficultyLevel $difficultyLevel = null;
 
+    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Review::class, orphanRemoval: true)]
+    private Collection $reviews;
+
     public function getMealQuantityForLists()
     {
         return $this->mealQuantityForLists;
@@ -71,6 +74,7 @@ class Recipe implements JsonSerializable
         $this->ingredients = new ArrayCollection();
         $this->favedBy = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -355,6 +359,36 @@ class Recipe implements JsonSerializable
     public function setDifficultyLevel(?DifficultyLevel $difficultyLevel): static
     {
         $this->difficultyLevel = $difficultyLevel;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Review>
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Review $review): static
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
+            $review->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Review $review): static
+    {
+        if ($this->reviews->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getRecipe() === $this) {
+                $review->setRecipe(null);
+            }
+        }
 
         return $this;
     }

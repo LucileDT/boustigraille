@@ -58,7 +58,28 @@
                         </div>
                     </div>
                     <hr class="text-white">
-                    <div class="recipe-total-duration text-white d-flex justify-content-center mb-5">
+                    <div id="recipe-rating" class="text-white text-center {{ app.user is not null ? 'cursor-pointer' : '' }}">
+                        {% set averageScore = average_score(recipe) %}
+                        {% if app.user is not null %}
+                            <span
+                                    class="cursor-pointer"
+                                    data-bs-toggle="tooltip"
+                                    title="Noter la recette (note moyenne actuelle : {{ averageScore }}/5)"
+                            >
+                                <span data-bs-toggle="modal" data-bs-target="#rate-recipe-modal">
+                                    {{ averageScore | rating_stars | raw }}
+                                </span>
+                            </span>
+                        {% else %}
+                            <span
+                                    data-bs-toggle="tooltip"
+                                    title="Note moyenne actuelle : {{ averageScore }}/5"
+                            >
+                                {{ averageScore | rating_stars | raw }}
+                            </span>
+                        {% endif %}
+                    </div>
+                    <div class="recipe-total-duration text-white d-flex justify-content-center mb-5 mt-4">
                         <div>
                             <strong>
                                 <i class="ri-timer-line"></i>
@@ -278,4 +299,41 @@
             </div>
         </div>
     </div>
+
+    {% if app.user is not null %}
+        <div class="modal fade" id="rate-recipe-modal" tabindex="-1" aria-labelledby="rate-recipe-modal-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body pb-0">
+                        Notez la recette {{ recipe.name }}&nbsp;:
+                        <form
+                                id="review-recipe"
+                                data-submit-url="{{ path('api_review_rate_recipe', {'id': recipe.id}) }}"
+                        >
+                            <div class="input-group mt-3">
+                                <input
+                                        name="review-grade"
+                                        type="number"
+                                        min="0"
+                                        max="5"
+                                        class="form-control"
+                                        placeholder="4,5"
+                                        aria-label="Note"
+                                        aria-describedby="recipe-grade-input-label"
+                                        value="{{ userReview.grade ?? '' }}"
+                                >
+                                <span class="input-group-text" id="recipe-grade-input-label">/5</span>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <div class="d-flex justify-content-between w-100">
+                            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <button type="submit" form="review-recipe" class="btn btn-sm btn-primary">Enregistrer ma note</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Recipe;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
 use Imagine\Image\Point;
@@ -14,6 +15,26 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
  */
 class RecipeService
 {
+    /**
+     * Get the average grade of a recipe.
+     *
+     * @param Recipe $recipe
+     *
+     * @return float|null null if there is no reviews for the recipe, the grade average otherwise
+     */
+    public static function getAverageGrade(Recipe $recipe): float|null
+    {
+        if ($recipe->getReviews()->isEmpty()) {
+            return null;
+        }
+
+        $totalGrade = 0;
+        foreach ($recipe->getReviews() as $review) {
+            $totalGrade += $review->getGrade();
+        }
+        return (float) $totalGrade / count($recipe->getReviews());
+    }
+
     /**
      * Save an uploaded recipe main picture by generating its name and
      * resizing it

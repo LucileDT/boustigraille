@@ -55,7 +55,19 @@ $white-sections-padding: calc(#{$sections-padding} / 2) calc(#{$sections-padding
     }
 
     hr {
-        margin: 2rem 5rem;
+        margin: 1rem 5rem;
+    }
+
+    #recipe-rating {
+        font-size: 1.4rem;
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        .recipe-not-rated {
+            opacity: .5;
+        }
     }
 
     .recipe-total-duration {

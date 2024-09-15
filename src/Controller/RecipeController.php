@@ -6,6 +6,7 @@ use App\Entity\IngredientQuantityForRecipe;
 use App\Entity\Recipe;
 use App\Form\RecipeType;
 use App\Repository\RecipeRepository;
+use App\Repository\ReviewRepository;
 use App\Repository\TagRepository;
 use App\Service\Migrations\ContentAuthorService;
 use App\Service\RecipeService;
@@ -87,11 +88,26 @@ class RecipeController extends AbstractController
      * @throws Exception
      */
     #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
-    public function show(Recipe $recipe, ContentAuthorService $authorService): Response
+    public function show(
+        Recipe $recipe,
+        ContentAuthorService $authorService,
+        ReviewRepository $reviewRepository
+    ): Response
     {
         $authorService->updateRecipesAuthor();
+        $connectedUser = $this->getUser();
+        $review = null;
+
+        if (!empty($connectedUser)) {
+            $review = $reviewRepository->findOneBy([
+                'author' => $connectedUser,
+                'recipe' => $recipe,
+            ]);
+        }
+
         return $this->render('recipe/show.html.twig', [
             'recipe' => $recipe,
+            'userReview' => $review,
         ]);
     }
 
