@@ -37,6 +37,8 @@
                 <p class="description fst-italic mb-0">
                     Par {{ recipe.author.username }}
                 </p>
+            {% else %}
+                <div class="mb-3"></div>
             {% endif %}
             <div id="recipe-tags">
                 {% for tag in recipe.tags %}
@@ -44,6 +46,13 @@
                         {{ tag.label }}
                     </span>
                 {% endfor %}
+            </div>
+            <div id="recipe-duration" class="text-white mt-2">
+                <strong>
+                    <i class="ri-timer-line"></i>
+                    <small>Temps total&nbsp;:</small>
+                </strong>
+                {{ recipe.fullDuration | date_interval }}
             </div>
         </div>
         <div class="main-text-button">

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\RecipeRepository;
 use DateInterval;
+use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -325,5 +326,17 @@ class Recipe implements JsonSerializable
         $this->restDuration = $restDuration;
 
         return $this;
+    }
+
+    public function getFullDuration(): DateInterval
+    {
+        $now = new DateTime();
+        $nowClone = clone $now;
+        $now
+            ->add($this->getPreparationDuration())
+            ->add($this->getCookingDuration())
+            ->add($this->getRestDuration())
+        ;
+        return $nowClone->diff($now);
     }
 }

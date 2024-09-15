@@ -58,6 +58,15 @@
                         </div>
                     </div>
                     <hr class="text-white">
+                    <div class="recipe-total-duration text-white d-flex justify-content-center mb-5">
+                        <div>
+                            <strong>
+                                <i class="ri-timer-line"></i>
+                                Temps total&nbsp;:
+                            </strong>
+                            {{ recipe.fullDuration | date_interval }}
+                        </div>
+                    </div>
                     <div class="recipe-durations bg-white">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="durations-label">
