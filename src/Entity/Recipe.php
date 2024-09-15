@@ -58,6 +58,9 @@ class Recipe implements JsonSerializable
     #[ORM\Column(nullable: true)]
     private ?DateInterval $restDuration = null;
 
+    #[ORM\ManyToOne(inversedBy: 'recipes')]
+    private ?DifficultyLevel $difficultyLevel = null;
+
     public function getMealQuantityForLists()
     {
         return $this->mealQuantityForLists;
@@ -332,11 +335,27 @@ class Recipe implements JsonSerializable
     {
         $now = new DateTime();
         $nowClone = clone $now;
-        $now
-            ->add($this->getPreparationDuration())
-            ->add($this->getCookingDuration())
-            ->add($this->getRestDuration())
-        ;
+        if (!empty($this->getPreparationDuration())) {
+            $now->add($this->getPreparationDuration());
+        }
+        if (!empty($this->getCookingDuration())) {
+            $now->add($this->getCookingDuration());
+        }
+        if (!empty($this->getRestDuration())) {
+            $now->add($this->getRestDuration());
+        }
         return $nowClone->diff($now);
+    }
+
+    public function getDifficultyLevel(): ?DifficultyLevel
+    {
+        return $this->difficultyLevel;
+    }
+
+    public function setDifficultyLevel(?DifficultyLevel $difficultyLevel): static
+    {
+        $this->difficultyLevel = $difficultyLevel;
+
+        return $this;
     }
 }

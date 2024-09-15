@@ -66,6 +66,20 @@
                             </strong>
                             {{ recipe.fullDuration | date_interval }}
                         </div>
+                        <div class="ms-5">
+                            <strong>
+                                <i class="ri-trophy-fill"></i>
+                                Difficulté&nbsp;:
+                            </strong>
+                            <span
+                                    {% if recipe.difficultyLevel is not null %}
+                                        data-bs-toggle="tooltip"
+                                        title="{{ recipe.difficultyLevel.description }}"
+                                    {% endif %}
+                            >
+                                {{ recipe.difficultyLevel.label ?? '-' }}
+                            </span>
+                        </div>
                     </div>
                     <div class="recipe-durations bg-white">
                         <div class="d-flex justify-content-between align-items-center">

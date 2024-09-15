@@ -6,6 +6,7 @@ use App\Entity\IngredientQuantityForRecipe;
 use App\Entity\Recipe;
 use App\Form\RecipeType;
 use App\Repository\RecipeRepository;
+use App\Repository\TagRepository;
 use App\Service\Migrations\ContentAuthorService;
 use App\Service\RecipeService;
 use Doctrine\DBAL\Exception;
@@ -96,7 +97,12 @@ class RecipeController extends AbstractController
 
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHENTICATED')]
-    public function edit(Request $request, Recipe $recipe, EntityManagerInterface $entityManager): Response
+    public function edit(
+        Request $request,
+        Recipe $recipe,
+        EntityManagerInterface $entityManager,
+        TagRepository $tagRepository
+    ): Response
     {
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
@@ -119,6 +125,18 @@ class RecipeController extends AbstractController
                 {
                     $this->addFlash('danger', $e->getMessage());
                 }
+            }
+
+            // make sure tags correspond to the difficulty level
+            if ($recipe->getDifficultyLevel()?->getLabel() === 'Facile') {
+                $recipe->addTag($tagRepository->findOneBy(['label' => 'Facile']));
+                $recipe->removeTag($tagRepository->findOneBy(['label' => 'Difficile']));
+            } else if ($recipe->getDifficultyLevel()?->getLabel() === 'Difficile') {
+                $recipe->addTag($tagRepository->findOneBy(['label' => 'Difficile']));
+                $recipe->removeTag($tagRepository->findOneBy(['label' => 'Facile']));
+            } else {
+                $recipe->removeTag($tagRepository->findOneBy(['label' => 'Facile']));
+                $recipe->removeTag($tagRepository->findOneBy(['label' => 'Difficile']));
             }
 
             $entityManager->persist($recipe);

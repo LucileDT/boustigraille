@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\DifficultyLevel;
 use App\Entity\Recipe;
 use App\Entity\Tag;
 use Doctrine\ORM\EntityManagerInterface;
@@ -57,6 +58,16 @@ class RecipeType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false, // use addIngredient and removeIngredient in Recipe
+            ])
+            ->add('difficulty_level', EntityType::class, [
+                'class' => DifficultyLevel::class,
+                'label' => 'Niveau de difficulté',
+                'multiple' => false,
+                'expanded' => false,
+                'required' => false,
+                'choice_label' => function (DifficultyLevel $difficulty): string {
+                    return $difficulty->getSelectName();
+                }
             ])
             ->add('tags', EntityType::class, [
                 'class' => Tag::class,

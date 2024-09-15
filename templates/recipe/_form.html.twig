@@ -74,7 +74,7 @@
 {% if app.user is not null %}
     {{ form_start(form) }}
         <div class="p-4 bg-light">
-            <div>
+            <div class="flex-grow-1">
                 <h4>
                     {{ form_label(form.name) }}
                 </h4>
@@ -83,13 +83,50 @@
                 {{ form_errors(form.name) }}
             </div>
 
+            <div class="d-flex mt-4">
+                <div class="flex-grow-1">
+                    <h5>
+                        {{ form_label(form.main_picture) }}
+                    </h5>
+                    {{ form_widget(form.main_picture, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_help(form.main_picture) }}
+                    {{ form_errors(form.main_picture) }}
+                </div>
+                <div class="ms-4 flex-grow-1">
+                    <h5>
+                        {{ form_label(form.difficulty_level) }}
+                    </h5>
+                    {{ form_widget(form.difficulty_level, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_help(form.difficulty_level) }}
+                    {{ form_errors(form.difficulty_level) }}
+                </div>
+            </div>
+
             <div class="mt-4">
-                <h4>
-                    {{ form_label(form.main_picture) }}
-                </h4>
-                {{ form_widget(form.main_picture, {'attr': {'class': 'form-control'}}) }}
-                {{ form_help(form.main_picture) }}
-                {{ form_errors(form.main_picture) }}
+                <h5>{{ form_label(form.tags) }}</h5>
+                {{ form_widget(form.tags) }}
+                {{ form_help(form.tags) }}
+                {{ form_errors(form.tags) }}
+            </div>
+            <div id="recipe_durations" class="row mt-3">
+                <div class="col me-3">
+                    <h5>{{ form_label(form.preparation_duration) }}</h5>
+                    {{ form_widget(form.preparation_duration) }}
+                    {{ form_help(form.preparation_duration) }}
+                    {{ form_errors(form.preparation_duration) }}
+                </div>
+                <div class="col me-3">
+                    <h5>{{ form_label(form.cooking_duration) }}</h5>
+                    {{ form_widget(form.cooking_duration) }}
+                    {{ form_help(form.cooking_duration) }}
+                    {{ form_errors(form.cooking_duration) }}
+                </div>
+                <div class="col">
+                    <h5>{{ form_label(form.rest_duration) }}</h5>
+                    {{ form_widget(form.rest_duration) }}
+                    {{ form_help(form.rest_duration) }}
+                    {{ form_errors(form.rest_duration) }}
+                </div>
             </div>
         </div>
 
@@ -125,33 +162,7 @@
         </div>
 
         <div class="p-4 bg-light mt-4">
-            <div>
-                <h4>{{ form_label(form.tags) }}</h4>
-                {{ form_widget(form.tags) }}
-                {{ form_help(form.tags) }}
-                {{ form_errors(form.tags) }}
-            </div>
-            <div id="recipe_durations" class="row mt-3">
-                <div class="col me-3">
-                    <h4>{{ form_label(form.preparation_duration) }}</h4>
-                    {{ form_widget(form.preparation_duration) }}
-                    {{ form_help(form.preparation_duration) }}
-                    {{ form_errors(form.preparation_duration) }}
-                </div>
-                <div class="col me-3">
-                    <h4>{{ form_label(form.cooking_duration) }}</h4>
-                    {{ form_widget(form.cooking_duration) }}
-                    {{ form_help(form.cooking_duration) }}
-                    {{ form_errors(form.cooking_duration) }}
-                </div>
-                <div class="col">
-                    <h4>{{ form_label(form.rest_duration) }}</h4>
-                    {{ form_widget(form.rest_duration) }}
-                    {{ form_help(form.rest_duration) }}
-                    {{ form_errors(form.rest_duration) }}
-                </div>
-            </div>
-            <div class="mt-3">
+            <div class="">
                 <h4>{{ form_label(form.process) }}</h4>
                 {{ form_widget(form.process) }}
                 {{ form_help(form.process) }}

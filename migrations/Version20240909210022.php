@@ -31,7 +31,6 @@ final class Version20240909210022 extends AbstractMigration
         $this->addSql('INSERT INTO tag VALUES (nextval(\'tag_id_seq\'), \'Long\')');
         $this->addSql('INSERT INTO tag VALUES (nextval(\'tag_id_seq\'), \'Végé\')');
         $this->addSql('INSERT INTO tag VALUES (nextval(\'tag_id_seq\'), \'Vegan\')');
-
     }
 
     public function down(Schema $schema): void

@@ -49,10 +49,15 @@
             </div>
             <div id="recipe-duration" class="text-white mt-2">
                 <strong>
-                    <i class="ri-timer-line"></i>
                     <small>Temps total&nbsp;:</small>
                 </strong>
                 {{ recipe.fullDuration | date_interval }}
+            </div>
+            <div id="recipe-difficulty-level" class="text-white">
+                <strong>
+                    <small>Difficulté&nbsp;:</small>
+                </strong>
+                <small>{{ recipe.difficultyLevel.label ?? '-' }}</small>
             </div>
         </div>
         <div class="main-text-button">
