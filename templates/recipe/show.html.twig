@@ -180,9 +180,11 @@
                                         <span class="text-lowercase">{{ ingredient.label }}</span>
 
                                         {% if ingredientQuantity.isMeasuredByUnit %}
-                                            (<span class="quantity-for-unit" data-unit-size="{{ ingredient.unitSize }}">
-                                                {{ ingredientQuantity.quantity * ingredient.unitSize }}
-                                            </span> {{ ingredient.measureType }})
+                                            (<span
+                                                class="quantity-for-unit"
+                                                data-unit-size="{{ ingredient.unitSize }}"
+                                            >{{ ingredientQuantity.quantity * ingredient.unitSize }}</span>
+                                            {{ ingredient.measureType }})
                                         {% endif %}
                                     </span>
 
