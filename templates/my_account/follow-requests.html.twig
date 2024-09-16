@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block javascript %}
+    {{ encore_entry_script_tags('my_account_follow_requests') }}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+                <li class="breadcrumb-item"><a href="{{ path('my_account_index') }}">Mon compte</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Demandes de suivi</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block title %}User{% endblock %}
+
+{% block page_title %}
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="page-heading">
+                    <h2>
+                        Demandes non traitées
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col">
+                {% if unprocessed_follow_requests | length > 0 %}
+                    {% for follow_request in unprocessed_follow_requests %}
+                        {{
+                            include('my_account/_follow-request.html.twig', {
+                                'follow_request': follow_request,
+                                'color': 'primary',
+                            })
+                        }}
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center">
+                        <i class="text-muted">Vous n'avez aucune demande non traitée (pour le moment)</i>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="page-heading">
+                    <h2>
+                        Demandes acceptées
+                    </h2>
+                </div>
+                {% if accepted_follow_requests | length > 0 %}
+                    {% for follow_request in accepted_follow_requests %}
+                        {{
+                            include('my_account/_follow-request.html.twig', {
+                                'follow_request': follow_request,
+                                'color': 'success',
+                            })
+                        }}
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center">
+                        <i class="text-muted">Vous n'avez aucune demande acceptée (pour le moment)</i>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col">
+                <div class="page-heading">
+                    <h2>
+                        Demandes refusées
+                    </h2>
+                </div>
+                {% if refused_follow_requests | length > 0 %}
+                    {% for follow_request in refused_follow_requests %}
+                        {{
+                            include('my_account/_follow-request.html.twig', {
+                                'follow_request': follow_request,
+                                'color': 'dark',
+                            })
+                        }}
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center">
+                        <i class="text-muted">Vous n'avez aucune demande refusée (pour le moment)</i>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

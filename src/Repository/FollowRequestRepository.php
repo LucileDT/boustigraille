@@ -21,18 +21,42 @@ class FollowRequestRepository extends ServiceEntityRepository
         parent::__construct($registry, FollowRequest::class);
     }
 
-    // Commented for notifications and follow rework
-    // Adapt with follow type as filter
-    // /**
-    //  * @return FollowMealList[] / FollowUsernameOnRecipe[]
-    //  */
-    // public function findUserOnesAccepted($user) {
-    //     return $this->createQueryBuilder('fml')
-    //         ->andWhere('fml.followed = :followed')
-    //         ->andWhere('fml.acceptedAt IS NOT NULL')
-    //         ->setParameter('followed', $user)
-    //         ->getQuery()
-    //         ->getResult()
-    //         ;
-    // }
+    /**
+     * @return FollowRequest[]
+     */
+    public function findUserOnesUnprocessed($user) {
+        return $this->createQueryBuilder('fr')
+            ->andWhere('fr.followed = :followed')
+            ->andWhere('fr.processedAt IS NULL')
+            ->setParameter('followed', $user)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @return FollowRequest[]
+     */
+    public function findUserOnesAccepted($user) {
+        return $this->createQueryBuilder('fr')
+            ->andWhere('fr.followed = :followed')
+            ->andWhere('fr.acceptedAt IS NOT NULL')
+            ->setParameter('followed', $user)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @return FollowRequest[]
+     */
+    public function findUserOnesRefused($user) {
+        return $this->createQueryBuilder('fr')
+            ->andWhere('fr.followed = :followed')
+            ->andWhere('fr.refusedAt IS NOT NULL')
+            ->setParameter('followed', $user)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

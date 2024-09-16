@@ -8,6 +8,7 @@ use App\Form\ProposeMealListFollowType;
 use App\Form\ProposeUsernameInRecipeFollowType;
 use App\Form\UserNutritionalDataType;
 use App\FormDataObject\UserNutritionalDataFDO;
+use App\Repository\FollowRequestRepository;
 use App\Repository\NotificationHistoryRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -229,26 +230,36 @@ class MyAccountController extends AbstractController
     #[Route(path: '/notifications', name: 'notifications', methods: ['GET'])]
     #[IsGranted('IS_AUTHENTICATED')]
     public function notifications(
-        Request $request,
         NotificationHistoryRepository $notificationHistoryRepository,
-        EntityManagerInterface $entityManager
     ): Response
     {
         $user = $this->getUser();
-        $form = $this->createForm(PrivacySettingsType::class, $user);
-        $form->handleRequest($request);
         $unreadNotificationHistory = $notificationHistoryRepository->findUnreadByUser($user);
         $readNotificationHistory = $notificationHistoryRepository->findReadByUser($user);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-            return $this->redirectToRoute('my_account_index');
-        }
 
         return $this->render('my_account/notifications.html.twig', [
             'user' => $user,
             'unread_notification_history' => $unreadNotificationHistory,
             'read_notification_history' => $readNotificationHistory,
+        ]);
+    }
+
+    #[Route(path: '/follow-requests', name: 'follow_requests', methods: ['GET'])]
+    #[IsGranted('IS_AUTHENTICATED')]
+    public function followRequests(
+        FollowRequestRepository $followRequestRepository,
+    ): Response
+    {
+        $user = $this->getUser();
+        $unprocessedFollowRequests = $followRequestRepository->findUserOnesUnprocessed($user);
+        $acceptedFollowRequests = $followRequestRepository->findUserOnesAccepted($user);
+        $refusedFollowRequests = $followRequestRepository->findUserOnesRefused($user);
+
+        return $this->render('my_account/follow-requests.html.twig', [
+            'user' => $user,
+            'unprocessed_follow_requests' => $unprocessedFollowRequests,
+            'accepted_follow_requests' => $acceptedFollowRequests,
+            'refused_follow_requests' => $refusedFollowRequests,
         ]);
     }
 }
