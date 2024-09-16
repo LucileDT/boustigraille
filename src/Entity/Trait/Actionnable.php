@@ -16,6 +16,9 @@ trait Actionnable
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?DateTimeImmutable $refusedAt;
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?DateTimeImmutable $processedAt;
+
     public function getProposedAt(): ?DateTimeImmutable
     {
         return $this->proposedAt;
@@ -48,6 +51,18 @@ trait Actionnable
     public function setRefusedAt(?DateTimeImmutable $refusedAt): self
     {
         $this->refusedAt = $refusedAt;
+
+        return $this;
+    }
+
+    public function getProcessedAt(): ?DateTimeImmutable
+    {
+        return $this->processedAt;
+    }
+
+    public function setProcessedAt(?DateTimeImmutable $processedAt): self
+    {
+        $this->processedAt = $processedAt;
 
         return $this;
     }
