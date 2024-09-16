@@ -172,6 +172,9 @@ class RecipeController extends AbstractController
     public function delete(Request $request, Recipe $recipe, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$recipe->getId(), $request->request->get('_token'))) {
+            foreach ($recipe->getIngredients() as $ingredientQuantity) {
+                $entityManager->remove($ingredientQuantity);
+            }
             $entityManager->remove($recipe);
             $entityManager->flush();
         }
