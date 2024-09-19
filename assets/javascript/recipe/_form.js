@@ -314,6 +314,27 @@ $(document).ready(function () {
         }
     });
 
+    // make sure all duration selects are set or unset when selecting one
+    $('.form_duration select').on('change', function () {
+        $(this).addClass('changed')
+        let $durationSelectSiblings = $(this)
+            .closest('.form_duration')
+            .find('select:not(.changed)')
+        ;
+        if ($(this).find(":selected").val() === '') {
+            // make sure all the selects are reset
+            $durationSelectSiblings.val('').change();
+        } else {
+            // put a 0 value on other selects to avoid form validation errors
+            $durationSelectSiblings
+                .has('option[value=""]:selected') // only get selects without a defined value
+                .val(0)
+                .change()
+            ;
+        }
+        $(this).removeClass('changed')
+    })
+
     // get the element that holds the collection of ingredients
     let $collectionHolder = $('#ingredients');
 

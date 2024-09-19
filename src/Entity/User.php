@@ -102,6 +102,9 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
     // #[ORM\OneToMany(targetEntity: FollowUsernameOnRecipe::class, mappedBy: 'followed', orphanRemoval: true)]
     // private $followerUsernamesOnRecipes;
 
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Review::class, orphanRemoval: true)]
+    private Collection $reviews;
+
     function __construct($id = -1, $username = NULL, $plainPassword = NULL, $responsibilities = [])
     {
         $this->id = $id;
@@ -120,6 +123,7 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
         $this->followRequestsReceived = new ArrayCollection();
         $this->notificationsSent = new ArrayCollection();
         $this->notificationsReceived = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
     }
 
     /**
@@ -664,6 +668,36 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
             // set the owning side to null (unless already changed)
             if ($notificationReceived->getRecipient() === $this) {
                 $notificationReceived->setRecipient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Review>
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Review $review): static
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
+            $review->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Review $review): static
+    {
+        if ($this->reviews->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getAuthor() === $this) {
+                $review->setAuthor(null);
             }
         }
 

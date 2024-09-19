@@ -6,6 +6,8 @@ use App\Entity\IngredientQuantityForRecipe;
 use App\Entity\Recipe;
 use App\Form\RecipeType;
 use App\Repository\RecipeRepository;
+use App\Repository\ReviewRepository;
+use App\Repository\TagRepository;
 use App\Service\Migrations\ContentAuthorService;
 use App\Service\RecipeService;
 use Doctrine\DBAL\Exception;
@@ -86,17 +88,37 @@ class RecipeController extends AbstractController
      * @throws Exception
      */
     #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
-    public function show(Recipe $recipe, ContentAuthorService $authorService): Response
+    public function show(
+        Recipe $recipe,
+        ContentAuthorService $authorService,
+        ReviewRepository $reviewRepository
+    ): Response
     {
         $authorService->updateRecipesAuthor();
+        $connectedUser = $this->getUser();
+        $review = null;
+
+        if (!empty($connectedUser)) {
+            $review = $reviewRepository->findOneBy([
+                'author' => $connectedUser,
+                'recipe' => $recipe,
+            ]);
+        }
+
         return $this->render('recipe/show.html.twig', [
             'recipe' => $recipe,
+            'userReview' => $review,
         ]);
     }
 
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHENTICATED')]
-    public function edit(Request $request, Recipe $recipe, EntityManagerInterface $entityManager): Response
+    public function edit(
+        Request $request,
+        Recipe $recipe,
+        EntityManagerInterface $entityManager,
+        TagRepository $tagRepository
+    ): Response
     {
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
@@ -121,6 +143,18 @@ class RecipeController extends AbstractController
                 }
             }
 
+            // make sure tags correspond to the difficulty level
+            if ($recipe->getDifficultyLevel()?->getLabel() === 'Facile') {
+                $recipe->addTag($tagRepository->findOneBy(['label' => 'Facile']));
+                $recipe->removeTag($tagRepository->findOneBy(['label' => 'Difficile']));
+            } else if ($recipe->getDifficultyLevel()?->getLabel() === 'Difficile') {
+                $recipe->addTag($tagRepository->findOneBy(['label' => 'Difficile']));
+                $recipe->removeTag($tagRepository->findOneBy(['label' => 'Facile']));
+            } else {
+                $recipe->removeTag($tagRepository->findOneBy(['label' => 'Facile']));
+                $recipe->removeTag($tagRepository->findOneBy(['label' => 'Difficile']));
+            }
+
             $entityManager->persist($recipe);
             $entityManager->flush();
 
@@ -138,6 +172,9 @@ class RecipeController extends AbstractController
     public function delete(Request $request, Recipe $recipe, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$recipe->getId(), $request->request->get('_token'))) {
+            foreach ($recipe->getIngredients() as $ingredientQuantity) {
+                $entityManager->remove($ingredientQuantity);
+            }
             $entityManager->remove($recipe);
             $entityManager->flush();
         }

@@ -52,7 +52,7 @@ class IngredientType extends AbstractType
             ->add('measureType', TextType::class, [
                 'label' => 'Unité de mesure (g, ml, l, ...) *',
             ])
-            ->add('unitSize', IntegerType::class, [
+            ->add('unitSize', NumberType::class, [
                 'label' => 'Taille d\'une unité',
                 'required' => false,
                 'help' => 'Pour des barres de céréales, le poids d\'une barre.',

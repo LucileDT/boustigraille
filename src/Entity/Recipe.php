@@ -3,8 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\RecipeRepository;
+use DateInterval;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
@@ -14,26 +18,26 @@ class Recipe implements JsonSerializable
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private int $id;
 
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: IngredientQuantityForRecipe::class, cascade: ['persist'], orphanRemoval: true)]
     private $ingredients;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $name;
+    private string $name;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $process;
+    private ?string $process;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $comment;
+    private ?string $comment;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $mainPictureFilename;
 
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: User::class)]
-    private $author;
+    private User $author;
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favoriteRecipes')]
     #[ORM\OrderBy(['username' => 'ASC'])]
@@ -45,6 +49,21 @@ class Recipe implements JsonSerializable
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'recipes', cascade: ['persist'])]
     private Collection $tags;
 
+    #[ORM\Column(nullable: true)]
+    private ?DateInterval $preparationDuration = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?DateInterval $cookingDuration = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?DateInterval $restDuration = null;
+
+    #[ORM\ManyToOne(inversedBy: 'recipes')]
+    private ?DifficultyLevel $difficultyLevel = null;
+
+    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Review::class, orphanRemoval: true)]
+    private Collection $reviews;
+
     public function getMealQuantityForLists()
     {
         return $this->mealQuantityForLists;
@@ -55,6 +74,7 @@ class Recipe implements JsonSerializable
         $this->ingredients = new ArrayCollection();
         $this->favedBy = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -274,6 +294,100 @@ class Recipe implements JsonSerializable
     {
         if ($this->tags->removeElement($tag)) {
             $tag->removeRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function getPreparationDuration(): ?DateInterval
+    {
+        return $this->preparationDuration;
+    }
+
+    public function setPreparationDuration(?DateInterval $preparationDuration): static
+    {
+        $this->preparationDuration = $preparationDuration;
+
+        return $this;
+    }
+
+    public function getCookingDuration(): ?DateInterval
+    {
+        return $this->cookingDuration;
+    }
+
+    public function setCookingDuration(?DateInterval $cookingDuration): static
+    {
+        $this->cookingDuration = $cookingDuration;
+
+        return $this;
+    }
+
+    public function getRestDuration(): ?DateInterval
+    {
+        return $this->restDuration;
+    }
+
+    public function setRestDuration(?DateInterval $restDuration): static
+    {
+        $this->restDuration = $restDuration;
+
+        return $this;
+    }
+
+    public function getFullDuration(): DateInterval
+    {
+        $now = new DateTime();
+        $nowClone = clone $now;
+        if (!empty($this->getPreparationDuration())) {
+            $now->add($this->getPreparationDuration());
+        }
+        if (!empty($this->getCookingDuration())) {
+            $now->add($this->getCookingDuration());
+        }
+        if (!empty($this->getRestDuration())) {
+            $now->add($this->getRestDuration());
+        }
+        return $nowClone->diff($now);
+    }
+
+    public function getDifficultyLevel(): ?DifficultyLevel
+    {
+        return $this->difficultyLevel;
+    }
+
+    public function setDifficultyLevel(?DifficultyLevel $difficultyLevel): static
+    {
+        $this->difficultyLevel = $difficultyLevel;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Review>
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Review $review): static
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
+            $review->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Review $review): static
+    {
+        if ($this->reviews->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getRecipe() === $this) {
+                $review->setRecipe(null);
+            }
         }
 
         return $this;

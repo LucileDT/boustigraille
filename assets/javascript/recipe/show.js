@@ -1,4 +1,5 @@
 import '../../styles/recipe/show.scss';
+import $ from "jquery";
 
 $(document).ready(function () {
     // display ingredients quantity according to portions count
@@ -12,6 +13,21 @@ $(document).ready(function () {
     $('#expand-nutritional-information').on('click', function () {
         $('.chevron').toggleClass('d-none');
     });
+
+    $('#review-recipe').on('submit', function (event) {
+        event.preventDefault();
+        let submitUrl = $(this).data('submit-url');
+        let formData = $(this).serialize();
+        console.debug(formData);
+        $.ajax({
+            url: submitUrl,
+            method: 'POST',
+            dataType: 'json',
+            data: formData,
+        }).done(function() {
+            location.reload();
+        });
+    })
 });
 
 function updateIngredientsQuantity(portionsCount) {
