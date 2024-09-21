@@ -13,7 +13,7 @@ class NotificationSent
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'notificationSents')]
+    #[ORM\ManyToOne(inversedBy: 'notificationsSent')]
     #[ORM\JoinColumn(nullable: true)]
     private ?User $sender = null;
 
