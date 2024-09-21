@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block javascript %}
-    {{ encore_entry_script_tags('my_account_follow_requests') }}
+    {{ encore_entry_script_tags('my_account_follow_propositions') }}
 {% endblock %}
 
 {% block page_breadcrumb %}
@@ -37,11 +37,11 @@
     <div class="container">
         <div class="row mb-4">
             <div class="col">
-                {% if unprocessed_follow_requests | length > 0 %}
-                    {% for follow_request in unprocessed_follow_requests %}
+                {% if unprocessed_follow_propositions | length > 0 %}
+                    {% for follow_proposition in unprocessed_follow_propositions %}
                         {{
-                            include('my_account/_follow-request.html.twig', {
-                                'follow_request': follow_request,
+                            include('my_account/_follow-proposition.html.twig', {
+                                'follow_proposition': follow_proposition,
                                 'color': 'primary',
                             })
                         }}
@@ -60,11 +60,11 @@
                         Demandes acceptées
                     </h2>
                 </div>
-                {% if accepted_follow_requests | length > 0 %}
-                    {% for follow_request in accepted_follow_requests %}
+                {% if accepted_follow_propositions | length > 0 %}
+                    {% for follow_proposition in accepted_follow_propositions %}
                         {{
-                            include('my_account/_follow-request.html.twig', {
-                                'follow_request': follow_request,
+                            include('my_account/_follow-proposition.html.twig', {
+                                'follow_proposition': follow_proposition,
                                 'color': 'success',
                             })
                         }}
@@ -81,11 +81,11 @@
                         Demandes refusées
                     </h2>
                 </div>
-                {% if refused_follow_requests | length > 0 %}
-                    {% for follow_request in refused_follow_requests %}
+                {% if refused_follow_propositions | length > 0 %}
+                    {% for follow_proposition in refused_follow_propositions %}
                         {{
-                            include('my_account/_follow-request.html.twig', {
-                                'follow_request': follow_request,
+                            include('my_account/_follow-proposition.html.twig', {
+                                'follow_proposition': follow_proposition,
                                 'color': 'dark',
                             })
                         }}

@@ -8,7 +8,7 @@ use App\Form\ProposeMealListFollowType;
 use App\Form\ProposeUsernameInRecipeFollowType;
 use App\Form\UserNutritionalDataType;
 use App\FormDataObject\UserNutritionalDataFDO;
-use App\Repository\FollowRequestRepository;
+use App\Repository\FollowPropositionRepository;
 use App\Repository\NotificationHistoryRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -244,22 +244,22 @@ class MyAccountController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/follow-requests', name: 'follow_requests', methods: ['GET'])]
+    #[Route(path: '/follow-propositions', name: 'follow_propositions', methods: ['GET'])]
     #[IsGranted('IS_AUTHENTICATED')]
-    public function followRequests(
-        FollowRequestRepository $followRequestRepository,
+    public function followPropositions(
+        FollowPropositionRepository $followPropositionRepository,
     ): Response
     {
         $user = $this->getUser();
-        $unprocessedFollowRequests = $followRequestRepository->findUserOnesUnprocessed($user);
-        $acceptedFollowRequests = $followRequestRepository->findUserOnesAccepted($user);
-        $refusedFollowRequests = $followRequestRepository->findUserOnesRefused($user);
+        $unprocessedFollowPropositions = $followPropositionRepository->findUserOnesUnprocessed($user);
+        $acceptedFollowPropositions = $followPropositionRepository->findUserOnesAccepted($user);
+        $refusedFollowPropositions = $followPropositionRepository->findUserOnesRefused($user);
 
-        return $this->render('my_account/follow-requests.html.twig', [
+        return $this->render('my_account/follow-propositions.html.twig', [
             'user' => $user,
-            'unprocessed_follow_requests' => $unprocessedFollowRequests,
-            'accepted_follow_requests' => $acceptedFollowRequests,
-            'refused_follow_requests' => $refusedFollowRequests,
+            'unprocessed_follow_propositions' => $unprocessedFollowPropositions,
+            'accepted_follow_propositions' => $acceptedFollowPropositions,
+            'refused_follow_propositions' => $refusedFollowPropositions,
         ]);
     }
 }

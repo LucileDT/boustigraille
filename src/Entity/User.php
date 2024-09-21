@@ -77,11 +77,11 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $doShowWrittenMealListToOthers;
 
-    #[ORM\OneToMany(mappedBy: 'follower', targetEntity: FollowRequest::class)]
-    private Collection $followRequestsSent;
+    #[ORM\OneToMany(mappedBy: 'followed', targetEntity: FollowProposition::class)]
+    private Collection $followPropositionsSent;
 
-    #[ORM\OneToMany(mappedBy: 'followed', targetEntity: FollowRequest::class)]
-    private Collection $followRequestsReceived;
+    #[ORM\OneToMany(mappedBy: 'follower', targetEntity: FollowProposition::class)]
+    private Collection $followPropositionsReceived;
 
     #[ORM\OneToMany(mappedBy: 'sender', targetEntity: NotificationSent::class)]
     private Collection $notificationsSent;
@@ -119,8 +119,8 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
         // $this->followerUsernamesOnRecipes = new ArrayCollection();
         $this->doShowUsernameOnRecipe = false;
         $this->doShowWrittenMealListToOthers = false;
-        $this->followRequestsSent = new ArrayCollection();
-        $this->followRequestsReceived = new ArrayCollection();
+        $this->followPropositionsSent = new ArrayCollection();
+        $this->followPropositionsReceived = new ArrayCollection();
         $this->notificationsSent = new ArrayCollection();
         $this->notificationsReceived = new ArrayCollection();
         $this->reviews = new ArrayCollection();
@@ -555,29 +555,29 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
     }
 
     /**
-     * @return Collection<int, FollowRequest>
+     * @return Collection<int, FollowProposition>
      */
-    public function getFollowRequestsSent(): Collection
+    public function getFollowPropositionsSent(): Collection
     {
-        return $this->followRequestsSent;
+        return $this->followPropositionsSent;
     }
 
-    public function addFollowRequestsSent(FollowRequest $followRequestsSent): static
+    public function addFollowPropositionsSent(FollowProposition $followPropositionsSent): static
     {
-        if (!$this->followRequestsSent->contains($followRequestsSent)) {
-            $this->followRequestsSent->add($followRequestsSent);
-            $followRequestsSent->setFollower($this);
+        if (!$this->followPropositionsSent->contains($followPropositionsSent)) {
+            $this->followPropositionsSent->add($followPropositionsSent);
+            $followPropositionsSent->setFollower($this);
         }
 
         return $this;
     }
 
-    public function removeFollowRequestsSent(FollowRequest $followRequestsSent): static
+    public function removeFollowPropositionsSent(FollowProposition $followPropositionsSent): static
     {
-        if ($this->followRequestsSent->removeElement($followRequestsSent)) {
+        if ($this->followPropositionsSent->removeElement($followPropositionsSent)) {
             // set the owning side to null (unless already changed)
-            if ($followRequestsSent->getFollower() === $this) {
-                $followRequestsSent->setFollower(null);
+            if ($followPropositionsSent->getFollower() === $this) {
+                $followPropositionsSent->setFollower(null);
             }
         }
 
@@ -585,29 +585,29 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
     }
 
     /**
-     * @return Collection<int, FollowRequest>
+     * @return Collection<int, FollowProposition>
      */
-    public function getFollowRequestsReceived(): Collection
+    public function getFollowPropositionsReceived(): Collection
     {
-        return $this->followRequestsReceived;
+        return $this->followPropositionsReceived;
     }
 
-    public function addFollowRequestsReceived(FollowRequest $followRequestsReceived): static
+    public function addFollowPropositionsReceived(FollowProposition $followPropositionsReceived): static
     {
-        if (!$this->followRequestsReceived->contains($followRequestsReceived)) {
-            $this->followRequestsReceived->add($followRequestsReceived);
-            $followRequestsReceived->setFollowed($this);
+        if (!$this->followPropositionsReceived->contains($followPropositionsReceived)) {
+            $this->followPropositionsReceived->add($followPropositionsReceived);
+            $followPropositionsReceived->setFollowed($this);
         }
 
         return $this;
     }
 
-    public function removeFollowRequestsReceived(FollowRequest $followRequestsReceived): static
+    public function removeFollowPropositionsReceived(FollowProposition $followPropositionsReceived): static
     {
-        if ($this->followRequestsReceived->removeElement($followRequestsReceived)) {
+        if ($this->followPropositionsReceived->removeElement($followPropositionsReceived)) {
             // set the owning side to null (unless already changed)
-            if ($followRequestsReceived->getFollowed() === $this) {
-                $followRequestsReceived->setFollowed(null);
+            if ($followPropositionsReceived->getFollowed() === $this) {
+                $followPropositionsReceived->setFollowed(null);
             }
         }
 

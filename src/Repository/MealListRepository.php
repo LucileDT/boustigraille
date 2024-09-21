@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\FollowType;
 use App\Entity\MealList;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -46,7 +47,24 @@ class MealListRepository extends ServiceEntityRepository
         }
     }
 
-    // TODO: create a base query and refact the three next methods
+    /**
+     * @return QueryBuilder A query builder object containing the base query to find MealList.
+     */
+    public function getFindOnesBaseQuery($connectedUser)
+    {
+        return $this->createQueryBuilder('m')
+            ->leftJoin('m.author', 'a')
+            ->leftJoin('a.followPropositionsSent', 'fps')
+            ->leftJoin('fps.type', 'ft')
+            ->andWhere('m.author = :connectedUser OR a.doShowWrittenMealListToOthers = :true
+                    OR (fps.follower = :connectedUser AND fps.acceptedAt IS NOT NULL)')
+            ->andWhere('ft.code = :followTypeMealList OR ft.code is null')
+            ->setParameter('connectedUser', $connectedUser)
+            ->setParameter('followTypeMealList', FollowType::MEAL_LIST)
+            ->setParameter('true', true);
+        ;
+    }
+
     /**
      * @return MealList[] Returns an array of past MealList
      */
@@ -54,16 +72,9 @@ class MealListRepository extends ServiceEntityRepository
     {
         $now = new DateTime();
 
-        return $this->createQueryBuilder('m')
-            ->leftJoin('m.author', 'a')
-            // Commented for notifications and follow rework
-            // ->leftJoin('a.followerMealLists', 'fml')
+        return $this->getFindOnesBaseQuery($connectedUser)
             ->andWhere('m.endDate < :now')
-            ->andWhere('m.author = :connectedUser OR a.doShowWrittenMealListToOthers = :true')
-                    // OR (fml.follower = :connectedUser AND fml.acceptedAt IS NOT NULL)')
             ->setParameter('now', $now)
-            ->setParameter('connectedUser', $connectedUser)
-            ->setParameter('true', true)
             ->orderBy('m.startDate', 'DESC')
             ->getQuery()
             ->getResult()
@@ -77,16 +88,9 @@ class MealListRepository extends ServiceEntityRepository
     {
         $now = new DateTime();
 
-        return $this->createQueryBuilder('m')
-            ->leftJoin('m.author', 'a')
-            // Commented for notifications and follow rework
-            // ->leftJoin('a.followerMealLists', 'fml')
+        return $this->getFindOnesBaseQuery($connectedUser)
             ->andWhere(':now >= m.startDate and :now <= m.endDate')
-            ->andWhere('m.author = :connectedUser OR a.doShowWrittenMealListToOthers = :true')
-                    // OR (fml.follower = :connectedUser AND fml.acceptedAt IS NOT NULL)')
             ->setParameter('now', $now)
-            ->setParameter('connectedUser', $connectedUser)
-            ->setParameter('true', true)
             ->orderBy('m.startDate', 'ASC')
             ->getQuery()
             ->getResult()
@@ -100,16 +104,9 @@ class MealListRepository extends ServiceEntityRepository
     {
         $now = new DateTime();
 
-        return $this->createQueryBuilder('m')
-            ->leftJoin('m.author', 'a')
-            // Commented for notifications and follow rework
-            // ->leftJoin('a.followerMealLists', 'fml')
+        return $this->getFindOnesBaseQuery($connectedUser)
             ->andWhere('m.startDate > :now')
-            ->andWhere('m.author = :connectedUser OR a.doShowWrittenMealListToOthers = :true')
-                // OR (fml.follower = :connectedUser AND fml.acceptedAt IS NOT NULL)')
             ->setParameter('now', $now)
-            ->setParameter('connectedUser', $connectedUser)
-            ->setParameter('true', true)
             ->orderBy('m.startDate', 'ASC')
             ->getQuery()
             ->getResult()

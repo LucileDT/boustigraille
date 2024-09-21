@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use App\Entity\Trait\Actionnable;
-use App\Repository\FollowRequestRepository;
+use App\Repository\FollowPropositionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: FollowRequestRepository::class)]
-class FollowRequest
+#[ORM\Entity(repositoryClass: FollowPropositionRepository::class)]
+class FollowProposition
 {
     use Actionnable;
 
@@ -16,17 +16,17 @@ class FollowRequest
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'followRequests')]
+    #[ORM\ManyToOne(inversedBy: 'followPropositions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?FollowType $type = null;
 
-    #[ORM\ManyToOne(inversedBy: 'followRequestsSent')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $follower = null;
-
-    #[ORM\ManyToOne(inversedBy: 'followRequestsReceived')]
+    #[ORM\ManyToOne(inversedBy: 'followPropositionsSent')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $followed = null;
+
+    #[ORM\ManyToOne(inversedBy: 'followPropositionsReceived')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $follower = null;
 
     public function getId(): ?int
     {

@@ -1,4 +1,4 @@
-<div id="follow_request-{{ follow_request.id }}" class="mb-4">
+<div id="follow_proposition-{{ follow_proposition.id }}" class="mb-4">
     <div class="card border-{{ color }} border-top-0 border-bottom-0 border-end-0 border-5 rounded-0 bg-light">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
@@ -7,18 +7,18 @@
                         <span
                             class="badge rounded-pill bg-{{ color }}"
                             data-bs-toggle="tooltip"
-                            title="{{ follow_request.type.description }}"
+                            title="{{ follow_proposition.type.description }}"
                         >
-                            {{ follow_request.type.label }}
+                            {{ follow_proposition.type.label }}
                             <i class="ri-question-fill"></i>
                         </span>
                         <small class="text-muted">
-                            Le {{ follow_request.proposedAt | format_date('full', locale='fr') }}
+                            Le {{ follow_proposition.proposedAt | format_date('full', locale='fr') }}
                         </small>
                     </div>
-                    {% if follow_request.type.code == 'meal_list' %}
+                    {% if follow_proposition.type.code == constant('App\\Entity\\FollowType::MEAL_LIST') %}
                         <p>
-                            <span class="fw-bold">{{ follow_request.follower.username }}</span> vous propose l'accès à ses
+                            <span class="fw-bold">{{ follow_proposition.followed.username }}</span> vous propose l'accès à ses
                             <span class="fw-bold">listes de repas</span>, souhaitez-vous accepter ?
                             <br />
                             Si vous acceptez, vous pourrez voir ses listes de repas dans la page idoine.
@@ -26,20 +26,20 @@
                         {# display a message explaining which action has been taken #}
                         <div class="fst-italic text-muted">
                             <small>
-                                {% if follow_request.acceptedAt != null %}
+                                {% if follow_proposition.acceptedAt != null %}
                                     <i class="ri-checkbox-circle-fill"></i>
                                     Vous avez accepté l'accès à la liste de repas le
-                                    {{ follow_request.acceptedAt | format_date('full', locale='fr') }}.
-                                {% elseif follow_request.refusedAt != null %}
+                                    {{ follow_proposition.acceptedAt | format_date('full', locale='fr') }}.
+                                {% elseif follow_proposition.refusedAt != null %}
                                     <i class="ri-close-circle-fill"></i>
                                     Vous avez refusé l'accès à la liste de repas le
-                                    {{ follow_request.refusedAt | format_date('full', locale='fr') }}.
+                                    {{ follow_proposition.refusedAt | format_date('full', locale='fr') }}.
                                 {% endif %}
                             </small>
                         </div>
-                    {% elseif follow_request.type.code == 'username_on_recipe' %}
+                    {% elseif follow_proposition.type.code == constant('App\\Entity\\FollowType::USERNAME_ON_RECIPE') %}
                         <p>
-                            <span class="fw-bold">{{ follow_request.follower.username }}</span> vous propose de voir son
+                            <span class="fw-bold">{{ follow_proposition.followed.username }}</span> vous propose de voir son
                             <span class="fw-bold">pseudo</span> dans les <span class="fw-bold">recettes</span> qu'ael a rédigées,
                             souhaitez-vous accepter ?
                             <br />
@@ -48,38 +48,38 @@
                         {# display a message explaining which action has been taken #}
                         <div class="fst-italic text-muted">
                             <small>
-                                {% if follow_request.acceptedAt != null %}
+                                {% if follow_proposition.acceptedAt != null %}
                                     <i class="ri-checkbox-circle-fill"></i>
                                     Vous avez accepté de voir son pseudo sur ses recettes le
-                                    {{ follow_request.acceptedAt | format_date('full', locale='fr') }}.
-                                {% elseif follow_request.refusedAt != null %}
+                                    {{ follow_proposition.acceptedAt | format_date('full', locale='fr') }}.
+                                {% elseif follow_proposition.refusedAt != null %}
                                     <i class="ri-close-circle-fill"></i>
                                     Vous avez refusé de voir son pseudo sur ses recettes le
-                                    {{ follow_request.refusedAt | format_date('full', locale='fr') }}.
+                                    {{ follow_proposition.refusedAt | format_date('full', locale='fr') }}.
                                 {% endif %}
                             </small>
                         </div>
                     {% endif %}
                 </div>
                 <div class="d-flex flex-column">
-                    {# display buttons to accept/reject follow request #}
+                    {# display buttons to accept/reject follow proposition #}
                     <div class="mb-1">
-                        {% if (follow_request.processedAt == null) or (follow_request.refusedAt != null) %}
+                        {% if (follow_proposition.processedAt == null) or (follow_proposition.refusedAt != null) %}
                             <button
                                 class="btn btn-outline-{{ color }} btn-sm accept-access"
-                                data-url-accept-access="{{ path('api_follow_request_accept_follow', {'id': follow_request.id}) }}"
+                                data-url-accept-access="{{ path('api_follow_proposition_accept_follow', {'id': follow_proposition.id}) }}"
                             >
                                 Accepter
                             </button>
                         {% endif %}
-                        {% if (follow_request.processedAt == null) or (follow_request.acceptedAt != null) %}
+                        {% if (follow_proposition.processedAt == null) or (follow_proposition.acceptedAt != null) %}
                             <button
                                 class="btn btn-outline-{{ color }} btn-sm refuse-access"
-                                data-url-refuse-access="{{ path('api_follow_request_refuse_follow', {'id': follow_request.id}) }}"
+                                data-url-refuse-access="{{ path('api_follow_proposition_refuse_follow', {'id': follow_proposition.id}) }}"
                             >
-                                {% if follow_request.processedAt == null %}
+                                {% if follow_proposition.processedAt == null %}
                                     Refuser
-                                {% elseif follow_request.acceptedAt != null %}
+                                {% elseif follow_proposition.acceptedAt != null %}
                                     Révoquer
                                 {% endif %}
                             </button>

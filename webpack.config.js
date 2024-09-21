@@ -52,7 +52,7 @@ Encore
     .addEntry('meal_list_form', './assets/javascript/meal_list/_form.js')
     .addEntry('meal_list_card', './assets/javascript/meal_list/_meal_list_card.js')
     .addEntry('my_account_notifications', './assets/javascript/my_account/notifications.js')
-    .addEntry('my_account_follow_requests', './assets/javascript/my_account/follow_requests.js')
+    .addEntry('my_account_follow_propositions', './assets/javascript/my_account/follow_propositions.js')
     .addEntry('ingredient_show', './assets/javascript/ingredient/show.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)

@@ -2,59 +2,59 @@
 
 namespace App\Repository;
 
-use App\Entity\FollowRequest;
+use App\Entity\FollowProposition;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<FollowRequest>
+ * @extends ServiceEntityRepository<FollowProposition>
  *
- * @method FollowRequest|null find($id, $lockMode = null, $lockVersion = null)
- * @method FollowRequest|null findOneBy(array $criteria, array $orderBy = null)
- * @method FollowRequest[]    findAll()
- * @method FollowRequest[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method FollowProposition|null find($id, $lockMode = null, $lockVersion = null)
+ * @method FollowProposition|null findOneBy(array $criteria, array $orderBy = null)
+ * @method FollowProposition[]    findAll()
+ * @method FollowProposition[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FollowRequestRepository extends ServiceEntityRepository
+class FollowPropositionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, FollowRequest::class);
+        parent::__construct($registry, FollowProposition::class);
     }
 
     /**
-     * @return FollowRequest[]
+     * @return FollowProposition[]
      */
     public function findUserOnesUnprocessed($user) {
         return $this->createQueryBuilder('fr')
-            ->andWhere('fr.followed = :followed')
+            ->andWhere('fr.follower = :follower')
             ->andWhere('fr.processedAt IS NULL')
-            ->setParameter('followed', $user)
+            ->setParameter('follower', $user)
             ->getQuery()
             ->getResult()
             ;
     }
 
     /**
-     * @return FollowRequest[]
+     * @return FollowProposition[]
      */
     public function findUserOnesAccepted($user) {
         return $this->createQueryBuilder('fr')
-            ->andWhere('fr.followed = :followed')
+            ->andWhere('fr.follower = :follower')
             ->andWhere('fr.acceptedAt IS NOT NULL')
-            ->setParameter('followed', $user)
+            ->setParameter('follower', $user)
             ->getQuery()
             ->getResult()
             ;
     }
 
     /**
-     * @return FollowRequest[]
+     * @return FollowProposition[]
      */
     public function findUserOnesRefused($user) {
         return $this->createQueryBuilder('fr')
-            ->andWhere('fr.followed = :followed')
+            ->andWhere('fr.follower = :follower')
             ->andWhere('fr.refusedAt IS NOT NULL')
-            ->setParameter('followed', $user)
+            ->setParameter('follower', $user)
             ->getQuery()
             ->getResult()
             ;

@@ -11,6 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: FollowTypeRepository::class)]
 class FollowType
 {
+    const MEAL_LIST = 'meal_list';
+    const USERNAME_ON_RECIPE = 'username_on_recipe';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -25,12 +28,12 @@ class FollowType
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'type', targetEntity: FollowRequest::class)]
-    private Collection $followRequests;
+    #[ORM\OneToMany(mappedBy: 'type', targetEntity: FollowProposition::class)]
+    private Collection $followPropositions;
 
     public function __construct()
     {
-        $this->followRequests = new ArrayCollection();
+        $this->followPropositions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -75,29 +78,29 @@ class FollowType
     }
 
     /**
-     * @return Collection<int, FollowRequest>
+     * @return Collection<int, FollowProposition>
      */
-    public function getFollowRequests(): Collection
+    public function getFollowPropositions(): Collection
     {
-        return $this->followRequests;
+        return $this->followPropositions;
     }
 
-    public function addFollowRequest(FollowRequest $followRequest): static
+    public function addFollowProposition(FollowProposition $followProposition): static
     {
-        if (!$this->followRequests->contains($followRequest)) {
-            $this->followRequests->add($followRequest);
-            $followRequest->setType($this);
+        if (!$this->followPropositions->contains($followProposition)) {
+            $this->followPropositions->add($followProposition);
+            $followProposition->setType($this);
         }
 
         return $this;
     }
 
-    public function removeFollowRequest(FollowRequest $followRequest): static
+    public function removeFollowProposition(FollowProposition $followProposition): static
     {
-        if ($this->followRequests->removeElement($followRequest)) {
+        if ($this->followPropositions->removeElement($followProposition)) {
             // set the owning side to null (unless already changed)
-            if ($followRequest->getType() === $this) {
-                $followRequest->setType(null);
+            if ($followProposition->getType() === $this) {
+                $followProposition->setType(null);
             }
         }
 
