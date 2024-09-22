@@ -5,12 +5,8 @@ use App\Notifier\BoustigrailleRecipientInterface;
 use Doctrine\ORM\Mapping\InverseJoinColumn;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
-use JetBrains\PhpStorm\ArrayShape;
-use JetBrains\PhpStorm\Pure;
-use ReturnTypeWillChange;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -89,19 +85,6 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
     #[ORM\OneToMany(mappedBy: 'recipient', targetEntity: NotificationReceived::class)]
     private Collection $notificationsReceived;
 
-    // Commented for notifications and follow rework
-    // #[ORM\OneToMany(targetEntity: FollowMealList::class, mappedBy: 'follower', orphanRemoval: true)]
-    // private $followingMealLists;
-
-    // #[ORM\OneToMany(targetEntity: FollowMealList::class, mappedBy: 'followed', orphanRemoval: true)]
-    // private $followerMealLists;
-
-    // #[ORM\OneToMany(targetEntity: FollowUsernameOnRecipe::class, mappedBy: 'follower', orphanRemoval: true)]
-    // private $followingUsernamesOnRecipes;
-
-    // #[ORM\OneToMany(targetEntity: FollowUsernameOnRecipe::class, mappedBy: 'followed', orphanRemoval: true)]
-    // private $followerUsernamesOnRecipes;
-
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Review::class, orphanRemoval: true)]
     private Collection $reviews;
 
@@ -112,11 +95,6 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
         $this->plainPassword = $plainPassword;
         $this->responsibilities = $responsibilities;
         $this->favoriteRecipes = new ArrayCollection();
-        // Commented for notifications and follow rework
-        // $this->followingMealLists = new ArrayCollection();
-        // $this->followerMealLists = new ArrayCollection();
-        // $this->followingUsernamesOnRecipes = new ArrayCollection();
-        // $this->followerUsernamesOnRecipes = new ArrayCollection();
         $this->doShowUsernameOnRecipe = false;
         $this->doShowWrittenMealListToOthers = false;
         $this->followPropositionsSent = new ArrayCollection();
@@ -416,135 +394,6 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
 
         return $this;
     }
-
-    // Commented for notifications and follow rework
-    // /**
-    //  * @return Collection<int, FollowMealList>
-    //  */
-    // public function getFollowingMealLists(): Collection
-    // {
-    //     return $this->followingMealLists;
-    // }
-
-    // public function addFollowingMealList(FollowMealList $followingMealList): self
-    // {
-    //     if (!$this->followingMealLists->contains($followingMealList)) {
-    //         $this->followingMealLists[] = $followingMealList;
-    //         $followingMealList->setFollower($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeFollowingMealList(FollowMealList $followingMealList): self
-    // {
-    //     if ($this->followingMealLists->removeElement($followingMealList)) {
-    //         // set the owning side to null (unless already changed)
-    //         if ($followingMealList->getFollower() === $this) {
-    //             $followingMealList->setFollower(null);
-    //         }
-    //     }
-
-    //     return $this;
-    // }
-
-    // /**
-    //  * @return Collection<int, FollowMealList>
-    //  */
-    // public function getFollowerMealLists(): Collection
-    // {
-    //     return $this->followerMealLists;
-    // }
-
-    // public function addFollowerMealList(FollowMealList $followerMealList): self
-    // {
-    //     if (!$this->followerMealLists->contains($followerMealList)) {
-    //         $this->followerMealLists[] = $followerMealList;
-    //         $followerMealList->setFollowed($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeFollowerMealList(FollowMealList $followerMealList): self
-    // {
-    //     if ($this->followerMealLists->removeElement($followerMealList)) {
-    //         // set the owning side to null (unless already changed)
-    //         if ($followerMealList->getFollowed() === $this) {
-    //             $followerMealList->setFollowed(null);
-    //         }
-    //     }
-
-    //     return $this;
-    // }
-
-    // /**
-    //  * @return Collection<int, FollowUsernameOnRecipe>
-    //  */
-    // public function getFollowingUsernamesOnRecipes(): Collection
-    // {
-    //     return $this->followingUsernamesOnRecipes;
-    // }
-
-    // public function addFollowingUsernameOnRecipe(FollowUsernameOnRecipe $followingUsernameOnRecipe): self
-    // {
-    //     if (!$this->followingUsernamesOnRecipes->contains($followingUsernameOnRecipe)) {
-    //         $this->followingUsernamesOnRecipes[] = $followingUsernameOnRecipe;
-    //         $followingUsernameOnRecipe->setFollower($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeFollowingUsernameOnRecipe(FollowUsernameOnRecipe $followingUsernameOnRecipe): self
-    // {
-    //     if ($this->followingUsernamesOnRecipes->removeElement($followingUsernameOnRecipe)) {
-    //         // set the owning side to null (unless already changed)
-    //         if ($followingUsernameOnRecipe->getFollower() === $this) {
-    //             $followingUsernameOnRecipe->setFollower(null);
-    //         }
-    //     }
-
-    //     return $this;
-    // }
-
-    // /**
-    //  * @return Collection<int, FollowUsernameOnRecipe>
-    //  */
-    // public function getFollowerUsernamesOnRecipes(): Collection
-    // {
-    //     return $this->followerUsernamesOnRecipes;
-    // }
-
-    // public function addFollowerUsernameOnRecipe(FollowUsernameOnRecipe $followerUsernameOnRecipe): self
-    // {
-    //     if (!$this->followerUsernamesOnRecipes->contains($followerUsernameOnRecipe)) {
-    //         $this->followerUsernamesOnRecipes[] = $followerUsernameOnRecipe;
-    //         $followerUsernameOnRecipe->setFollower($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeFollowerUsernameOnRecipe(FollowUsernameOnRecipe $followerUsernameOnRecipe): self
-    // {
-    //     if ($this->followingUsernamesOnRecipes->removeElement($followerUsernameOnRecipe)) {
-    //         // set the owning side to null (unless already changed)
-    //         if ($followerUsernameOnRecipe->getFollower() === $this) {
-    //             $followerUsernameOnRecipe->setFollower(null);
-    //         }
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function doFollowUsernameOnRecipe(User $user): bool
-    // {
-    //     $followed = Criteria::create()->where(Criteria::expr()->eq('followed', $user));
-    //     $followAccepted = Criteria::create()->where(Criteria::expr()->neq('acceptedAt', null));
-    //     $proposedFollowings = $this->followingUsernamesOnRecipes->matching($followed);
-    //     return !$proposedFollowings->matching($followAccepted)->isEmpty();
-    // }
 
     public function jsonSerialize(): array
     {

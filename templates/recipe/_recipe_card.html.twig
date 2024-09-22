@@ -33,9 +33,7 @@
                 {{ recipe.name }}
             </h1>
 
-            {% if recipe.author.doShowUsernameOnRecipe or (app.user is not null and app.user == recipe.author) %}
-                    {# Commented for notifications and follow rework #}
-                    {# or (app.user is not null and app.user.doFollowUsernameOnRecipe(recipe.author)) #}
+            {% if is_granted('view_author_username', recipe) %}
                 <p class="description">
                     Par {{ recipe.author.username }}
                 </p>
