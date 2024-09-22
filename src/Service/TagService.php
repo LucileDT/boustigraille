@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Recipe;
 use App\Entity\Tag;
 use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -50,6 +51,29 @@ class TagService
         }
     }
 
+    public function manageRecipeVegeAndVeganTags(Recipe &$recipe): void
+    {
+        $isVegan = true;
+        $isVegetarian = true;
+        foreach ($recipe->getIngredients() as $ingredientQuantity) {
+            if (!$this->isVegan($ingredientQuantity->getIngredient()->getTags())) {
+                $isVegan = false;
+            }
+            if (!$this->isVegetarian($ingredientQuantity->getIngredient()->getTags())) {
+                $isVegetarian = false;
+            }
+        }
+        if ($isVegan) {
+            $recipe->addTag($this->getVeganTag());
+        } else {
+            $recipe->removeTag($this->getVeganTag());
+        }
+        if ($isVegetarian) {
+            $recipe->addTag($this->getVegetarianTag());
+        } else {
+            $recipe->removeTag($this->getVegetarianTag());
+        }
+    }
 
     public function getVegetarianTag(): Tag
     {

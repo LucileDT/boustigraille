@@ -9,6 +9,7 @@ use App\FormDataObject\IngredientFromOpenFoodFactsFDO;
 use App\Repository\IngredientRepository;
 use App\Repository\TagRepository;
 use App\Service\OpenFoodFactService;
+use App\Service\TagService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -145,12 +146,23 @@ class IngredientController extends AbstractController
 
     #[Route(path: '/{id}/edit', name: 'edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHENTICATED')]
-    public function edit(EntityManagerInterface $entityManager, Request $request, Ingredient $ingredient): Response
+    public function edit(
+        EntityManagerInterface $entityManager,
+        Request $request,
+        TagService $tagService,
+        Ingredient $ingredient
+    ): Response
     {
         $form = $this->createForm(IngredientType::class, $ingredient);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($ingredient->getIngredientQuantityForRecipes() as $ingredientQuantity) {
+                $recipe = $ingredientQuantity->getRecipe();
+                $tagService->manageRecipeVegeAndVeganTags($recipe);
+                $entityManager->persist($recipe);
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('ingredient_index');

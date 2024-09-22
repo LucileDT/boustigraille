@@ -10,6 +10,7 @@ use App\Repository\ReviewRepository;
 use App\Repository\TagRepository;
 use App\Service\Migrations\ContentAuthorService;
 use App\Service\RecipeService;
+use App\Service\TagService;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,7 +33,13 @@ class RecipeController extends AbstractController
 
     #[Route(path: '/new/{fromRecipe?}', name: 'new', methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHENTICATED')]
-    public function new(Request $request, EntityManagerInterface $entityManager, ?Recipe $fromRecipe): Response
+    public function new(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        TagRepository $tagRepository,
+        TagService $tagService,
+        ?Recipe $fromRecipe
+    ): Response
     {
         $recipe = new Recipe();
         if (!empty($fromRecipe)) {
@@ -71,6 +78,8 @@ class RecipeController extends AbstractController
                 }
             }
             $recipe->setAuthor($this->getUser());
+
+            $this->manageTags($tagService, $tagRepository, $recipe);
 
             $entityManager->persist($recipe);
             $entityManager->flush();
@@ -117,7 +126,8 @@ class RecipeController extends AbstractController
         Request $request,
         Recipe $recipe,
         EntityManagerInterface $entityManager,
-        TagRepository $tagRepository
+        TagRepository $tagRepository,
+        TagService $tagService
     ): Response
     {
         $form = $this->createForm(RecipeType::class, $recipe);
@@ -143,17 +153,7 @@ class RecipeController extends AbstractController
                 }
             }
 
-            // make sure tags correspond to the difficulty level
-            if ($recipe->getDifficultyLevel()?->getLabel() === 'Facile') {
-                $recipe->addTag($tagRepository->findOneBy(['label' => 'Facile']));
-                $recipe->removeTag($tagRepository->findOneBy(['label' => 'Difficile']));
-            } else if ($recipe->getDifficultyLevel()?->getLabel() === 'Difficile') {
-                $recipe->addTag($tagRepository->findOneBy(['label' => 'Difficile']));
-                $recipe->removeTag($tagRepository->findOneBy(['label' => 'Facile']));
-            } else {
-                $recipe->removeTag($tagRepository->findOneBy(['label' => 'Facile']));
-                $recipe->removeTag($tagRepository->findOneBy(['label' => 'Difficile']));
-            }
+            $this->manageTags($tagService, $tagRepository, $recipe);
 
             $entityManager->persist($recipe);
             $entityManager->flush();
@@ -180,5 +180,23 @@ class RecipeController extends AbstractController
         }
 
         return $this->redirectToRoute('recipe_index');
+    }
+
+    private function manageTags(TagService $tagService, TagRepository $tagRepository, Recipe &$recipe): void
+    {
+        // make sure tags correspond to the difficulty level
+        if ($recipe->getDifficultyLevel()?->getLabel() === 'Facile') {
+            $recipe->addTag($tagRepository->findOneBy(['label' => 'Facile']));
+            $recipe->removeTag($tagRepository->findOneBy(['label' => 'Difficile']));
+        } else if ($recipe->getDifficultyLevel()?->getLabel() === 'Difficile') {
+            $recipe->addTag($tagRepository->findOneBy(['label' => 'Difficile']));
+            $recipe->removeTag($tagRepository->findOneBy(['label' => 'Facile']));
+        } else {
+            $recipe->removeTag($tagRepository->findOneBy(['label' => 'Facile']));
+            $recipe->removeTag($tagRepository->findOneBy(['label' => 'Difficile']));
+        }
+
+        // tag the recipe as vegan / vegetarian if all the ingredients are
+        $tagService->manageRecipeVegeAndVeganTags($recipe);
     }
 }

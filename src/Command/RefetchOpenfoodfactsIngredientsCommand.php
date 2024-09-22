@@ -2,16 +2,14 @@
 
 namespace App\Command;
 
-use App\Entity\Ingredient;
 use App\Repository\IngredientRepository;
 use App\Service\OpenFoodFactService;
+use App\Service\TagService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -25,6 +23,7 @@ class RefetchOpenfoodfactsIngredientsCommand extends Command
         private IngredientRepository $ingredientRepository,
         private OpenFoodFactService $openFoodFactService,
         private EntityManagerInterface $entityManager,
+        private TagService $tagService,
     )
     {
         parent::__construct();
@@ -63,6 +62,11 @@ class RefetchOpenfoodfactsIngredientsCommand extends Command
                 $product = $this->openFoodFactService->getProductFromApi($ingredient->getBarCode());
                 $this->openFoodFactService->synchronizeIngredientWithProductData($ingredient, $product);
                 $this->entityManager->persist($ingredient);
+                foreach ($ingredient->getIngredientQuantityForRecipes() as $ingredientQuantity) {
+                    $recipe = $ingredientQuantity->getRecipe();
+                    $this->tagService->manageRecipeVegeAndVeganTags($recipe);
+                    $this->entityManager->persist($recipe);
+                }
                 $this->entityManager->flush();
             } catch (Exception $e) {
                 $io->error($ingredient->getLabel() . ' ingredient fetching error: ' . $e->getMessage());
