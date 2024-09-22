@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Ingredient;
+use DateInterval;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,32 +21,48 @@ class IngredientRepository extends ServiceEntityRepository
         parent::__construct($registry, Ingredient::class);
     }
 
-    // /**
-    //  * @return Ingredient[] Returns an array of Ingredient objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Ingredient[] Returns an array of Ingredient objects
+     */
+    public function findByFetchedFromOFFDuringLastMinute(): array
     {
+        $now = new DateTime();
         return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('i.lastSynchronizedAt > :oneMinuteAgo')
+            ->setParameter('oneMinuteAgo', $now->sub(new DateInterval('PT1M')))
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Ingredient
+    /**
+     * @return Ingredient[] Returns an array of Ingredient objects
+     */
+    public function findByLastSynchronizedAtNull(): array
     {
         return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('i.lastSynchronizedAt IS NULL')
+            ->andWhere('i.barCode IS NOT NULL')
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
     }
-    */
+
+    /**
+     * @return Ingredient[] Returns an array of Ingredient objects
+     */
+    public function findByLastSynchronizedNotNull(int $maxResults): array
+    {
+        $now = new DateTime();
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.lastSynchronizedAt IS NOT NULL')
+            ->andWhere('i.lastSynchronizedAt < :oneMinuteAgo')
+            ->setParameter('oneMinuteAgo', $now->sub(new DateInterval('PT1M')))
+            ->andWhere('i.barCode IS NOT NULL')
+            ->orderBy('i.lastSynchronizedAt', 'ASC')
+            ->setMaxResults($maxResults)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

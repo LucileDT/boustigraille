@@ -7,6 +7,7 @@ use App\Form\IngredientFromOpenFoodFactsType;
 use App\Form\IngredientType;
 use App\FormDataObject\IngredientFromOpenFoodFactsFDO;
 use App\Repository\IngredientRepository;
+use App\Repository\TagRepository;
 use App\Service\OpenFoodFactService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -67,7 +68,8 @@ class IngredientController extends AbstractController
         OpenFoodFactService $offService,
         Request $request,
         IngredientFromOpenFoodFactsFDO $ingredientIdentifier,
-        IngredientRepository $ingredientRepository
+        IngredientRepository $ingredientRepository,
+        TagRepository $tagRepository
     ): Response
     {
         $form = $this->createForm(IngredientFromOpenFoodFactsType::class, $ingredientIdentifier);
@@ -107,11 +109,11 @@ class IngredientController extends AbstractController
             {
                 $ingredient = new Ingredient();
                 $product = $offService->getProductFromApi($productBarCode);
+                $offService->synchronizeIngredientWithProductData($ingredient, $product);
 
-                $offService->fillIngredientNutritionalDataWithProductOnes($ingredient, $product);
                 $form = $this->createForm(IngredientType::class, $ingredient, [
-                        'action' => $this->generateUrl('ingredient_new'),
-                    ]);
+                    'action' => $this->generateUrl('ingredient_new'),
+                ]);
 
                 return $this->render('ingredient/new.html.twig', [
                     'ingredient' => $ingredient,

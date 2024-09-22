@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\DifficultyLevel;
 use App\Entity\Recipe;
 use App\Entity\Tag;
+use App\Service\TagService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -25,9 +26,9 @@ class RecipeType extends AbstractType
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private TagService $tagService
     ) {
     }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -134,31 +135,7 @@ class RecipeType extends AbstractType
             ])
         ;
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-            $formData = $event->getData();
-
-            if (!$formData) {
-                return; // form data is empty, no need to continue
-            }
-
-            // this array can contain tag ids (the tag already existed) or tag labels (the tag is newly created)
-            $tagsSelectId = $formData['tags'];
-
-            // check for each tag if it's an existing one or if it needs to be created
-            foreach ($tagsSelectId as $index => $tagSelectId) {
-                if (is_numeric($tagSelectId) && $this->entityManager->getRepository(Tag::class)->find($tagSelectId)) {
-                    continue; // tag exists
-                }
-
-                // tag does not exist, create it
-                $tag = new Tag();
-                $tag->setLabel($tagSelectId);
-                $this->entityManager->persist($tag);
-                $this->entityManager->flush();
-
-                // after creation, set the true id in the form data
-                $formData['tags'][$index] = (string) $tag->getId();
-            }
-            $event->setData($formData);
+            $this->tagService->manageTagsFromSelect2Form($this->entityManager, $event);
         });
     }
 

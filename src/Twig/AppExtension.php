@@ -4,20 +4,26 @@ namespace App\Twig;
 
 use App\Entity\Recipe;
 use App\Service\RecipeService;
+use App\Service\TagService;
 use DateInterval;
 use DateInvalidOperationException;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\PersistentCollection;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension
 {
+    public function __construct(private TagService $tagService) {}
+
     public function getFilters(): array
     {
         return [
             new TwigFilter('date_interval', [$this, 'formatDateInterval']),
             new TwigFilter('rating_stars', [$this, 'formatRatingStars']),
+            new TwigFilter('vegan_icon', [$this, 'formatVeganIcon']),
         ];
     }
 
@@ -77,6 +83,23 @@ class AppExtension extends AbstractExtension
             } else {
                 return $dateInterval->format('%hh%I');
             }
+        }
+    }
+
+    /**
+     * Return a Remix Icon depending on the presence of a Vegetarian or Vegan tag in the given collection
+     *
+     * @param PersistentCollection $tags
+     * @return string
+     */
+    public function formatVeganIcon(PersistentCollection $tags): string
+    {
+        if ($this->tagService->isVegan($tags)) {
+            return '<i class="ri-plant-fill text-success" data-bs-toggle="tooltip" title="Vegan"></i>';
+        } else if ($this->tagService->isVegetarian($tags)) {
+            return '<i class="ri-seedling-fill text-success" data-bs-toggle="tooltip" title="Végé"></i>';
+        } else {
+            return '<i class="ri-skull-line" data-bs-toggle="tooltip" title="Carné"></i>';
         }
     }
 }

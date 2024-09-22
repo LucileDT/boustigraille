@@ -2,6 +2,7 @@
 namespace App\Service;
 
 use App\Entity\Ingredient;
+use DateTimeImmutable;
 use Exception;
 
 /**
@@ -9,8 +10,12 @@ use Exception;
  */
 class OpenFoodFactService
 {
-    const APP_VERSION = '0.1';
+    const APP_VERSION = '0.2';
     const APP_SOURCE_CODE_WEBSITE = 'https://github.com/LucileDT/boustigraille';
+
+    public function __construct(private TagService $tagService)
+    {
+    }
 
     /**
      * Get bar code of an Open Food Facts product using its URL
@@ -42,18 +47,24 @@ class OpenFoodFactService
     {
         // set up product API URL
         $productApiUrl = sprintf(
-                'https://world.openfoodfacts.org/api/v0/product/%s.json',
-                $barCodeProduct
-            );
+            'https://world.openfoodfacts.org/api/v0/product/%s.json',
+            $barCodeProduct
+        );
+
+        if (empty($_SERVER['HTTP_USER_AGENT'])) {
+            $userAgent = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:130.0) Gecko/20100101 Firefox/130.0';
+        } else {
+            $userAgent = $_SERVER['HTTP_USER_AGENT'];
+        }
 
         // set up a custom user agent as asked by OpenFoodFacts documentation
         $customUserAgent = sprintf(
-                '%s - %s - %s - %s',
-                'Boustigraille',
-                $_SERVER['HTTP_USER_AGENT'],
-                self::APP_VERSION,
-                self::APP_SOURCE_CODE_WEBSITE
-            );
+            '%s - %s - %s - %s',
+            'Boustigraille',
+            $userAgent,
+            self::APP_VERSION,
+            self::APP_SOURCE_CODE_WEBSITE
+        );
 
         // create new cURL session
         $ch = curl_init();
@@ -80,13 +91,52 @@ class OpenFoodFactService
     }
 
     /**
+     * Get all the OpenFoodFacts product data and put it into an Ingredient
+     *
+     * @param Ingredient $ingredient
+     * @param object $product
+     * @return void
+     * @throws Exception
+     */
+    public function synchronizeIngredientWithProductData(Ingredient &$ingredient, object $product): void
+    {
+        $now = new DateTimeImmutable();
+        $ingredient->setLastSynchronizedAt($now);
+        $this->addIngredientTagsWithProductOnes($ingredient, $product);
+        $this->fillIngredientNutritionalDataWithProductOnes($ingredient, $product);
+    }
+
+    /**
+     * Add tags to an Ingredient using an Open Food Facts Product
+     * Currently, it supports Vegan and Vegetarian tags
+     *
+     * @param Ingredient $ingredient
+     * @param object $product Open Food Fact product
+     */
+    private function addIngredientTagsWithProductOnes(
+        Ingredient &$ingredient,
+        object     $product
+    ): void
+    {
+        if (in_array('en:vegetarian', $product->ingredients_analysis_tags)) {
+            $ingredient->addTag($this->tagService->getVegetarianTag());
+        }
+        if (in_array('en:vegan', $product->ingredients_analysis_tags)) {
+            $ingredient->addTag($this->tagService->getVeganTag());
+        }
+    }
+
+    /**
      * Fill an Ingredient nutritional data using an Open Food Facts Product
      *
      * @param Ingredient $ingredient
      * @param object $product Open Food Fact product
      * @throws Exception Missing data
      */
-    public function fillIngredientNutritionalDataWithProductOnes(Ingredient &$ingredient, $product)
+    private function fillIngredientNutritionalDataWithProductOnes(
+        Ingredient &$ingredient,
+        object     $product
+    ): void
     {
         // General information
         $ingredient->setBarCode($product->code);

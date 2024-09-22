@@ -5,10 +5,8 @@ namespace App\Entity;
 use App\Repository\RecipeRepository;
 use DateInterval;
 use DateTime;
-use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
@@ -33,7 +31,7 @@ class Recipe implements JsonSerializable
     private ?string $comment;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $mainPictureFilename;
+    private ?string $mainPictureFilename;
 
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: User::class)]

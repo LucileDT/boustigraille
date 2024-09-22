@@ -105,7 +105,10 @@
                             {% if app.user is not null %}
                                 <td class="text-center align-middle">{{ ingredient.id }}</td>
                             {% endif %}
-                            <td class="align-middle"><strong>{{ ingredient.label }}</strong></td>
+                            <td class="align-middle">
+                                {{ ingredient.tags | vegan_icon | raw }}
+                                <strong>{{ ingredient.label }}</strong>
+                            </td>
                             <td class="text-center align-middle">
                                 {% if ingredient.brand is empty %}
                                     <small class="text-muted fst-italic">
