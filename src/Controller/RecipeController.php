@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\IngredientQuantityForRecipe;
 use App\Entity\Recipe;
+use App\Form\FilterRecipeType;
 use App\Form\RecipeType;
 use App\Repository\RecipeRepository;
 use App\Repository\ReviewRepository;
@@ -24,10 +25,39 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class RecipeController extends AbstractController
 {
     #[Route(path: '/', name: 'index', methods: ['GET'])]
-    public function index(RecipeRepository $recipeRepository): Response
+    public function index(
+        Request $request,
+        RecipeRepository $recipeRepository,
+        TagService $tagService,
+        TagRepository $tagRepository
+    ): Response
     {
+        $placeholder = new Recipe();
+        $filters = [];
+        if (!empty($request->query->all()['filter_recipe'])) {
+            if (!empty($request->query->all()['filter_recipe']['tags'])) {
+                $tags = $tagRepository->findBy(['id' => $request->query->all()['filter_recipe']['tags']]);
+                foreach ($tags as $tag) {
+                    $placeholder->addTag($tag);
+                    $filters['tags'][] = $tag;
+                }
+            }
+            if (!empty($request->query->all()['filter_recipe']['name'])) {
+                $placeholder->setName($request->query->all()['filter_recipe']['name']);
+                $filters['name'] = $request->query->all()['filter_recipe']['name'];
+            }
+        } else {
+            $placeholder->addTag($tagService->getVegetarianTag());
+            $filters['tags'][] = $tagService->getVegetarianTag();
+        }
+
+        $form = $this->createForm(FilterRecipeType::class, $placeholder, [
+            'action' => $this->generateUrl('recipe_index'),
+            'method' => 'GET',
+        ]);
         return $this->render('recipe/index.html.twig', [
-            'recipes' => $recipeRepository->findBy([], ['name' => 'ASC']),
+            'recipes' => $recipeRepository->findByFilters($filters),
+            'form' => $form->createView(),
         ]);
     }
 

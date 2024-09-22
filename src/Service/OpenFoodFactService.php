@@ -118,11 +118,17 @@ class OpenFoodFactService
         object     $product
     ): void
     {
+        $isCarnist = true;
         if (in_array('en:vegetarian', $product->ingredients_analysis_tags)) {
             $ingredient->addTag($this->tagService->getVegetarianTag());
+            $isCarnist = false;
         }
         if (in_array('en:vegan', $product->ingredients_analysis_tags)) {
             $ingredient->addTag($this->tagService->getVeganTag());
+            $isCarnist = false;
+        }
+        if ($isCarnist) {
+            $ingredient->addTag($this->tagService->getCarnistTag());
         }
     }
 

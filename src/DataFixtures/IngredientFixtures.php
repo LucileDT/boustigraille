@@ -4,9 +4,10 @@ namespace App\DataFixtures;
 
 use App\Entity\Ingredient;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class IngredientFixtures extends Fixture
+class IngredientFixtures extends Fixture implements DependentFixtureInterface
 {
     public const POTATO_INGREDIENT_REFERENCE = 'potato-ingredient';
     public const ONION_INGREDIENT_REFERENCE = 'onion-ingredient';
@@ -26,6 +27,8 @@ class IngredientFixtures extends Fixture
         $potato->setFat(0.3);
         $potato->setEnergy(80.5);
         $potato->setHasStockCheckNeededBeforeBuying(true);
+        $potato->addTag($this->getReference(TagFixtures::VEGAN_TAG_REFERENCE));
+        $potato->addTag($this->getReference(TagFixtures::VEGETARIAN_TAG_REFERENCE));
         $manager->persist($potato);
 
         $onion = new Ingredient();
@@ -37,6 +40,8 @@ class IngredientFixtures extends Fixture
         $onion->setFat(0,2);
         $onion->setEnergy(43);
         $onion->setHasStockCheckNeededBeforeBuying(true);
+        $onion->addTag($this->getReference(TagFixtures::VEGAN_TAG_REFERENCE));
+        $onion->addTag($this->getReference(TagFixtures::VEGETARIAN_TAG_REFERENCE));
         $manager->persist($onion);
 
         $pst = new Ingredient();
@@ -49,6 +54,8 @@ class IngredientFixtures extends Fixture
         $pst->setFat(5.9);
         $pst->setEnergy(337);
         $pst->setHasStockCheckNeededBeforeBuying(false);
+        $pst->addTag($this->getReference(TagFixtures::VEGAN_TAG_REFERENCE));
+        $pst->addTag($this->getReference(TagFixtures::VEGETARIAN_TAG_REFERENCE));
         $manager->persist($pst);
 
         $leek = new Ingredient();
@@ -60,6 +67,8 @@ class IngredientFixtures extends Fixture
         $leek->setFat(0.2);
         $leek->setEnergy(27.4);
         $leek->setHasStockCheckNeededBeforeBuying(false);
+        $leek->addTag($this->getReference(TagFixtures::VEGAN_TAG_REFERENCE));
+        $leek->addTag($this->getReference(TagFixtures::VEGETARIAN_TAG_REFERENCE));
         $manager->persist($leek);
 
         $carrot = new Ingredient();
@@ -71,6 +80,8 @@ class IngredientFixtures extends Fixture
         $carrot->setFat(0.2);
         $carrot->setEnergy(40.2);
         $carrot->setHasStockCheckNeededBeforeBuying(false);
+        $carrot->addTag($this->getReference(TagFixtures::VEGAN_TAG_REFERENCE));
+        $carrot->addTag($this->getReference(TagFixtures::VEGETARIAN_TAG_REFERENCE));
         $manager->persist($carrot);
 
         $oil = new Ingredient();
@@ -81,10 +92,11 @@ class IngredientFixtures extends Fixture
         $oil->setFat(92);
         $oil->setEnergy(828);
         $oil->setHasStockCheckNeededBeforeBuying(true);
+        $oil->addTag($this->getReference(TagFixtures::VEGAN_TAG_REFERENCE));
+        $oil->addTag($this->getReference(TagFixtures::VEGETARIAN_TAG_REFERENCE));
         $manager->persist($oil);
 
         $manager->flush();
-
 
         // allows other fixtures to access those objects
         $this->addReference(self::POTATO_INGREDIENT_REFERENCE, $potato);
@@ -93,5 +105,12 @@ class IngredientFixtures extends Fixture
         $this->addReference(self::LEEK_INGREDIENT_REFERENCE, $leek);
         $this->addReference(self::CARROT_INGREDIENT_REFERENCE, $carrot);
         $this->addReference(self::OIL_INGREDIENT_REFERENCE, $oil);
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            TagFixtures::class,
+        ];
     }
 }

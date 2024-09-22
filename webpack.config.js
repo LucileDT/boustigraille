@@ -48,6 +48,7 @@ Encore
     .addEntry('recipe_toggle_favorite', './assets/javascript/recipe/_toggle_favorite.js')
     .addEntry('recipe_nutritional_values_ingredients', './assets/javascript/recipe/_nutritional_values_ingredients.js')
     .addEntry('recipe_show', './assets/javascript/recipe/show.js')
+    .addEntry('recipe_index', './assets/javascript/recipe/index.js')
     .addEntry('recipe_card', './assets/javascript/recipe/_recipe_card.js')
     .addEntry('meal_list_form', './assets/javascript/meal_list/_form.js')
     .addEntry('meal_list_card', './assets/javascript/meal_list/_meal_list_card.js')

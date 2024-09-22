@@ -85,6 +85,12 @@ i {
         top: -0.07rem;
     }
 }
+.btn-link {
+    i::before {
+        position: initial;
+        top: initial;
+    }
+}
 
 /* icon which triggers an action */
 .action-icon {
