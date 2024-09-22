@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block javascript %}
+    {{ encore_entry_script_tags('recipe_index') }}
     {{ encore_entry_script_tags('recipe_card') }}
     {{ encore_entry_script_tags('recipe_toggle_favorite') }}
 {% endblock %}
@@ -43,6 +44,40 @@
 {% endblock %}
 
 {% block body %}
+    <div class="p-4 bg-light mb-5">
+        <h3 class="mb-3">Filtres</h3>
+        {{ form_start(form, {'attr': {'id': 'filter-recipe'}}) }}
+            <div class="row">
+                <div class="col-12 col-md-4">
+                    <div class="mb-3">
+                        {{ form_label(form.name) }}
+                        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.name) }}
+                        {{ form_errors(form.name) }}
+                    </div>
+                </div>
+                <div class="col-12 col-md">
+                    <div class="mb-3">
+                        {{ form_label(form.tags) }}
+                        {{ form_widget(form.tags, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_help(form.tags) }}
+                        {{ form_errors(form.tags) }}
+                    </div>
+                </div>
+            </div>
+            <div class="text-end">
+                <a class="btn btn-outline-primary" href="{{ path('recipe_index') }}">
+                    <i class="ri-filter-off-fill"></i>
+                    Réinitialiser les filtres
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="ri-filter-fill"></i>
+                    Filtrer
+                </button>
+            </div>
+        {{ form_end(form) }}
+    </div>
+
     <div id="klassy-cards-container" class="d-flex justify-content-between flex-wrap">
         {% for recipe in recipes %}
             {{ include('recipe/_recipe_card.html.twig') }}

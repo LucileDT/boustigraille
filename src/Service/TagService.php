@@ -73,6 +73,16 @@ class TagService
         } else {
             $recipe->removeTag($this->getVegetarianTag());
         }
+        if ($isVegan || $isVegetarian) {
+            $recipe->removeTag($this->getCarnistTag());
+        } else {
+            $recipe->addTag($this->getCarnistTag());
+        }
+    }
+
+    public function getCarnistTag(): Tag
+    {
+        return $this->tagRepository->findOneBy(['label' => 'Carniste']);
     }
 
     public function getVegetarianTag(): Tag

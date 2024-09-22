@@ -18,7 +18,6 @@ $(document).ready(function () {
         event.preventDefault();
         let submitUrl = $(this).data('submit-url');
         let formData = $(this).serialize();
-        console.debug(formData);
         $.ajax({
             url: submitUrl,
             method: 'POST',

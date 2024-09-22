@@ -12,6 +12,7 @@ class TagFixtures extends Fixture
     public const HARD_TAG_REFERENCE = 'hard-tag';
     public const QUICK_TAG_REFERENCE = 'quick-tag';
     public const LONG_TAG_REFERENCE = 'long-tag';
+    public const CARNIST_TAG_REFERENCE = 'carnist-tag';
     public const VEGETARIAN_TAG_REFERENCE = 'vegetarian-tag';
     public const VEGAN_TAG_REFERENCE = 'vegan-tag';
 
@@ -30,6 +31,9 @@ class TagFixtures extends Fixture
         $long = new Tag();
         $long->setLabel('Long');
         $manager->persist($long);
+        $carnist = new Tag();
+        $carnist->setLabel('Carnist');
+        $manager->persist($carnist);
         $vegetarian = new Tag();
         $vegetarian->setLabel('Végé');
         $manager->persist($vegetarian);
@@ -43,6 +47,7 @@ class TagFixtures extends Fixture
         $this->addReference(self::HARD_TAG_REFERENCE, $hard);
         $this->addReference(self::QUICK_TAG_REFERENCE, $quick);
         $this->addReference(self::LONG_TAG_REFERENCE, $long);
+        $this->addReference(self::CARNIST_TAG_REFERENCE, $carnist);
         $this->addReference(self::VEGETARIAN_TAG_REFERENCE, $vegetarian);
         $this->addReference(self::VEGAN_TAG_REFERENCE, $vegan);
     }

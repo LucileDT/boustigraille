@@ -24,7 +24,7 @@
             position: absolute;
             width: variables.$energy-box-size;
             height: variables.$energy-box-size;
-            background-color: variables.$klassy-primary-color;
+            background-color: variables.$klassy-secondary-color;
             font-size: calc(variables.$energy-box-size / 3.5);
             color: #fff;
             border-radius: variables.$card-border-radius;
@@ -67,8 +67,8 @@
         position: relative;
         width: 100%;
         height: variables.$card-height;
-        background-color: variables.$klassy-primary-color;
-        border: 1px solid variables.$klassy-primary-color;
+        background-color: variables.$klassy-secondary-color;
+        border: 1px solid variables.$klassy-secondary-color;
         transform: translate(0, calc(variables.$card-height - variables.$card-info-height));
         transition: transform 0.3s ease-out;
         padding: 1.2rem;
@@ -90,7 +90,7 @@
             a,
             button {
                 font-size: 13px;
-                color: variables.$klassy-primary-color;
+                color: variables.$klassy-secondary-color;
                 background-color: #fff;
                 font-weight: 600;
                 transition: all .3s;
@@ -103,7 +103,7 @@
                         border-color: #fff;
 
                         &:hover {
-                            color: variables.$klassy-primary-color;
+                            color: variables.$klassy-secondary-color;
                             background-color: #fff;
                             border-color: #fff;
                             opacity: 1;
