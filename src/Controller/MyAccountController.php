@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\FollowProposition;
+use App\Entity\FollowType;
+use App\Entity\NotificationHistory;
 use App\Form\NewPasswordType;
 use App\Form\PrivacySettingsType;
 use App\Form\ProposeMealListFollowType;
@@ -9,12 +12,15 @@ use App\Form\ProposeUsernameInRecipeFollowType;
 use App\Form\UserNutritionalDataType;
 use App\FormDataObject\UserNutritionalDataFDO;
 use App\Repository\FollowPropositionRepository;
+use App\Repository\FollowTypeRepository;
 use App\Repository\NotificationHistoryRepository;
 use App\Repository\UserRepository;
+use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -24,12 +30,13 @@ class MyAccountController extends AbstractController
 {
     #[Route(path: '/', name: 'index', methods: ['GET'])]
     #[IsGranted('IS_AUTHENTICATED')]
-    public function index(): Response
+    public function index(
+        FollowPropositionRepository $followPropositionRepository
+    ): Response
     {
         $user = $this->getUser();
-        // Commented for notifications and follow rework
-        $acceptedMealListFollow = []; // $followMealListRepository->findUserOnesAccepted($user);
-        $acceptedUsernameOnRecipeFollow = []; // $followUsernameOnRecipeRepository->findUserOnesAccepted($user);
+        $acceptedMealListFollow = $followPropositionRepository->findFollowedOnesAccepted($user, FollowType::MEAL_LIST);
+        $acceptedUsernameOnRecipeFollow = $followPropositionRepository->findFollowedOnesAccepted($user, FollowType::USERNAME_ON_RECIPE);
         return $this->render('my_account/index.html.twig', [
             'user' => $user,
             'acceptedMealListFollows' => $acceptedMealListFollow,
@@ -104,128 +111,146 @@ class MyAccountController extends AbstractController
         ]);
     }
 
-    // Commented for notifications and follow rework
-    // #[Route(path: '/edit-privacy-settings', name: 'edit_privacy_settings', methods: ['GET', 'POST'])]
-    // #[IsGranted('IS_AUTHENTICATED')]
-    // public function editPrivacySettings(
-    //     UserRepository $userRepository,
-    //     NotificationCategoryRepository $notificationCategoryRepository,
-    //     FollowMealListRepository $followMealListRepository,
-    //     FollowUsernameOnRecipeRepository $followUsernameOnRecipeRepository,
-    //     Request $request,
-    //     EntityManagerInterface $entityManager
-    // ): Response
-    // {
-    //     /** @var \App\Entity\User $user */
-    //     $user = $this->getUser();
-    //     $privacyForm = $this->createForm(PrivacySettingsType::class, $user);
-    //     $privacyForm->handleRequest($request);
+    #[Route(path: '/edit-privacy-settings', name: 'edit_privacy_settings', methods: ['GET', 'POST'])]
+    #[IsGranted('IS_AUTHENTICATED')]
+    public function editPrivacySettings(
+        Request $request,
+        UserRepository $userRepository,
+        FollowTypeRepository $followTypeRepository,
+        FollowPropositionRepository $followPropositionRepository,
+        EntityManagerInterface $entityManager,
+        NotificationService $notificationService
+    ): Response
+    {
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+        $privacyForm = $this->createForm(PrivacySettingsType::class, $user);
+        $privacyForm->handleRequest($request);
 
-    //     $sentFollowMealListPropositions = $followMealListRepository->findBy(['followed' => $user]);
-    //     $sentUsernameOnRecipeFollowPropositions = $followUsernameOnRecipeRepository->findBy(['followed' => $user]);
+        $sentFollowMealListPropositions = $followPropositionRepository->findByFollowedAndType(
+            $user,
+            FollowType::MEAL_LIST,
+        );
+        $sentUsernameOnRecipeFollowPropositions = $followPropositionRepository->findByFollowedAndType(
+            $user,
+            FollowType::USERNAME_ON_RECIPE,
+        );
 
-    //     if ($privacyForm->isSubmitted() && $privacyForm->isValid()) {
-    //         $entityManager->flush();
-    //         return $this->redirectToRoute('my_account_index');
-    //     }
+        if ($privacyForm->isSubmitted() && $privacyForm->isValid()) {
+            $entityManager->flush();
+            return $this->redirectToRoute('my_account_index');
+        }
 
-    //     $proposeMealListFollowForm = $this->createForm(ProposeMealListFollowType::class);
-    //     $proposeMealListFollowForm->handleRequest($request);
-    //     if ($proposeMealListFollowForm->isSubmitted() && $proposeMealListFollowForm->isValid()) {
-    //         $formData = $proposeMealListFollowForm->getData();
-    //         $username = $formData['username'];
+        $followPropositionUrl = $this->generateUrl('my_account_follow_propositions');
 
-    //         $askedUser = $userRepository->findOneBy(['username' => $username]);
+        $proposeMealListFollowForm = $this->createForm(ProposeMealListFollowType::class);
+        $proposeMealListFollowForm->handleRequest($request);
+        if ($proposeMealListFollowForm->isSubmitted() && $proposeMealListFollowForm->isValid()) {
+            $formData = $proposeMealListFollowForm->getData();
+            $username = $formData['username'];
 
-    //         // if the user exists, create a follow proposition and send them a notification
-    //         if (!empty($askedUser)) {
-    //             $followProposition = $followMealListRepository->findOneBy(['followed' => $user, 'follower' => $askedUser]);
-    //             if (empty($followProposition)) {
-    //                 $followProposition = new FollowMealList();
-    //                 $followProposition->setFollowed($user);
-    //                 $followProposition->setFollower($askedUser);
-    //                 $followProposition->setProposedAt(new \DateTimeImmutable());
+            $askedUser = $userRepository->findOneBy(['username' => $username]);
 
-    //                 $notification = new Notification();
-    //                 $notificationCategory = $notificationCategoryRepository->findOneBy(['code' => 2]);
-    //                 $notification->setCategory($notificationCategory);
-    //                 $notification->setMessage(
-    //                     '**' . $user->getUsername() . '**' .
-    //                     ' vous propose l\'accès à ses **listes de repas**, souhaitez-vous accepter ? ' .
-    //                     'Si vous acceptez, vous pourrez voir ses listes de repas dans la page idoine.'
-    //                 );
-    //                 $notification->setDateSent(new \DateTimeImmutable());
-    //                 $notification->setAction($followProposition);
-    //                 $notification->setSender($user);
+            // if the user exists, create a follow proposition and send them a notification
+            if (!empty($askedUser)) {
+                $followProposition = $followPropositionRepository->findFollowProposition(
+                    $askedUser,
+                    $user,
+                    FollowType::MEAL_LIST
+                );
 
-    //                 $notificationReceipt = new NotificationReceipt();
-    //                 $notificationReceipt->setNotification($notification);
-    //                 $notificationReceipt->setRecipient($askedUser);
+                if (empty($followProposition)) {
+                    $followTypeMealList = $followTypeRepository->findOneBy(['code' => FollowType::MEAL_LIST]);
+                    $followProposition = new FollowProposition();
+                    $followProposition->setType($followTypeMealList);
+                    $followProposition->setFollowed($user);
+                    $followProposition->setFollower($askedUser);
+                    $followProposition->setProposedAt(new \DateTimeImmutable());
 
-    //                 $entityManager->persist($notification);
-    //                 $entityManager->persist($followProposition);
-    //                 $entityManager->persist($notificationReceipt);
-    //                 $entityManager->flush();
-    //             }
-    //         }
+                    $notification = new Notification(
+                        $followTypeMealList->getLabel(),
+                        ['browser']
+                    );
 
-    //         $entityManager->flush();
-    //         return $this->redirectToRoute('my_account_index');
-    //     }
+                    $notification->content(
+                        '**' . $user->getUsername() . '**' .
+                        ' vous propose l\'accès à ses **listes de repas**.<br>' .
+                        'Vous pouvez voir sa proposition sur la page des [Demandes de suivi](' . $followPropositionUrl . ') !'
+                    );
 
-    //     $proposeUsernameInRecipeFollowForm = $this->createForm(ProposeUsernameInRecipeFollowType::class);
-    //     $proposeUsernameInRecipeFollowForm->handleRequest($request);
-    //     if ($proposeUsernameInRecipeFollowForm->isSubmitted() && $proposeUsernameInRecipeFollowForm->isValid()) {
-    //         $formData = $proposeUsernameInRecipeFollowForm->getData();
-    //         $username = $formData['username'];
+                    $notificationService->sendNotification(
+                        $notification,
+                        $askedUser,
+                        $user
+                    );
 
-    //         $askedUser = $userRepository->findOneBy(['username' => $username]);
+                    $entityManager->persist($followProposition);
+                    $entityManager->flush();
+                }
+            }
 
-    //         // if the user exists, create a follow proposition and send them a notification
-    //         if (!empty($askedUser)) {
-    //             $followProposition = $followUsernameOnRecipeRepository->findOneBy(['followed' => $user, 'follower' => $askedUser]);
-    //             if (empty($followProposition)) {
-    //                 $followProposition = new FollowUsernameOnRecipe();
-    //                 $followProposition->setFollowed($user);
-    //                 $followProposition->setFollower($askedUser);
-    //                 $followProposition->setProposedAt(new \DateTimeImmutable());
+            $entityManager->flush();
+            return $this->redirectToRoute('my_account_index');
+        }
 
-    //                 $notification = new Notification();
-    //                 $notificationCategory = $notificationCategoryRepository->findOneBy(['code' => 3]);
-    //                 $notification->setCategory($notificationCategory);
-    //                 $notification->setMessage(
-    //                     '**' . $user->getUsername() . '**' .
-    //                     ' vous propose de voir son **pseudo** dans les **recettes** qu\'ael a rédigées, souhaitez-vous accepter ? ' .
-    //                     'Si vous acceptez, vous pourrez voir son pseudo dans les pages de recettes correspondantes.'
-    //                 );
-    //                 $notification->setDateSent(new \DateTimeImmutable());
-    //                 $notification->setAction($followProposition);
-    //                 $notification->setSender($user);
+        $proposeUsernameInRecipeFollowForm = $this->createForm(ProposeUsernameInRecipeFollowType::class);
+        $proposeUsernameInRecipeFollowForm->handleRequest($request);
+        if ($proposeUsernameInRecipeFollowForm->isSubmitted() && $proposeUsernameInRecipeFollowForm->isValid()) {
+            $formData = $proposeUsernameInRecipeFollowForm->getData();
+            $username = $formData['username'];
 
-    //                 $notificationReceipt = new NotificationReceipt();
-    //                 $notificationReceipt->setNotification($notification);
-    //                 $notificationReceipt->setRecipient($askedUser);
+            $askedUser = $userRepository->findOneBy(['username' => $username]);
 
-    //                 $entityManager->persist($notification);
-    //                 $entityManager->persist($followProposition);
-    //                 $entityManager->persist($notificationReceipt);
-    //                 $entityManager->flush();
-    //             }
-    //         }
+            // if the user exists, create a follow proposition and send them a notification
+            if (!empty($askedUser)) {
+                $followProposition = $followPropositionRepository->findFollowProposition(
+                    $askedUser,
+                    $user,
+                    FollowType::USERNAME_ON_RECIPE
+                );
 
-    //         $entityManager->flush();
-    //         return $this->redirectToRoute('my_account_index');
-    //     }
+                if (empty($followProposition)) {
+                    $followTypeUsernameOnRecipe = $followTypeRepository->findOneBy(['code' => FollowType::USERNAME_ON_RECIPE]);
+                    $followProposition = new FollowProposition();
+                    $followProposition->setType($followTypeUsernameOnRecipe);
+                    $followProposition->setFollowed($user);
+                    $followProposition->setFollower($askedUser);
+                    $followProposition->setProposedAt(new \DateTimeImmutable());
 
-    //     return $this->render('my_account/privacy.html.twig', [
-    //         'user' => $user,
-    //         'global_settings_form' => $privacyForm->createView(),
-    //         'ask_meal_list_follow_form' => $proposeMealListFollowForm->createView(),
-    //         'propose_username_in_recipe_follow_form' => $proposeUsernameInRecipeFollowForm->createView(),
-    //         'sentMealListFollowPropositions' => $sentFollowMealListPropositions,
-    //         'sentUsernameOnRecipeFollowPropositions' => $sentUsernameOnRecipeFollowPropositions,
-    //     ]);
-    // }
+                    $notification = new Notification(
+                        $followTypeUsernameOnRecipe->getLabel(),
+                        ['browser']
+                    );
+
+                    $notification->content(
+                        '**' . $user->getUsername() . '**' .
+                        ' vous propose de voir son **pseudo** dans les **recettes** qu\'ael a rédigées.<br>' .
+                        'Vous pouvez voir sa proposition sur la page des [Demandes de suivi](' . $followPropositionUrl . ') !'
+                    );
+
+                    $notificationService->sendNotification(
+                        $notification,
+                        $askedUser,
+                        $user
+                    );
+
+                    $entityManager->persist($followProposition);
+                    $entityManager->flush();
+                }
+            }
+
+            return $this->redirectToRoute('my_account_index');
+        }
+
+        return $this->render('my_account/privacy.html.twig', [
+            'user' => $user,
+            'global_settings_form' => $privacyForm->createView(),
+            'ask_meal_list_follow_form' => $proposeMealListFollowForm->createView(),
+            'propose_username_in_recipe_follow_form' => $proposeUsernameInRecipeFollowForm->createView(),
+            'sentMealListFollowPropositions' => $sentFollowMealListPropositions,
+            'sentUsernameOnRecipeFollowPropositions' => $sentUsernameOnRecipeFollowPropositions,
+        ]);
+    }
 
     #[Route(path: '/notifications', name: 'notifications', methods: ['GET'])]
     #[IsGranted('IS_AUTHENTICATED')]

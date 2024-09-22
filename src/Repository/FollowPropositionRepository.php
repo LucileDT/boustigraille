@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\FollowProposition;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -22,7 +23,50 @@ class FollowPropositionRepository extends ServiceEntityRepository
         parent::__construct($registry, FollowProposition::class);
     }
 
-    public function findByFollowedAndType(User $followed, string $followTypeCode) {
+    private function getFindFollowPropositionBaseQuery(
+        User $follower,
+        User $followed,
+        string $followTypeCode
+    ): QueryBuilder
+    {
+        return $this->createQueryBuilder('fp')
+            ->leftJoin('fp.type', 'ft')
+            ->andWhere('fp.follower = :follower')
+            ->andWhere('fp.followed = :followed')
+            ->andWhere('ft.code = :followTypeCode')
+            ->setParameter('follower', $follower)
+            ->setParameter('followed', $followed)
+            ->setParameter('followTypeCode', $followTypeCode)
+        ;
+    }
+
+    /**
+     * @return FollowProposition
+     */
+    public function findFollowProposition(
+        User $follower,
+        User $followed,
+        string $followTypeCode
+    ): mixed
+    {
+        return $this->getFindFollowPropositionBaseQuery(
+            $follower,
+            $followed,
+            $followTypeCode
+        )
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    /**
+     * @return FollowProposition[]
+     */
+    public function findByFollowedAndType(
+        User $followed,
+        string $followTypeCode
+    ): mixed
+    {
         return $this->createQueryBuilder('fp')
             ->leftJoin('fp.type', 'ft')
             ->andWhere('fp.followed = :followed')
@@ -37,7 +81,8 @@ class FollowPropositionRepository extends ServiceEntityRepository
     /**
      * @return FollowProposition[]
      */
-    public function findUserOnesUnprocessed(User $user) {
+    public function findUserOnesUnprocessed(User $user): mixed
+    {
         return $this->createQueryBuilder('fp')
             ->andWhere('fp.follower = :follower')
             ->andWhere('fp.processedAt IS NULL')
@@ -50,20 +95,29 @@ class FollowPropositionRepository extends ServiceEntityRepository
     /**
      * @return FollowProposition[]
      */
-    public function findUserOnesAccepted(User $user) {
-        return $this->createQueryBuilder('fp')
+    public function findUserOnesAccepted(User $user, ?string $followTypeCode = null): mixed
+    {
+        $queryBuilder = $this->createQueryBuilder('fp')
             ->andWhere('fp.follower = :follower')
             ->andWhere('fp.acceptedAt IS NOT NULL')
-            ->setParameter('follower', $user)
-            ->getQuery()
-            ->getResult()
+            ->setParameter('follower', $user);
+
+        if (!is_null($followTypeCode)) {
+            $queryBuilder
+                ->leftJoin('fp.type', 'ft')
+                ->andWhere('ft.code = :followTypeCode')
+                ->setParameter('followTypeCode', $followTypeCode)
             ;
+        }
+
+        return $queryBuilder->getQuery()->getResult();
     }
 
     /**
      * @return FollowProposition[]
      */
-    public function findUserOnesRefused(User $user) {
+    public function findUserOnesRefused(User $user): mixed
+    {
         return $this->createQueryBuilder('fp')
             ->andWhere('fp.follower = :follower')
             ->andWhere('fp.refusedAt IS NOT NULL')
@@ -73,16 +127,39 @@ class FollowPropositionRepository extends ServiceEntityRepository
             ;
     }
 
-    public function hasAcceptedFollowPropositionFromUser(User $follower, User $followed, string $followTypeCode): bool {
-        $results = $this->createQueryBuilder('fp')
-            ->leftJoin('fp.type', 'ft')
-            ->andWhere('fp.follower = :follower')
+    /**
+     * @return FollowProposition[]
+     */
+    public function findFollowedOnesAccepted(User $followed, ?string $followTypeCode = null): mixed
+    {
+        $queryBuilder = $this->createQueryBuilder('fp')
             ->andWhere('fp.followed = :followed')
-            ->andWhere('ft.code = :followTypeCode')
             ->andWhere('fp.acceptedAt IS NOT NULL')
-            ->setParameter('follower', $follower)
-            ->setParameter('followed', $followed)
-            ->setParameter('followTypeCode', $followTypeCode)
+            ->setParameter('followed', $followed);
+
+        if (!is_null($followTypeCode)) {
+            $queryBuilder
+                ->leftJoin('fp.type', 'ft')
+                ->andWhere('ft.code = :followTypeCode')
+                ->setParameter('followTypeCode', $followTypeCode)
+            ;
+        }
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function hasAcceptedFollowPropositionFromUser(
+        User $follower,
+        User $followed,
+        string $followTypeCode
+    ): bool
+    {
+        $results = $this->getFindFollowPropositionBaseQuery(
+            $follower,
+            $followed,
+            $followTypeCode
+        )
+            ->andWhere('fp.acceptedAt IS NOT NULL')
             ->getQuery()
             ->getResult()
         ;
