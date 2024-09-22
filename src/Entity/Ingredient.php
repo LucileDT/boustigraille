@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\IngredientRepository;
+use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,50 +17,64 @@ class Ingredient
     private $id;
 
     #[ORM\Column(type: 'string', length: 40, nullable: true)]
-    private $barCode;
+    private ?string $barCode;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $label;
+    private ?string $label;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $brand;
+    private ?string $brand;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private $portionSize;
+    private ?int $portionSize;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $measureType;
+    private ?string $measureType;
 
     #[ORM\Column(type: 'float')]
-    private $proteins;
+    private ?float $proteins;
 
     #[ORM\Column(type: 'float')]
-    private $carbohydrates;
+    private ?float $carbohydrates;
 
     #[ORM\Column(type: 'float')]
-    private $fat;
+    private ?float $fat;
 
     #[ORM\Column(type: 'float')]
-    private $energy;
+    private ?float $energy;
 
     #[ORM\Column(type: 'string', length: 1000, nullable: true)]
-    private $comment;
+    private ?string $comment;
 
     #[ORM\Column(type: 'float', nullable: true)]
-    private $shopBatchSize;
+    private ?float $shopBatchSize;
 
     #[ORM\Column(type: 'float', nullable: true)]
-    private $unitSize;
+    private ?float $unitSize;
 
     #[ORM\JoinColumn(nullable: true)]
     #[ORM\ManyToOne(targetEntity: Store::class, inversedBy: 'ingredients')]
-    private $store;
+    private ?Store $store;
 
     #[ORM\Column(type: 'boolean')]
-    private $hasStockCheckNeededBeforeBuying;
+    private ?bool $hasStockCheckNeededBeforeBuying;
 
     #[ORM\OneToMany(mappedBy: 'ingredient', targetEntity: IngredientQuantityForRecipe::class, cascade: ['persist'], orphanRemoval: true)]
     private $ingredientQuantityForRecipes;
+
+    /**
+     * @var DateTimeImmutable|null Last OpenFoodFacts synchronization date
+     */
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $lastSynchronizedAt = null;
+
+    #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'ingredients')]
+    private Collection $tags;
+
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -239,5 +255,55 @@ class Ingredient
     public function getIngredientQuantityForRecipes(): ?Collection
     {
         return $this->ingredientQuantityForRecipes;
+    }
+
+    /**
+     * Return the last OpenFoodFacts synchronization date
+     * @return DateTimeImmutable|null
+     */
+    public function getLastSynchronizedAt(): ?DateTimeImmutable
+    {
+        return $this->lastSynchronizedAt;
+    }
+
+    /**
+     * Set the last OpenFoodFacts synchronization date
+     * @param DateTimeImmutable|null $lastSynchronizedAt
+     * @return $this
+     */
+    public function setLastSynchronizedAt(?DateTimeImmutable $lastSynchronizedAt): static
+    {
+        $this->lastSynchronizedAt = $lastSynchronizedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Tag>
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): static
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): static
+    {
+        $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    public function isVegan(): bool
+    {
+
     }
 }

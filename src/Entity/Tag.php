@@ -21,9 +21,13 @@ class Tag
     #[ORM\ManyToMany(targetEntity: Recipe::class, mappedBy: 'tags', cascade: ['persist'])]
     private Collection $recipes;
 
+    #[ORM\ManyToMany(targetEntity: Ingredient::class, mappedBy: 'tags')]
+    private Collection $ingredients;
+
     public function __construct()
     {
         $this->recipes = new ArrayCollection();
+        $this->ingredients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -63,6 +67,33 @@ class Tag
     public function removeRecipe(Recipe $recipe): static
     {
         $this->recipes->removeElement($recipe);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ingredient>
+     */
+    public function getIngredients(): Collection
+    {
+        return $this->ingredients;
+    }
+
+    public function addIngredient(Ingredient $ingredient): static
+    {
+        if (!$this->ingredients->contains($ingredient)) {
+            $this->ingredients->add($ingredient);
+            $ingredient->addTag($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIngredient(Ingredient $ingredient): static
+    {
+        if ($this->ingredients->removeElement($ingredient)) {
+            $ingredient->removeTag($this);
+        }
 
         return $this;
     }

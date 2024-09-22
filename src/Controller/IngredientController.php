@@ -7,7 +7,9 @@ use App\Form\IngredientFromOpenFoodFactsType;
 use App\Form\IngredientType;
 use App\FormDataObject\IngredientFromOpenFoodFactsFDO;
 use App\Repository\IngredientRepository;
+use App\Repository\TagRepository;
 use App\Service\OpenFoodFactService;
+use App\Service\TagService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -67,7 +69,8 @@ class IngredientController extends AbstractController
         OpenFoodFactService $offService,
         Request $request,
         IngredientFromOpenFoodFactsFDO $ingredientIdentifier,
-        IngredientRepository $ingredientRepository
+        IngredientRepository $ingredientRepository,
+        TagRepository $tagRepository
     ): Response
     {
         $form = $this->createForm(IngredientFromOpenFoodFactsType::class, $ingredientIdentifier);
@@ -107,11 +110,11 @@ class IngredientController extends AbstractController
             {
                 $ingredient = new Ingredient();
                 $product = $offService->getProductFromApi($productBarCode);
+                $offService->synchronizeIngredientWithProductData($ingredient, $product);
 
-                $offService->fillIngredientNutritionalDataWithProductOnes($ingredient, $product);
                 $form = $this->createForm(IngredientType::class, $ingredient, [
-                        'action' => $this->generateUrl('ingredient_new'),
-                    ]);
+                    'action' => $this->generateUrl('ingredient_new'),
+                ]);
 
                 return $this->render('ingredient/new.html.twig', [
                     'ingredient' => $ingredient,
@@ -143,12 +146,23 @@ class IngredientController extends AbstractController
 
     #[Route(path: '/{id}/edit', name: 'edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHENTICATED')]
-    public function edit(EntityManagerInterface $entityManager, Request $request, Ingredient $ingredient): Response
+    public function edit(
+        EntityManagerInterface $entityManager,
+        Request $request,
+        TagService $tagService,
+        Ingredient $ingredient
+    ): Response
     {
         $form = $this->createForm(IngredientType::class, $ingredient);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($ingredient->getIngredientQuantityForRecipes() as $ingredientQuantity) {
+                $recipe = $ingredientQuantity->getRecipe();
+                $tagService->manageRecipeVegeAndVeganTags($recipe);
+                $entityManager->persist($recipe);
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('ingredient_index');

@@ -47,7 +47,10 @@
                 {# recipe general data (only name & author at the moment) #}
                 <div class="recipe-general-data">
                     <div class="recipe-name text-center text-white">
-                        <h1>{{ recipe.name }}</h1>
+                        <h1>
+                            {{ recipe.tags | vegan_icon | raw }}
+                            {{ recipe.name }}
+                        </h1>
                         {# todo add author #}
                         <div id="recipe-tags" class="d-flex align-items-center justify-content-center mt-4 text-center text-white">
                             {% for tag in recipe.tags %}

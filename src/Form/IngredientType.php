@@ -4,20 +4,34 @@ namespace App\Form;
 
 use App\Entity\Ingredient;
 use App\Entity\Store;
+use App\Entity\Tag;
+use App\Service\TagService;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class IngredientType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private TagService $tagService
+    ) {}
+
+    public function buildForm(
+        FormBuilderInterface $builder,
+        array $options
+    ): void
     {
         $builder
             ->add('label', TextType::class, [
@@ -90,7 +104,20 @@ class IngredientType extends AbstractType
                 'label' => 'Commentaire',
                 'required' => false,
             ])
+            ->add('tags', EntityType::class, [
+                'class' => Tag::class,
+                'choice_label' => 'label',
+                'multiple' => true,
+                'expanded' => false,
+                'required' => false,
+            ])
+            ->add('lastSynchronizedAt', DateTimeType::class, [
+                'attr' => ['class' => 'd-none'],
+            ])
         ;
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $this->tagService->manageTagsFromSelect2Form($this->entityManager, $event);
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)

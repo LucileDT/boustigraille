@@ -30,6 +30,7 @@
     <div class="info-box d-flex flex-column justify-content-between">
         <div>
             <h1 class="title">
+                {{ recipe.tags | vegan_icon | raw }}
                 {{ recipe.name }}
             </h1>
 
