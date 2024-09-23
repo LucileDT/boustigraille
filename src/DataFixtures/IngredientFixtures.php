@@ -111,6 +111,7 @@ class IngredientFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             TagFixtures::class,
+            StoreFixtures::class,
         ];
     }
 }

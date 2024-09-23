@@ -5,10 +5,11 @@ namespace App\DataFixtures;
 use App\Entity\Responsibility;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements DependentFixtureInterface
 {
     public const ADMIN_USER_REFERENCE = 'admin-user';
     public const REGULAR_USER_REFERENCE = 'regular-user';
@@ -49,5 +50,12 @@ class UserFixtures extends Fixture
         // allows other fixtures to access those objects
         $this->addReference(self::ADMIN_USER_REFERENCE, $admin);
         $this->addReference(self::REGULAR_USER_REFERENCE, $user);
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            FollowTypeFixtures::class,
+        ];
     }
 }

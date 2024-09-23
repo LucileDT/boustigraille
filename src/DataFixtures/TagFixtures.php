@@ -32,7 +32,7 @@ class TagFixtures extends Fixture
         $long->setLabel('Long');
         $manager->persist($long);
         $carnist = new Tag();
-        $carnist->setLabel('Carnist');
+        $carnist->setLabel('Carniste');
         $manager->persist($carnist);
         $vegetarian = new Tag();
         $vegetarian->setLabel('Végé');

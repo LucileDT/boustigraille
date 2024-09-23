@@ -79,6 +79,7 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
             UserFixtures::class,
             IngredientFixtures::class,
             TagFixtures::class,
+            DifficultyLevelFixtures::class,
         ];
     }
 }
