@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\FollowProposition;
 use App\Entity\FollowType;
 use App\Entity\NotificationHistory;
+use App\Entity\User;
 use App\Form\NewPasswordType;
 use App\Form\PrivacySettingsType;
 use App\Form\ProposeMealListFollowType;
@@ -52,7 +53,7 @@ class MyAccountController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-        /** @var \App\Entity\User $currentUser */
+        /** @var User $currentUser */
         $currentUser = $this->getUser();
         $userNutritionalDataFDO->setProteins($currentUser->getProteins());
         $userNutritionalDataFDO->setCarbohydrates($currentUser->getCarbohydrates());
@@ -88,7 +89,7 @@ class MyAccountController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-        /** @var \App\Entity\User $user */
+        /** @var User $user */
         $user = $this->getUser();
         $form = $this->createForm(NewPasswordType::class);
         $form->handleRequest($request);
@@ -122,7 +123,7 @@ class MyAccountController extends AbstractController
         NotificationService $notificationService
     ): Response
     {
-        /** @var \App\Entity\User $user */
+        /** @var User $user */
         $user = $this->getUser();
         $privacyForm = $this->createForm(PrivacySettingsType::class, $user);
         $privacyForm->handleRequest($request);

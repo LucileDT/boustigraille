@@ -22,21 +22,27 @@ class TagFixtures extends Fixture
         $easy = new Tag();
         $easy->setLabel('Facile');
         $manager->persist($easy);
+
         $hard = new Tag();
         $hard->setLabel('Difficile');
         $manager->persist($hard);
+
         $quick = new Tag();
         $quick->setLabel('Rapide');
         $manager->persist($quick);
+
         $long = new Tag();
         $long->setLabel('Long');
         $manager->persist($long);
+
         $carnist = new Tag();
         $carnist->setLabel('Carniste');
         $manager->persist($carnist);
+
         $vegetarian = new Tag();
         $vegetarian->setLabel('Végé');
         $manager->persist($vegetarian);
+
         $vegan = new Tag();
         $vegan->setLabel('Vegan');
         $manager->persist($vegan);

@@ -21,7 +21,12 @@ class NotificationService
         private EntityManagerInterface $entityManager
     ) { }
 
-    public function sendNotification(Notification $notification, User $recipient, User $sender = null) {
+    public function sendNotification(
+        Notification $notification,
+        User $recipient,
+        User $sender = null,
+    ): NotificationHistory
+    {
         // Create notification history
         $notificationHistory = new NotificationHistory();
         $notificationHistory->hydrateFromNotificationAndRecipient($notification, $recipient);
@@ -47,5 +52,7 @@ class NotificationService
 
         // Save the entities in DB
         $this->entityManager->flush();
+
+        return $notificationHistory;
     }
 }
