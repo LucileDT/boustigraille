@@ -95,8 +95,6 @@
                         <th class="text-center align-middle">Lipides</th>
                         <th class="text-center align-middle">Énergie</th>
                         <th></th>
-                        <th></th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -177,16 +175,12 @@
                                         <i class="ri-bar-chart-box-fill"></i>
                                     </a>
                                 {% endif %}
-                            </td>
-                            <td class="text-end align-middle">
                                 <a
                                     class="btn-primary btn btn-sm"
                                     href="{{ path('ingredient_show', {'id': ingredient.id}) }}"
                                     >
                                     Voir
                                 </a>
-                            </td>
-                            <td class="text-end align-middle">
                                 {% if app.user is not null %}
                                     <a
                                         class="btn-secondary btn btn-sm"
