@@ -13,6 +13,17 @@ use Doctrine\Persistence\ObjectManager;
 class RecipeFixtures extends Fixture implements DependentFixtureInterface
 {
     public const COUNTRY_SIDE_PAN_FRY_RECIPE_REFERENCE = 'country-side-pan-fry-recipe';
+    public const CHEESE_OMELET_RECIPE_REFERENCE = 'cheese-omelet-recipe';
+    public const SASHIMI_RECIPE_REFERENCE = 'sashimi-recipe';
+    public const VEGAN_FRIED_RICE_RECIPE_REFERENCE = 'vegan-fried-rice-recipe';
+    public const POTATOES_AND_CHEESE_RECIPE_REFERENCE = 'potatoes-and-cheese-recipe';
+    public const STEAK_AND_POTATOES_RECIPE_REFERENCE = 'steak-and-potatoes-recipe';
+    public const HAM_ROSTIES_RECIPE_REFERENCE = 'ham-rosties-recipe';
+    public const POLENTA_RECIPE_REFERENCE = 'polenta-recipe';
+    public const VEGAN_CHIRASHI_RECIPE_REFERENCE = 'vegan-chirashi-recipe';
+    public const PST_RECIPE_REFERENCE = 'pst-recipe';
+    public const VEGETARIAN_CHIRASHI_RECIPE_REFERENCE = 'vegetarian-chirashi-recipe';
+    public const GNOCCHI_RECIPE_REFERENCE = 'gnocchi-recipe';
 
     public function load(ObjectManager $manager): void
     {
@@ -562,6 +573,17 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
 
         $this->addReference(self::COUNTRY_SIDE_PAN_FRY_RECIPE_REFERENCE, $countrySidePanFry);
+        $this->addReference(self::CHEESE_OMELET_RECIPE_REFERENCE, $cheeseOmelet);
+        $this->addReference(self::SASHIMI_RECIPE_REFERENCE, $sashimi);
+        $this->addReference(self::VEGAN_FRIED_RICE_RECIPE_REFERENCE, $veganFriedRice);
+        $this->addReference(self::POTATOES_AND_CHEESE_RECIPE_REFERENCE, $potatoesAndCheese);
+        $this->addReference(self::STEAK_AND_POTATOES_RECIPE_REFERENCE, $potatoesAndSteak);
+        $this->addReference(self::HAM_ROSTIES_RECIPE_REFERENCE, $hamRosties);
+        $this->addReference(self::POLENTA_RECIPE_REFERENCE, $polenta);
+        $this->addReference(self::VEGAN_CHIRASHI_RECIPE_REFERENCE, $chirashiVegan);
+        $this->addReference(self::PST_RECIPE_REFERENCE, $caramelizedPST);
+        $this->addReference(self::VEGETARIAN_CHIRASHI_RECIPE_REFERENCE, $chirashiVegetarian);
+        $this->addReference(self::GNOCCHI_RECIPE_REFERENCE, $greenVegetableGnocchi);
     }
 
     public function getDependencies(): array
