@@ -39,11 +39,6 @@ class RecipeVoter extends Voter
     {
         $user = $token->getUser();
 
-        if (!$user instanceof User) {
-            // the user must be logged in; if not, deny access
-            return false;
-        }
-
         // you know $subject is a Recipe object, thanks to `supports()`
         /** @var Recipe $recipe */
         $recipe = $subject;
@@ -54,15 +49,20 @@ class RecipeVoter extends Voter
         };
     }
 
-    private function canViewAuthorUsername(Recipe $recipe, User $user): bool
+    private function canViewAuthorUsername(Recipe $recipe, ?User $user): bool
     {
-        $author =  $recipe->getAuthor();
+        $author = $recipe->getAuthor();
 
-        if ($author === $user) {
+        if ($author->doShowUsernameOnRecipe()) {
             return true;
         }
 
-        if ($author->doShowUsernameOnRecipe()) {
+        // Only continue if the user is connected
+        if (is_null($user)) {
+            return false;
+        }
+
+        if ($author === $user) {
             return true;
         }
 
