@@ -14,8 +14,12 @@ class IngredientFixtures extends Fixture implements DependentFixtureInterface
     public const PROTEIN_INGREDIENT_REFERENCE = 'pst-ingredient';
     public const LEEK_INGREDIENT_REFERENCE = 'leek-ingredient';
     public const CARROT_INGREDIENT_REFERENCE = 'carrot-ingredient';
+    public const SPINACH_INGREDIENT_REFERENCE = 'spinach-ingredient';
     public const OIL_INGREDIENT_REFERENCE = 'oil-ingredient';
     public const SUSHI_RICE_INGREDIENT_REFERENCE = 'sushi-rice-ingredient';
+    public const POLENTA_INGREDIENT_REFERENCE = 'polenta-ingredient';
+    public const GNOCCHI_INGREDIENT_REFERENCE = 'gnocchi-ingredient';
+    public const MAPLE_SYRUP_INGREDIENT_REFERENCE = 'maple-syrup-ingredient';
     public const SOY_SAUCE_INGREDIENT_REFERENCE = 'soy-sauce-ingredient';
     public const SWEET_SOY_SAUCE_INGREDIENT_REFERENCE = 'sweet-sow-sauce-ingredient';
 
@@ -23,6 +27,7 @@ class IngredientFixtures extends Fixture implements DependentFixtureInterface
     public const SPREADABLE_CHEESE_INGREDIENT_REFERENCE = 'spreadable-cheese-ingredient';
     public const COW_MILK_INGREDIENT_REFERENCE = 'cow-milk-ingredient';
     public const EGG_INGREDIENT_REFERENCE = 'egg-ingredient';
+    public const CREAM_INGREDIENT_REFERENCE = 'cream-ingredient';
 
     public const HAM_INGREDIENT_REFERENCE = 'ham-ingredient';
     public const LARDOON_INGREDIENT_REFERENCE = 'lardoon-ingredient';
@@ -31,10 +36,13 @@ class IngredientFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
+        // ------------------------//
         // -- VEGAN INGREDIENTS -- //
+        // ------------------------//
         $potato = new Ingredient();
         $potato->setLabel('Pomme de terre');
         $potato->setMeasureType('g');
+        $potato->setUnitSize('120');
         $potato->setProteins(1.8);
         $potato->setCarbohydrates(16.7);
         $potato->setFat(0.3);
@@ -50,7 +58,7 @@ class IngredientFixtures extends Fixture implements DependentFixtureInterface
         $onion->setUnitSize('100');
         $onion->setProteins(1.4);
         $onion->setCarbohydrates(9);
-        $onion->setFat(0,2);
+        $onion->setFat(0.2);
         $onion->setEnergy(43);
         $onion->setHasStockCheckNeededBeforeBuying(true);
         $onion->addTag($this->getReference(TagFixtures::VEGAN_TAG_REFERENCE));
@@ -97,6 +105,20 @@ class IngredientFixtures extends Fixture implements DependentFixtureInterface
         $carrot->addTag($this->getReference(TagFixtures::VEGETARIAN_TAG_REFERENCE));
         $manager->persist($carrot);
 
+        $spinach = new Ingredient();
+        $spinach->setLabel('Épinards surgelés en feuilles');
+        $spinach->setMeasureType('g');
+        $spinach->setProteins(3.1);
+        $spinach->setCarbohydrates(0.5);
+        $spinach->setFat(0.8);
+        $spinach->setEnergy(26);
+        $spinach->setShopBatchSize(600);
+        $spinach->setHasStockCheckNeededBeforeBuying(false);
+        $spinach->setBarCode('3560071239855');
+        $spinach->addTag($this->getReference(TagFixtures::VEGAN_TAG_REFERENCE));
+        $spinach->addTag($this->getReference(TagFixtures::VEGETARIAN_TAG_REFERENCE));
+        $manager->persist($spinach);
+
         $oil = new Ingredient();
         $oil->setLabel('Huile d\'olive');
         $oil->setMeasureType('ml');
@@ -122,6 +144,45 @@ class IngredientFixtures extends Fixture implements DependentFixtureInterface
         $sushiRice->addTag($this->getReference(TagFixtures::VEGAN_TAG_REFERENCE));
         $sushiRice->addTag($this->getReference(TagFixtures::VEGETARIAN_TAG_REFERENCE));
         $manager->persist($sushiRice);
+
+        $polenta = new Ingredient();
+        $polenta->setLabel('Polenta');
+        $polenta->setMeasureType('g');
+        $polenta->setProteins(6.3);
+        $polenta->setCarbohydrates(77);
+        $polenta->setFat(1.5);
+        $polenta->setEnergy(352);
+        $polenta->setHasStockCheckNeededBeforeBuying(true);
+        $polenta->addTag($this->getReference(TagFixtures::VEGAN_TAG_REFERENCE));
+        $polenta->addTag($this->getReference(TagFixtures::VEGETARIAN_TAG_REFERENCE));
+        $manager->persist($polenta);
+
+        $gnocchi = new Ingredient();
+        $gnocchi->setLabel('Gnocchis');
+        $gnocchi->setMeasureType('g');
+        $gnocchi->setProteins(4.6);
+        $gnocchi->setCarbohydrates(28);
+        $gnocchi->setFat(0.5);
+        $gnocchi->setEnergy(134);
+        $gnocchi->setBarCode('4056489162025');
+        $gnocchi->setShopBatchSize(380);
+        $gnocchi->setHasStockCheckNeededBeforeBuying(true);
+        $gnocchi->setStore($this->getReference(StoreFixtures::LIDL_STORE_REFERENCE));
+        $gnocchi->addTag($this->getReference(TagFixtures::VEGAN_TAG_REFERENCE));
+        $gnocchi->addTag($this->getReference(TagFixtures::VEGETARIAN_TAG_REFERENCE));
+        $manager->persist($gnocchi);
+
+        $mapleSyrup = new Ingredient();
+        $mapleSyrup->setLabel('Sirop d\'érable');
+        $mapleSyrup->setMeasureType('ml');
+        $mapleSyrup->setProteins(0.5);
+        $mapleSyrup->setCarbohydrates(64);
+        $mapleSyrup->setFat(0.5);
+        $mapleSyrup->setEnergy(256);
+        $mapleSyrup->setHasStockCheckNeededBeforeBuying(true);
+        $mapleSyrup->addTag($this->getReference(TagFixtures::VEGAN_TAG_REFERENCE));
+        $mapleSyrup->addTag($this->getReference(TagFixtures::VEGETARIAN_TAG_REFERENCE));
+        $manager->persist($mapleSyrup);
 
         $soySauce = new Ingredient();
         $soySauce->setLabel('Sauce soja salée');
@@ -153,7 +214,9 @@ class IngredientFixtures extends Fixture implements DependentFixtureInterface
         $sweetSoySauce->addTag($this->getReference(TagFixtures::VEGETARIAN_TAG_REFERENCE));
         $manager->persist($sweetSoySauce);
 
+        // -----------------------------//
         // -- VEGETARIAN INGREDIENTS -- //
+        // -----------------------------//
         $gratedComte = new Ingredient();
         $gratedComte->setLabel('Comté râpé');
         $gratedComte->setMeasureType('g');
@@ -206,7 +269,21 @@ class IngredientFixtures extends Fixture implements DependentFixtureInterface
         $egg->addTag($this->getReference(TagFixtures::VEGETARIAN_TAG_REFERENCE));
         $manager->persist($egg);
 
+        $cream = new Ingredient();
+        $cream->setLabel('Crème liquide 30%MG');
+        $cream->setMeasureType('ml');
+        $cream->setProteins(2.3);
+        $cream->setCarbohydrates(3.2);
+        $cream->setFat(30);
+        $cream->setEnergy(292);
+        $cream->setShopBatchSize(200);
+        $cream->setHasStockCheckNeededBeforeBuying(true);
+        $cream->addTag($this->getReference(TagFixtures::VEGETARIAN_TAG_REFERENCE));
+        $manager->persist($cream);
+
+        // --------------------------//
         // -- CARNIST INGREDIENTS -- //
+        // --------------------------//
         $ham = new Ingredient();
         $ham->setLabel('Jambon blanc avec couenne');
         $ham->setMeasureType('g');
@@ -262,8 +339,12 @@ class IngredientFixtures extends Fixture implements DependentFixtureInterface
         $this->addReference(self::PROTEIN_INGREDIENT_REFERENCE, $pst);
         $this->addReference(self::LEEK_INGREDIENT_REFERENCE, $leek);
         $this->addReference(self::CARROT_INGREDIENT_REFERENCE, $carrot);
+        $this->addReference(self::SPINACH_INGREDIENT_REFERENCE, $spinach);
         $this->addReference(self::OIL_INGREDIENT_REFERENCE, $oil);
         $this->addReference(self::SUSHI_RICE_INGREDIENT_REFERENCE, $sushiRice);
+        $this->addReference(self::POLENTA_INGREDIENT_REFERENCE, $polenta);
+        $this->addReference(self::GNOCCHI_INGREDIENT_REFERENCE, $gnocchi);
+        $this->addReference(self::MAPLE_SYRUP_INGREDIENT_REFERENCE, $mapleSyrup);
         $this->addReference(self::SOY_SAUCE_INGREDIENT_REFERENCE, $soySauce);
         $this->addReference(self::SWEET_SOY_SAUCE_INGREDIENT_REFERENCE, $sweetSoySauce);
 
@@ -271,12 +352,12 @@ class IngredientFixtures extends Fixture implements DependentFixtureInterface
         $this->addReference(self::SPREADABLE_CHEESE_INGREDIENT_REFERENCE, $spreadableCheese);
         $this->addReference(self::COW_MILK_INGREDIENT_REFERENCE, $cowMilk);
         $this->addReference(self::EGG_INGREDIENT_REFERENCE, $egg);
+        $this->addReference(self::CREAM_INGREDIENT_REFERENCE, $cream);
 
         $this->addReference(self::HAM_INGREDIENT_REFERENCE, $ham);
         $this->addReference(self::LARDOON_INGREDIENT_REFERENCE, $lardoon);
         $this->addReference(self::SALMOON_INGREDIENT_REFERENCE, $salmoon);
         $this->addReference(self::BURGER_INGREDIENT_REFERENCE, $burger);
-
     }
 
     public function getDependencies(): array

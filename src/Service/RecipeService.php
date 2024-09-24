@@ -47,7 +47,7 @@ class RecipeService
      *
      * @return string Newly saved file name
      */
-    public static function saveMainPicture(UploadedFile $mainPicture, string $fileName, string $filepath)
+    public static function saveMainPicture(UploadedFile $mainPicture, string $fileName, string $filepath): string
     {
         $slugger = new AsciiSlugger();
         $slugRecipeName = strtolower($slugger->slug($fileName));
@@ -55,7 +55,7 @@ class RecipeService
 
         $mainPicture->move($filepath, $newFilename);
 
-        self::_resizeImage($filepath . '/' . $newFilename);
+        self::resizeImage($filepath . '/' . $newFilename);
 
         return $newFilename;
     }
@@ -65,7 +65,7 @@ class RecipeService
      *
      * @param string $filepath
      */
-    private static function _resizeImage(string $filepath)
+    public static function resizeImage(string $filepath): void
     {
         $finalHeight = 400;
         $finalWidth = 400;
