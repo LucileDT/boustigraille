@@ -27,3 +27,8 @@ services:
     App\Migrations\Factory\MigrationFactoryDecorator:
         decorates: Doctrine\Migrations\Version\DbalMigrationFactory
         arguments: ['@App\Migrations\Factory\MigrationFactoryDecorator.inner','@App\Service\Migrations\ContentAuthorService']
+
+    # EventListeners
+    App\EventListener\RequestListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
