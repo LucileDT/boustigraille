@@ -6,6 +6,7 @@ use App\Entity\Recipe;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,8 +37,8 @@ class APIRecipeController extends AbstractController
         return new JsonResponse(['toggled']);
     }
 
-    #[Route(path: '/recipe/by-favourite', name: 'by_favorite', methods: ['GET'])]
-    public function getRecipesGroupedByFavorite(Request $request, RecipeRepository $recipeRepository): JsonResponse
+    #[Route(path: '/recipe/by-favorite', name: 'by_favorite', methods: ['GET'])]
+    public function getRecipesGroupedByFavorite(Request $request, RecipeRepository $recipeRepository, Security $security): JsonResponse
     {
         /** @var \App\Entity\User $connectedUser */
         $connectedUser = $this->getUser();
@@ -51,6 +52,14 @@ class APIRecipeController extends AbstractController
         $favedRecipes = $recipeRepository->findByFavedByAndTransliteratedName($connectedUser, $nameWithoutSpecialCharacters);
         $notFavedRecipes = $recipeRepository->findByNotFavedByAndTransliteratedName($connectedUser, $nameWithoutSpecialCharacters);
 
+        foreach ($favedRecipes as &$favedRecipe) {
+            $favedRecipe->canViewAuthorUsername = $security->isGranted('view_author_username', $favedRecipe);
+        }
+
+        foreach ($notFavedRecipes as &$notFavedRecipe) {
+            $notFavedRecipe->canViewAuthorUsername = $security->isGranted('view_author_username', $notFavedRecipe);
+        }
+
         $groupedData = [
             'faved' => $favedRecipes,
             'not_faved' => $notFavedRecipes,
@@ -60,7 +69,7 @@ class APIRecipeController extends AbstractController
     }
 
     #[Route(path: '/suggested', name: 'suggested', methods: ['GET'])]
-    public function getSuggestedRecipes(Request $request, RecipeRepository $recipeRepository): JsonResponse
+    public function getSuggestedRecipes(Request $request, RecipeRepository $recipeRepository, Security $security): JsonResponse
     {
         /** @var \App\Entity\User $connectedUser */
         $connectedUser = $this->getUser();
@@ -74,6 +83,10 @@ class APIRecipeController extends AbstractController
         if (count($firstSuggestedRecipes) !== 6) {
             $otherSuggestedRecipes = $recipeRepository->findFavoritedRecipesOldestMade($connectedUser, 6 - count($firstSuggestedRecipes));
         }
-        return new JsonResponse(array_merge($firstSuggestedRecipes, $otherSuggestedRecipes));
+        $suggestedRecipes = array_merge($firstSuggestedRecipes, $otherSuggestedRecipes);
+        foreach ($suggestedRecipes as &$suggestedRecipe) {
+            $suggestedRecipe->canViewAuthorUsername = $security->isGranted('view_author_username', $suggestedRecipe);
+        }
+        return new JsonResponse($suggestedRecipes);
     }
 }

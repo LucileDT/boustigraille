@@ -66,9 +66,15 @@ $(document).ready(function () {
                     let favedRecipesData = data.faved;
                     let favedRecipes = [];
                     $.each(favedRecipesData, function (key, recipeData) {
+                        let recipeText = recipeData.name;
+
+                        if (recipeData.can_view_author_username) {
+                            recipeText += ' (' + recipeData.author.username + ')';
+                        }
+
                         let recipe = {
                             'id': recipeData.id,
-                            'text': recipeData.name + ' (' + recipeData.author.username + ')',
+                            'text': recipeText,
                         };
                         favedRecipes.push(recipe);
                     });
@@ -76,9 +82,15 @@ $(document).ready(function () {
                     let notFavedRecipesData = data.not_faved;
                     let notFavedRecipes = [];
                     $.each(notFavedRecipesData, function (key, recipeData) {
+                        let recipeText = recipeData.name;
+
+                        if (recipeData.can_view_author_username) {
+                            recipeText += ' (' + recipeData.author.username + ')';
+                        }
+
                         let recipe = {
                             'id': recipeData.id,
-                            'text': recipeData.name + ' (' + recipeData.author.username + ')',
+                            'text': recipeText,
                         };
                         notFavedRecipes.push(recipe);
                     });
@@ -218,7 +230,7 @@ $(document).ready(function () {
                     $newRecipe.css('background-image', 'url("/build/image/default-recipe-main-picture.jpg")');
                 }
 
-                if (this.author) {
+                if (this.author && this.can_view_author_username) {
                     $newRecipe.find('.description').html('Par ' + this.author.username);
                 } else {
                     $newRecipe.find('.description').html('');

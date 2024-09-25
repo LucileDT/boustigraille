@@ -267,6 +267,7 @@ class Recipe implements JsonSerializable
             'main_picture_filename' => $this->getMainPictureFilename(),
             'energy' => $this->getEnergy(),
             'author' => $this->getAuthor(),
+            'can_view_author_username' => $this->canViewAuthorUsername ?? false,
         ];
     }
 
