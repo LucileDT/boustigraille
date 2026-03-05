@@ -56,9 +56,10 @@ class MealListRepository extends ServiceEntityRepository
             ->leftJoin('m.author', 'a')
             ->leftJoin('a.followPropositionsSent', 'fps')
             ->leftJoin('fps.type', 'ft')
-            ->andWhere('m.author = :connectedUser OR a.doShowWrittenMealListToOthers = :true
-                    OR (fps.follower = :connectedUser AND fps.acceptedAt IS NOT NULL)')
-            ->andWhere('ft.code = :followTypeMealList OR ft.code is null')
+            ->andWhere('m.author = :connectedUser
+                    OR a.doShowWrittenMealListToOthers = :true
+                    OR (fps.follower = :connectedUser AND fps.acceptedAt IS NOT NULL AND ft.code = :followTypeMealList)'
+            )
             ->setParameter('connectedUser', $connectedUser)
             ->setParameter('followTypeMealList', FollowType::MEAL_LIST)
             ->setParameter('true', true);

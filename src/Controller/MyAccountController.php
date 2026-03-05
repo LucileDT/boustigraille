@@ -72,7 +72,7 @@ class MyAccountController extends AbstractController
             $entityManager->persist($currentUser);
             $entityManager->flush();
 
-            return $this->redirectToRoute('user_show', ['id' => $currentUser->getId()]);
+            return $this->redirectToRoute('my_account_index');
         }
 
         return $this->render('my_account/edit-nutritional-data.html.twig', [

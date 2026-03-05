@@ -9,6 +9,8 @@
         "ext-iconv": "*",
         "ext-pgsql": "*",
         "ext-curl": "*",
+        "ext-gd": "*",
+        "ext-intl": "*",
         "composer/package-versions-deprecated": "1.11.99.1",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.5",
