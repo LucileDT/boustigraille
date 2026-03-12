@@ -98,6 +98,9 @@ Encore
         options.sassOptions.quietDeps = true;                                  // during sass compilation
     })
 
+    // enables Vue.js Loader
+    .enableVueLoader()
+
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
 
