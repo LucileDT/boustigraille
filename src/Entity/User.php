@@ -400,6 +400,7 @@ class User implements UserInterface, \JsonSerializable, PasswordAuthenticatedUse
         return [
             'id' => $this->getId(),
             'username' => $this->getUsername(),
+            'do_show_username_on_recipe' => $this->doShowUsernameOnRecipe(),
         ];
     }
 

@@ -6,9 +6,11 @@ use App\Repository\DifficultyLevelRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Query\Expr\Func;
+use JsonSerializable;
 
 #[ORM\Entity(repositoryClass: DifficultyLevelRepository::class)]
-class DifficultyLevel
+class DifficultyLevel implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -56,6 +58,16 @@ class DifficultyLevel
         $this->description = $description;
 
         return $this;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->getId(),
+            'label' => $this->getLabel(),
+            'description' => $this->getDescription(),
+            'select_name' => $this->getSelectName(),
+        ];
     }
 
     /**

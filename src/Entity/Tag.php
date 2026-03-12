@@ -6,9 +6,10 @@ use App\Repository\TagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 #[ORM\Entity(repositoryClass: TagRepository::class)]
-class Tag
+class Tag implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -45,6 +46,14 @@ class Tag
         $this->label = $label;
 
         return $this;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->getId(),
+            'label' => $this->getLabel(),
+        ];
     }
 
     /**
