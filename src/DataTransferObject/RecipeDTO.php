@@ -31,6 +31,7 @@ class RecipeDTO implements JsonSerializable
     private string $recipeShowPath;
     private string $recipeEditPath;
     private string $recipeNewPath;
+    private string $toggleFavoritePath;
 
     public function __construct()
     {
@@ -288,12 +289,13 @@ class RecipeDTO implements JsonSerializable
             'recipe_show_path' => $this->getRecipeShowPath(),
             'recipe_edit_path' => $this->getRecipeEditPath(),
             'recipe_new_path' => $this->getRecipeNewPath(),
+            'toggle_favorite_path' => $this->getToggleFavoritePath(),
         ];
     }
 
     /**
      * Get the value of recipeShowPath
-     */ 
+     */
     public function getRecipeShowPath()
     {
         return $this->recipeShowPath;
@@ -303,7 +305,7 @@ class RecipeDTO implements JsonSerializable
      * Set the value of recipeShowPath
      *
      * @return  self
-     */ 
+     */
     public function setRecipeShowPath($recipeShowPath)
     {
         $this->recipeShowPath = $recipeShowPath;
@@ -313,7 +315,7 @@ class RecipeDTO implements JsonSerializable
 
     /**
      * Get the value of recipeEditPath
-     */ 
+     */
     public function getRecipeEditPath()
     {
         return $this->recipeEditPath;
@@ -323,7 +325,7 @@ class RecipeDTO implements JsonSerializable
      * Set the value of recipeEditPath
      *
      * @return  self
-     */ 
+     */
     public function setRecipeEditPath($recipeEditPath)
     {
         $this->recipeEditPath = $recipeEditPath;
@@ -333,7 +335,7 @@ class RecipeDTO implements JsonSerializable
 
     /**
      * Get the value of recipeNewPath
-     */ 
+     */
     public function getRecipeNewPath()
     {
         return $this->recipeNewPath;
@@ -343,10 +345,30 @@ class RecipeDTO implements JsonSerializable
      * Set the value of recipeNewPath
      *
      * @return  self
-     */ 
+     */
     public function setRecipeNewPath($recipeNewPath)
     {
         $this->recipeNewPath = $recipeNewPath;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of toggleFavoritePath
+     */
+    public function getToggleFavoritePath()
+    {
+        return $this->toggleFavoritePath;
+    }
+
+    /**
+     * Set the value of toggleFavoritePath
+     *
+     * @return  self
+     */
+    public function setToggleFavoritePath($toggleFavoritePath)
+    {
+        $this->toggleFavoritePath = $toggleFavoritePath;
 
         return $this;
     }

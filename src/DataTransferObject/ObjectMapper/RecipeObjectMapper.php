@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class RecipeObjectMapper
 {
     public function __construct(
-        private string $projectDir, 
+        private string $projectDir,
         private Security $security,
         private DateService $dateService,
         private UrlGeneratorInterface $urlGenerator,
@@ -24,7 +24,7 @@ class RecipeObjectMapper
     public function map(Recipe $recipe): RecipeDTO
     {
         $package = new Package(new JsonManifestVersionStrategy($this->projectDir . '/public/build/manifest.json'));
-        
+
         $mainPictureUrl = $recipe->getMainPictureFilename() ?
             $package->getUrl('/uploads/pictures/' . $recipe->getMainPictureFilename()) :
             $package->getUrl('build/image/default-recipe-main-picture.jpg');
@@ -48,6 +48,7 @@ class RecipeObjectMapper
             ->setRecipeShowPath($this->urlGenerator->generate('recipe_show', ['id' => $recipe->getId()]))
             ->setRecipeEditPath($this->urlGenerator->generate('recipe_edit', ['id' => $recipe->getId()]))
             ->setRecipeNewPath($this->urlGenerator->generate('recipe_new', ['fromRecipe' => $recipe->getId()]))
+            ->setToggleFavoritePath($this->urlGenerator->generate('api_recipe_toggle_favorite', ['id' => $recipe->getId()]))
         ;
 
         return $recipeDto;
