@@ -7,8 +7,7 @@ use App\Service\RecipeService;
 use App\Service\TagService;
 use DateInterval;
 use DateInvalidOperationException;
-use DateTimeImmutable;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Service\DateService;
 use Doctrine\ORM\PersistentCollection;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -16,7 +15,7 @@ use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension
 {
-    public function __construct(private TagService $tagService) {}
+    public function __construct(private TagService $tagService, private DateService $dateService) {}
 
     public function getFilters(): array
     {
@@ -65,25 +64,7 @@ class AppExtension extends AbstractExtension
      * @throws DateInvalidOperationException
      */
     public function formatDateInterval(?DateInterval $dateInterval): string {
-        if (empty($dateInterval)) {
-            return '-';
-        }
-        $now = new DateTimeImmutable();
-        $dateIntervalInSeconds = $now->add($dateInterval)->getTimestamp() - $now->getTimestamp();
-
-        $oneHour = $now->getTimestamp() - $now->sub(new DateInterval('PT1H'))->getTimestamp();
-
-        if ($dateIntervalInSeconds === 0) {
-            return '-';
-        } elseif ($dateIntervalInSeconds < $oneHour) {
-            return $dateInterval->format('%i min');
-        } else {
-            if ($dateInterval->i === 0) {
-                return $dateInterval->format('%hh');
-            } else {
-                return $dateInterval->format('%hh%I');
-            }
-        }
+        return $this->dateService->formatDateInterval($dateInterval);
     }
 
     /**
