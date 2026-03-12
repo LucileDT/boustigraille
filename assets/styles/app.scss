@@ -126,3 +126,36 @@ i {
 .img-thumbnail.img-thumbnail-small {
     width: 100px !important;
 }
+
+/*
+  AUTO GRID
+  Set the minimum item size with `--auto-grid-min-size` and you'll
+  get a fully responsive grid with no media queries.
+*/
+.auto-grid {
+  --auto-grid-min-size: 16rem;
+}
+
+.auto-grid > * {
+  max-width: 400px;
+}
+
+.auto-grid > * + * {
+  margin-top: 1rem;
+}
+
+@supports(display: grid) {
+  .auto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--auto-grid-min-size), 1fr));
+    grid-gap: 2rem;
+  }
+
+  .auto-grid > * {
+    max-width: unset;
+  }
+
+  .auto-grid > * + * {
+    margin-top: unset;
+  }
+}
