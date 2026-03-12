@@ -3,6 +3,7 @@
 namespace App\Controller\API;
 
 use App\Entity\Recipe;
+use App\DataTransferObject\ObjectMapper\RecipeObjectMapper;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,6 +15,19 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/api/recipe', name: 'api_recipe_')]
 class APIRecipeController extends AbstractController
 {
+    #[Route(path: '/', name: 'list', methods: ['GET'])]
+    public function getRecipesList(
+        RecipeRepository $recipeRepository,
+        RecipeObjectMapper $recipeObjectMapper
+    ): JsonResponse
+    {
+        return new JsonResponse(
+            $recipeObjectMapper->mapAll(
+                $recipeRepository->findAll()
+            )
+        );
+    }
+
     #[Route(path: '/toggle-favorite/{id}', name: 'toggle_favorite', methods: ['POST'])]
     public function toggleFavorite(EntityManagerInterface $entityManager, Recipe $recipe): JsonResponse
     {
@@ -69,7 +83,7 @@ class APIRecipeController extends AbstractController
     }
 
     #[Route(path: '/suggested', name: 'suggested', methods: ['GET'])]
-    public function getSuggestedRecipes(Request $request, RecipeRepository $recipeRepository, Security $security): JsonResponse
+    public function getSuggestedRecipes(RecipeRepository $recipeRepository, Security $security): JsonResponse
     {
         /** @var \App\Entity\User $connectedUser */
         $connectedUser = $this->getUser();
