@@ -92,7 +92,11 @@ Encore
     })
 
     // enables Sass/SCSS support
-    .enableSassLoader()
+    .enableSassLoader(function(options) {
+        // https://github.com/sass/node-sass#options
+        options.sassOptions.silenceDeprecations = ['import', 'legacy-js-api']; // Prevent warnings
+        options.sassOptions.quietDeps = true;                                  // during sass compilation
+    })
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
