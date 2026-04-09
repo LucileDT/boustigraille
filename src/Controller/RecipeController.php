@@ -27,7 +27,6 @@ class RecipeController extends AbstractController
     #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function index(
         Request $request,
-        RecipeRepository $recipeRepository,
         TagService $tagService,
         TagRepository $tagRepository
     ): Response
@@ -56,7 +55,6 @@ class RecipeController extends AbstractController
             'method' => 'GET',
         ]);
         return $this->render('recipe/index.html.twig', [
-            'recipes' => $recipeRepository->findByFilters($filters),
             'form' => $form->createView(),
         ]);
     }

@@ -20,28 +20,7 @@ class RecipeRepository extends ServiceEntityRepository
         parent::__construct($registry, Recipe::class);
     }
 
-    public function findByFilters(array $filters = [])
-    {
-        $query = $this->createQueryBuilder('r');
-        if (!empty($filters['tags'])) {
-            $query->join('r.tags', 't');
-            foreach ($filters['tags'] as $tag) {
-                $query->andWhere('t.id = :tag')->setParameter('tag', $tag);
-            }
-        }
-        if (!empty($filters['name'])) {
-            $query
-                ->andWhere('UPPER(unaccent(r.name)) LIKE UPPER(:name)')
-                ->setParameter('name', '%' . $filters['name'] . '%')
-            ;
-        }
-        return $query->orderBy('r.name', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    public function findByFavedByAndTransliteratedName(User $user, string $name = null) {
+    public function findByFavedByAndTransliteratedName(User $user, ?string $name = null) {
         $query = $this->createQueryBuilder('r')
             ->join('r.favedBy', 'u')
             ->andWhere('u = :user')
@@ -64,7 +43,7 @@ class RecipeRepository extends ServiceEntityRepository
             ;
     }
 
-    public function findByNotFavedByAndTransliteratedName(User $user, string $name = null) {
+    public function findByNotFavedByAndTransliteratedName(User $user, ?string $name = null) {
         $query = $this->createQueryBuilder('r')
             ->andWhere(':user NOT MEMBER OF r.favedBy')
             ->setParameter('user', $user)
@@ -120,33 +99,4 @@ class RecipeRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
-
-    // /**
-    //  * @return Recipe[] Returns an array of Recipe objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Recipe
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

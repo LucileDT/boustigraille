@@ -44,7 +44,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="p-4 bg-light mb-5">
+    {# <div class="p-4 bg-light mb-5">
         <h3 class="mb-3">Filtres</h3>
         {{ form_start(form, {'attr': {'id': 'filter-recipe'}}) }}
             <div class="row">
@@ -76,11 +76,6 @@
                 </button>
             </div>
         {{ form_end(form) }}
-    </div>
-
-    <div id="klassy-cards-container" class="d-flex justify-content-between flex-wrap">
-        {% for recipe in recipes %}
-            {{ include('recipe/_recipe_card.html.twig') }}
-        {% endfor %}
-    </div>
+    </div> #}
+    <div id="recipe-index" data-connected-user="{{ app.user|json_encode() }}"></div>
 {% endblock %}

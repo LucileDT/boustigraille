@@ -1,11 +1,17 @@
 import $ from "jquery";
+import { createApp } from 'vue';
+import RecipeIndex from "../components/RecipeIndex.vue";
+
+const mountEl = document.querySelector("#recipe-index");
+createApp(RecipeIndex, { ...mountEl.dataset }
+).mount("#recipe-index");
 
 $(document).ready(function () {
-    // activate Select2 on tags selector
-    $('#filter_recipe_tags').select2({
-        theme: "bootstrap-5",
-        tags: false,
-    });
+    // // activate Select2 on tags selector
+    // $('#filter_recipe_tags').select2({
+    //     theme: "bootstrap-5",
+    //     tags: false,
+    // });
 
     $('#filter-recipe').on('submit', function (event) {
         event.preventDefault();
@@ -16,10 +22,5 @@ $(document).ready(function () {
         let url = new URL(currentLocation.origin + $(this).attr('action') + '?' + search.toString())
 
         window.location.href = url;
-        console.debug(url);
-        console.debug(search);
-        console.debug(currentLocation);
-        console.debug(formData);
-        console.debug($(this));
     })
 });
