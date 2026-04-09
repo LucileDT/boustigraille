@@ -38,6 +38,7 @@ security:
         - { path: ^/ingredient, roles: [PUBLIC_ACCESS] }
         - { path: ^/recipe, roles: [PUBLIC_ACCESS] }
         - { path: ^/api/recipe, roles: [PUBLIC_ACCESS] }
+        - { path: ^/api/tag, roles: [PUBLIC_ACCESS] }
         #  require authentication for all other routes
         - { path: ^/, roles: [IS_AUTHENTICATED_FULLY] }
 
